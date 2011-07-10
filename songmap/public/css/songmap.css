@@ -1,0 +1,36 @@
+/*
+ * setup the head of the document
+ */
+
+#ui_head {
+	min-height: 75px;
+}
+
+#ui_head div {
+	display: inline;
+}
+
+#functions {
+	float: right;
+}
+
+#banner {
+	float: left;
+	font-family: 'Monofett', arial, serif;
+	font-size: 60px;
+}
+
+/*
+ * setup the body of the document
+ */
+ 
+ #playlists {
+ 	float: left;
+ 	width: 29%;
+ 	padding-right: .5%;
+ 	padding-left: .5%;
+ }
+ 
+ #map {
+ 	float: right;
+ }

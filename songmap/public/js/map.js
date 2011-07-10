@@ -8,7 +8,7 @@ SONGMAP.initMap = function(eln, lat, lng, zoom) {
 	var options = {
 		zoom : zoom,
 		center : new google.maps.LatLng(lat, lng),
-		mapTypeId : google.maps.MapTypeId.HYBRID,
+		mapTypeId : google.maps.MapTypeId.ROADMAP,
 		disableDefaultUI : true, // disable all UI features
 		disableDoubleClickZoom : true, // disable click to zoom
 		scrollwheel : false
