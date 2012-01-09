@@ -1,0 +1,81 @@
+/*
+ * setup the head of the document
+ */
+
+html {
+	margin:0;
+	padding:0;
+	border:0;
+}
+
+body {
+  background: url(/img/noir-bg.png);
+  color: #d1d9e1;
+  padding: 60px;
+  font-family: 'Helvetica Neue',Helvetica,Verdana;
+}
+
+#ui_head {
+	min-height: 75px;
+}
+
+#ui_head div {
+	display: inline;
+}
+
+#functions {
+	float: right;
+}
+
+#banner {
+	color: #6bffbd;	
+	float: left;
+	font-family: 'Monofett', arial, serif;
+	font-size: 60px;
+	padding-bottom: 5px;
+}
+
+#subbanner {
+	color: #6bffbd;
+	float: left;
+	padding-left: 20px;
+	padding-bottom: 10px;
+}
+
+/*
+ * setup the body of the document
+ */
+ 
+#playlists {
+ 	float: left;
+ 	width: 29%;
+ 	padding-right: .5%;
+ 	padding-left: .5%;
+}
+ 
+#map {
+ 	float: right;
+}
+ 
+ /*
+  * Landing page
+  */
+  
+#land-title {
+  text-align: center;
+  width: 600px;
+  margin: 0px auto;
+  margin-top: 200px;
+}
+#land-title h1 {
+  color: #6bffbd;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+#wrapper {
+  margin: 0 auto;
+  width: 1000px;
+}
+ 
+ 

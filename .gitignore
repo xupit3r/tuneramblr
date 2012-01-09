@@ -1,0 +1,59 @@
+##############
+# temp files #
+##############
+*~
+
+###################
+# compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+############
+# archives #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+##################
+# log/data files #
+##################
+*.log
+*.sql
+*.sqlite
+
+#################
+# Eclipse Files #
+#################
+.classpath
+.project
+.settings
+
+######################
+# OS generated files #
+######################
+.DS_Store*
+ehthums.db
+Icon?
+Thumbs.db
+
+###############
+# Directories #
+###############
+classes/
+
+#################
+# Scratch Files #
+#################
+scratch.txt
+.lein-failures
