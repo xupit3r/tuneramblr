@@ -46,11 +46,14 @@ body {
  * setup the body of the document
  */
  
-#playlists {
+#playlist {
  	float: left;
- 	width: 29%;
- 	padding-right: .5%;
- 	padding-left: .5%;
+ 	padding-left: 15px;
+ 	padding-top: 20px;
+}
+
+#playlist li {
+	
 }
  
 #map {

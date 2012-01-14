@@ -4,10 +4,7 @@ var HANDLERS = {};
 // of the site
 HANDLERS.functions = {};
 HANDLERS.metaside = {};
-HANDLERS.tags = {};
-HANDLERS.playlists = {};
-HANDLERS.songs = {};
-HANDLERS.locations = {};
+HANDLERS.playlist = {};
 
 HANDLERS.functions.setup = function() {
 	$("#fn_login").click(function () {
@@ -33,5 +30,17 @@ HANDLERS.metaside.setup = function() {
 };
 
 HANDLERS.metaside.reload = function() {
+
+};
+
+HANDLERS.playlist.setup = function() {
+	// the elements that make up this 
+	// section are going to dictate
+	// what goes in here...
+	// not sure yet
+
+};
+
+HANDLERS.playlist.reload = function() {
 
 };

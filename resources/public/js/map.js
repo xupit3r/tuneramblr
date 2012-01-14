@@ -4,17 +4,20 @@ var SONGMAP = {};
 SONGMAP.map = null;
 SONGMAP.infoBox = null;
 
-SONGMAP.initMap = function(eln, lat, lng, zoom) {
+SONGMAP.initMap = function(elm, zm) {
 	var options = {
-		zoom : zoom,
-		center : new google.maps.LatLng(lat, lng),
+		zoom: zm,
 		mapTypeId : google.maps.MapTypeId.ROADMAP,
-		disableDefaultUI : true, // disable all UI features
-		disableDoubleClickZoom : true, // disable click to zoom
+		disableDefaultUI : true,
 		scrollwheel : false
 	};
-	SONGMAP.map = new google.maps.Map(document.getElementById(eln), options);
+	SONGMAP.map = new google.maps.Map(document.getElementById(elm), options);
 	SONGMAP._registerMapListeners(SONGMAP.map);
+};
+
+// center the map at some location
+SONGMAP.center = function(lat, lng) {
+	SONGMAP.map.setCenter(new google.maps.LatLng(lat, lng));
 };
 
 // register all necessary map events
@@ -30,8 +33,7 @@ SONGMAP.addLocation = function(lat, lng) {
 		map : SONGMAP.map,
 		position : latlng
 	});
-	// do anything else that we might need
-	// with the location variable
+	return loc;
 };
 
 // hide a location

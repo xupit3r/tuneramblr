@@ -4,10 +4,7 @@ var UI = {};
 // of the site
 UI.functions = {};
 UI.metaside = {};
-UI.tags = {};
-UI.playlists = {};
-UI.songs = {};
-UI.locations = {};
+UI.playlist = {};
 
 UI.functions.setup = function() {
 	$("#fn_login").button({
@@ -34,20 +31,18 @@ UI.functions.reload = function() {
 };
 
 UI.metaside.setup = function() {
-	// the elements that make up this 
-	// section are going to dictate
-	// what goes in here...
-	// not sure yet
-	
-	$("#metaside").accordion();
-	
-	// should probably setup the content
-	// within the accordion as well
-	// e.g. handlers for links in the
-	// content
-
+	// setup the side pane for 
+	// all of the yummy meta-data
 };
 
 UI.metaside.reload = function() {
+
+};
+
+UI.playlist.setup = function() {
+	// setup the playlist
+};
+
+UI.playlist.reload = function() {
 
 };
