@@ -27,10 +27,33 @@ body {
 	float: right;
 }
 
+.fn_btn {
+	margin: 4px;
+	padding: 5px;
+	border: 2px solid #616363;
+    border-radius: 8px 8px 8px 8px;
+}
+
+.fn_btn:hover {
+	background: none repeat scroll 0 0 #6BFFBD;
+	opacity: 0.7;
+}
+
+#functions a {
+	color: #D1D9E1;
+	padding-left: 10px;
+	padding-right: 10px;
+	text-decoration: none;
+}
+
+#functions a:hover {
+	cursor: default;
+}
+
 #banner {
 	color: #6bffbd;	
 	float: left;
-	font-family: 'Monofett', arial, serif;
+	font-family: 'Chelsea Market', cursive;
 	font-size: 60px;
 	padding-bottom: 5px;
 }
@@ -47,9 +70,14 @@ body {
  */
  
 #playlist {
+	width: 645px;
+	height: 200px;
+	color: black;
  	float: left;
- 	padding-left: 15px;
- 	padding-top: 20px;
+ 	padding: 15px;
+ 	margin-top: 20px;
+ 	background: none repeat scroll 0 0 #E6FFE6;
+    border-radius: 8px 8px 8px 8px;
 }
 
 #playlist ul {
@@ -61,9 +89,15 @@ body {
 }
 
 #metaside {
+	width: 210px;
+	height: 650px;
+	color: black;
 	float: left;
-	padding-top: 10px;
-	padding-left: 20px;
+	margin-top: 10px;
+	margin-left: 20px;
+	padding: 15px;
+	background: none repeat scroll 0 0 #E6FFE6;
+	border-radius: 8px 8px 8px 8px;
 }
 
 #metaside ul {

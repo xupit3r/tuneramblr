@@ -19,9 +19,12 @@
      [:div {:class "span-24 last"}
       [:h1 {:id "banner"} "SONGMAP"]
       [:div {:id "functions"}
-       [:a {:id "fn_login"} "Login"]
-       [:a {:id "fn_settings"} "Settings"]
-       [:a {:id "fn_about"} "About"]]]
+        [:div {:class "fn_btn"}
+               [:a {:id "fn_login"} "Login"]]
+        [:div {:class "fn_btn"} 
+         [:a {:id "fn_settings"} "Settings"]]
+        [:div {:class "fn_btn"} 
+         [:a {:id "fn_about"} "About"]]]]
      [:div {:class "span-24 last"}
       [:h3 {:id "subbanner"} "your music, your world"]]]
     [:div {:id "ui_body"}

@@ -10,7 +10,8 @@
                             "/css/ie.css"
                             "/css/reset.css" 
                             "/css/songmap.css"
-                            "/css/overcast.css")
+                            "/css/overcast.css"
+                            "http://fonts.googleapis.com/css?family=Chelsea+Market")
                (include-js "http://maps.google.com/maps/api/js?sensor=false"
                            "/js/jquery.js"
                            "/js/jquery-ui.js"

@@ -7,23 +7,7 @@ UI.metaside = {};
 UI.playlist = {};
 
 UI.functions.setup = function() {
-	$("#fn_login").button({
-		icons: {
-			primary: "ui-icon-locked"
-		}
-	});
-	
-	$("#fn_settings").button({
-		icons: {
-			primary: "ui-icon-gear"
-		}
-	});
-	
-	$("#fn_about").button({
-		icons: {
-			primary: "ui-icon-gear"
-		}
-	});
+	// setup function menu UI
 };
 
 UI.functions.reload = function() {
