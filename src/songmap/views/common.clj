@@ -21,3 +21,16 @@
               [:body
                [:div#wrapper
                 content]]))
+
+
+(defpartial gen-ul [lst]
+  (html5
+    [:ul
+     (for [el lst]
+       [:li el])]))
+
+(defpartial gen-ol [lst]
+  (html5
+    [:ol
+     (for [el lst]
+       [:li el])]))

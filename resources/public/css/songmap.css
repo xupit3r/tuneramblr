@@ -52,10 +52,28 @@ body {
  	padding-top: 20px;
 }
 
-#playlist li {
-	
+#playlist ul {
+	list-style: none;
 }
- 
+
+#playlist li {
+	text-align: left;
+}
+
+#metaside {
+	float: left;
+	padding-top: 10px;
+	padding-left: 20px;
+}
+
+#metaside ul {
+	list-style: none;
+}
+
+#metaside li {
+	text-align: left;
+}
+
 #map {
  	float: right;
 }

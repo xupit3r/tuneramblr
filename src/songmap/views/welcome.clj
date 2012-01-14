@@ -1,5 +1,7 @@
 (ns songmap.views.welcome
-  (:require [songmap.views.common :as common])
+  (:require [songmap.views.common :as common]
+            [songmap.models.playlist :as playlist]
+            [songmap.models.metadata :as metadata])
   (:use [noir.core :only [defpage]]
         [hiccup.core :only [html]]))
 
@@ -25,22 +27,13 @@
     [:div {:id "ui_body"}
      [:div {:class "span-7", :style "height: 700px"}
       [:div {:id "metaside"}
-       [:ol
-        [:li "Property 1"]
-        [:li "Property 2"]
-        [:li "Property 3"]
-        [:li "Property 4"]]]]
+       (common/gen-ul (metadata/gimme-metadata))]]
      [:div {:class "span-17 last"}
       [:div {:id "map", :style "width: 100%;height: 700px"}]]
      [:div {:class "span-7"}
       [:div [:p "&nbsp;"]]]
      [:div {:class "span-17 last"}
       [:div {:id "playlist"}
-       [:ol
-        [:li "Song 1"]
-        [:li "Song 2"]
-        [:li "Song 3"]
-        [:li "Song 4"]]]]]
+       (common/gen-ul (playlist/gimme-playlist))]]]
     [:div {:id "ui_foot"}
      [:div {:class "container"}]]))
-       
