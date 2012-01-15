@@ -94,9 +94,13 @@ body {
 	text-align: left;
 }
 
+#map {
+	margin-top: 10px;
+}
+
 #metaside {
 	width: 210px;
-	height: 650px;
+	height: 920px;
 	color: black;
 	float: left;
 	margin-top: 10px;

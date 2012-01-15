@@ -33,9 +33,7 @@
        [:h3 "Collected Metadata"]]]
      [:div {:class "span-17 last"}
       [:div {:id "map", :style "width: 100%;height: 700px"}]]
-     [:div {:class "span-7"}
-      [:div [:p "&nbsp;"]]]
-     [:div {:class "span-17 last"}
+     [:div {:class "span-17 last prepend-7"}
       [:div {:id "playlist"}
        [:h3 "Playlist"]]]]
     [:div {:id "ui_foot"}
