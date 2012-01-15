@@ -7,8 +7,5 @@
 
 ;; handles a request for songs
 (defpage [:post "/songs"] {:keys [lat lng]}
-  (response/json [{:lat lat
-                  :lng lng
-                  :name "SONG 1"
-                  :content "this is some content for the marker"}]))
+  (response/json (songs/get-songs lat lng)))
 

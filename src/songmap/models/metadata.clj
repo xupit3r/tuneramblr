@@ -5,4 +5,4 @@
 ;;;; collection
 
 (defn get-meta [id] 
-  (list "this" "is" "some" "metadata"))
+  ["this" "is" "some" "metadata"])
