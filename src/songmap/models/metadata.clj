@@ -4,5 +4,5 @@
 ;;;; associated with some music
 ;;;; collection
 
-(defn gimme-metadata [] 
+(defn get-meta [id] 
   (list "this" "is" "some" "metadata"))

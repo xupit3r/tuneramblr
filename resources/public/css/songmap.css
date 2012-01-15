@@ -76,7 +76,13 @@ body {
  	float: left;
  	padding: 15px;
  	margin-top: 20px;
- 	background: none repeat scroll 0 0 #E6FFE6;
+ 	background: none repeat scroll 0 0 	#F0F0F0 ;
+    border-radius: 8px 8px 8px 8px;
+}
+
+#playlist h3 {
+	padding: 3px;
+	border: 1px solid #585858;
     border-radius: 8px 8px 8px 8px;
 }
 
@@ -96,8 +102,32 @@ body {
 	margin-top: 10px;
 	margin-left: 20px;
 	padding: 15px;
-	background: none repeat scroll 0 0 #E6FFE6;
+	background: none repeat scroll 0 0 	#F0F0F0 ;
 	border-radius: 8px 8px 8px 8px;
+}
+
+#metaside h3 {
+	padding: 3px;
+	border: 1px solid #585858 ;
+    border-radius: 8px 8px 8px 8px;
+}
+
+#meta-items {
+	margin-top: 10px;
+}
+
+#metaside input {
+	width: 13px;
+	height: 13px;
+	padding: 0px;
+	margin: 0px 5px 0px 0px;
+	position: relative;
+	top: -1px;
+}
+
+#metaside label {
+	display: block;
+	text-align: left;
 }
 
 #metaside ul {

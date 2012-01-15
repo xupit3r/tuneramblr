@@ -30,13 +30,13 @@
     [:div {:id "ui_body"}
      [:div {:class "span-7", :style "height: 700px"}
       [:div {:id "metaside"}
-       (common/gen-ul (metadata/gimme-metadata))]]
+       [:h3 "Collected Metadata"]]]
      [:div {:class "span-17 last"}
       [:div {:id "map", :style "width: 100%;height: 700px"}]]
      [:div {:class "span-7"}
       [:div [:p "&nbsp;"]]]
      [:div {:class "span-17 last"}
       [:div {:id "playlist"}
-       (common/gen-ul (playlist/gimme-playlist))]]]
+       [:h3 "Playlist"]]]]
     [:div {:id "ui_foot"}
      [:div {:class "container"}]]))
