@@ -5,7 +5,6 @@
   (:use [noir.core :only [defpage]]
         [hiccup.core :only [html]]))
 
-;; handles a request for songs
-(defpage [:post "/metadata"] {:keys [id]}
+;; handles a request for metadata
+(defpage [:post "/metadata/get"] {:keys [id]}
   (response/json (metadata/get-meta id)))
-

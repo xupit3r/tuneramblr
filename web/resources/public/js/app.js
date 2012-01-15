@@ -86,7 +86,7 @@ APP.getSongs = function() {
 	if (APP.userLocation) {
 		$.ajax({
 			type: "POST",
-			url: "/songs",
+			url: "/songs/get",
 			dataType: "json",
 			data: {lat: APP.userLocation.coords.latitude,
 				   lng: APP.userLocation.coords.longitude},
@@ -113,7 +113,7 @@ APP.getMetadata = function(id) {
 	// or some arbitrary id if no 
 	// user is logged in
 	$.ajax({type: "POST",
-			url: "/metadata",
+			url: "/metadata/get",
 			dataType: "json",
 			data: {id: id},
 			success: APP.fillMetadata});
