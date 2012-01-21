@@ -1,6 +1,9 @@
 // general application stuff
 var APP = {};
 
+// model storage of the songs on the map
+APP.songs = [];
+
 // executes when the DOM is ready
 $(document).ready(function() {
 	
@@ -102,7 +105,7 @@ APP.placeSongs = function(songs) {
 	// add them to the map
 	for (var idx in songs) {
 		var song = songs[idx];
-		SONGMAP.addLocation(song);
+		SONGMAP.addSong(song);
 	}
 };
 
@@ -124,6 +127,9 @@ APP.fillMetadata = function(metadata) {
 	// iterate over the metadata and 
 	// add it to the panel
 	if (metadata.length > 0) {
+		// we want to build a fragment and then 
+		// inject that fragment into the DOM
+		// (less expensive)
 		var frag = document.createDocumentFragment();
 		var fdiv = frag.appendChild(document.createElement("div"));
 		fdiv.id = "meta-items";

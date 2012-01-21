@@ -3,7 +3,6 @@ var SONGMAP = {};
 
 SONGMAP.map = null;
 SONGMAP.infoBox = null;
-SONGMAP.locations = [];
 
 SONGMAP.initMap = function(elm, zm) {
 	var options = {
@@ -27,20 +26,20 @@ SONGMAP._registerMapListeners = function(map) {
 	// then I will set them up here
 };
 
-// add a new location to the map
-SONGMAP.addLocation = function(locData) {
-	var latlng = new google.maps.LatLng(locData.lat, locData.lng);
+// add a new song location to the map
+SONGMAP.addSong = function(songData) {
+	var latlng = new google.maps.LatLng(songData.lat, songData.lng);
 	var loc = new google.maps.Marker({
 		map : SONGMAP.map,
 		position : latlng
 	});
 	
-	var id = SONGMAP.locations.length;
+	var id = APP.songs.length;
 	var mcf = function () {
 		var content = "<div class='song_mrkr'>";
-		content += "<p class='mrkr_artist'>Artist: "+locData.artist+"</p>";
-		content += "<p class='mrkr_title'>Title: "+locData.title+"</p>";
-		content += "<p class='mrkr_album'>Album: "+locData.album+"</p>";
+		content += "<p class='mrkr_artist'>Artist: "+songData.artist+"</p>";
+		content += "<p class='mrkr_title'>Title: "+songData.title+"</p>";
+		content += "<p class='mrkr_album'>Album: "+songData.album+"</p>";
 		content += "</div>";
 		SONGMAP.openinfoBox(loc, content);
 	};
@@ -49,8 +48,8 @@ SONGMAP.addLocation = function(locData) {
 	// add the marker to the location data
 	// and store that data in the SONGMAP
 	// model
-	locData.marker = loc;
-	SONGMAP.locations[id] = locData;
+	songData.marker = loc;
+	APP.songs[id] = songData;
 };
 
 SONGMAP.markerClick
