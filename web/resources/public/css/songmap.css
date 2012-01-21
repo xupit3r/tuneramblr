@@ -145,6 +145,28 @@ body {
 #map {
  	float: right;
 }
+
+/*
+ * Song Marker
+ */
+ 
+.song_mrkr {
+	color: black;
+	display: block;
+	text-align: left;
+};
+
+.mrkr_artist {
+	margin-bottom: 2px;
+};
+
+.mrkr_title {
+	margin-bottom: 2px;
+};
+
+.mrkr_album {
+	margin-bottom: 2px;
+};
  
  /*
   * Landing page

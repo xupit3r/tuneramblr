@@ -3,6 +3,7 @@ var SONGMAP = {};
 
 SONGMAP.map = null;
 SONGMAP.infoBox = null;
+SONGMAP.locations = [];
 
 SONGMAP.initMap = function(elm, zm) {
 	var options = {
@@ -27,14 +28,32 @@ SONGMAP._registerMapListeners = function(map) {
 };
 
 // add a new location to the map
-SONGMAP.addLocation = function(lat, lng) {
-	var latlng = new google.maps.LatLng(lat, lng);
+SONGMAP.addLocation = function(locData) {
+	var latlng = new google.maps.LatLng(locData.lat, locData.lng);
 	var loc = new google.maps.Marker({
 		map : SONGMAP.map,
 		position : latlng
 	});
-	return loc;
+	
+	var id = SONGMAP.locations.length;
+	var mcf = function () {
+		var content = "<div class='song_mrkr'>";
+		content += "<p class='mrkr_artist'>Artist: "+locData.artist+"</p>";
+		content += "<p class='mrkr_title'>Title: "+locData.title+"</p>";
+		content += "<p class='mrkr_album'>Album: "+locData.album+"</p>";
+		content += "</div>";
+		SONGMAP.openinfoBox(loc, content);
+	};
+	google.maps.event.addListener(loc, "click", mcf);
+
+	// add the marker to the location data
+	// and store that data in the SONGMAP
+	// model
+	locData.marker = loc;
+	SONGMAP.locations[id] = locData;
 };
+
+SONGMAP.markerClick
 
 // hide a location
 SONGMAP.hideLocation = function(loc) {
@@ -72,12 +91,12 @@ SONGMAP.closeInfoBox = function() {
 // opens an infoBox over a location on
 // the map, and fills the infoBox with
 // the provided content
-SONGMAP.openinfoBox = function(content, loc) {
+SONGMAP.openinfoBox = function(loc, content) {
 	if (SONGMAP.infoBox != null) {
 		SONGMAP.infoBox.close();
 	}
 	SONGMAP.infoBox = new google.maps.InfoWindow({
 		content : content
 	});
-	SONGMAP.infoBox.open(SONGMAP.map, mrkr);
+	SONGMAP.infoBox.open(SONGMAP.map, loc);
 };

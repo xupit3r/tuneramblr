@@ -102,7 +102,7 @@ APP.placeSongs = function(songs) {
 	// add them to the map
 	for (var idx in songs) {
 		var song = songs[idx];
-		SONGMAP.addLocation(song.lat, song.lng);
+		SONGMAP.addLocation(song);
 	}
 };
 
