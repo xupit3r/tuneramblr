@@ -1,7 +1,5 @@
 (ns songmap.views.welcome
-  (:require [songmap.views.common :as common]
-            [songmap.models.playlist :as playlist]
-            [songmap.models.metadata :as metadata])
+  (:require [songmap.views.common :as common])
   (:use [noir.core :only [defpage]]
         [hiccup.core :only [html]]))
 
