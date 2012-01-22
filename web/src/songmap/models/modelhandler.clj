@@ -27,7 +27,7 @@
 ;;;; METADATA CRUD METHODS ;;;;
 
 ;; get metadata associated with a particular user
-(defn get-meta [id]
+(defn get-meta []
   ["this" "is" "some" "metadata"])
 
 
