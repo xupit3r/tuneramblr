@@ -50,6 +50,13 @@ Thumbs.db
 # Directories #
 ###############
 classes/
+bin/
+
+###########
+# Android #
+###########
+.apk
+.ap_
 
 #################
 # Scratch Files #
