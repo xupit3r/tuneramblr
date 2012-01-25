@@ -27,12 +27,12 @@
 ;;;; METADATA CRUD METHODS ;;;;
 
 ;; get metadata associated with a particular user
-(defn get-meta []
+(defn get-meta [id]
   ["this" "is" "some" "metadata"])
 
 
 
 ;;;; PLAYLIST CRUD METHODS ;;;;
 
-(defn get-playlist []
+(defn get-playlist [id]
   ["this" "is" "a" "playlist"])

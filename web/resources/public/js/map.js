@@ -34,20 +34,14 @@ SONGMAP.addSong = function(songData) {
 		position : latlng
 	});
 	
-	var id = APP.songs.length;
-	var mcf = function () {
-		var content = "<div class='song_mrkr'>";
-		content += "<p class='mrkr_artist'>Artist: "+songData.artist+"</p>";
-		content += "<p class='mrkr_title'>Title: "+songData.title+"</p>";
-		content += "<p class='mrkr_album'>Album: "+songData.album+"</p>";
-		content += "</div>";
-		SONGMAP.openinfoBox(loc, content);
-	};
+	// setup a click listener for the marker
+	var mcf = UI.buildInfoBox(SONGMAP, loc, songData);
 	google.maps.event.addListener(loc, "click", mcf);
 
 	// add the marker to the location data
 	// and store that data in the SONGMAP
 	// model
+	var id = APP.songs.length;
 	songData.marker = loc;
 	APP.songs[id] = songData;
 };
