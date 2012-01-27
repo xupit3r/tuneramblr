@@ -1,7 +1,9 @@
 (ns songmap.models.metadata  
-  (:require clj-record.boot)
-  (:use [songmap.models.dbdef]))
+  (:import (java.util.Set)
+           (org.apache.hadoop.hbase HBaseConfiguration)
+           (org.apache.hadoop.hbase.client Put Get HTable)
+           (org.apache.hadoop.hbase.util Bytes)))
 
-;; prepare the typical
-;; db methods
-(clj-record/init-model)
+;; get a handle on an hbase table
+(defn hbase-table [tabname]
+  (HTable. (HBaseConfiguration.) tabname))

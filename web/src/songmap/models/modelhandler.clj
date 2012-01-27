@@ -9,7 +9,31 @@
 (defn get-songs [lat lng]
   ; just give me the only record in the
   ; db, for right now
-  (song/find-records {:id "1"}))
+  ;(song/find-records {:id "1"})
+  [{:lat 40.4,
+    :lng -80.08,
+    :artist "artist 1",
+    :title "title 1",
+    :album "album 1",
+    :genre "genre 1"} 
+   {:lat 40.5,
+    :lng -80.09,
+    :artist "artist 2",
+    :title "title 2",
+    :album "album 2",
+    :genre "genre 2"} 
+   {:lat 40.2,
+    :lng -80.00,
+    :artist "artist 3",
+    :title "title 3",
+    :album "album 3",
+    :genre "genre 3"} 
+   {:lat 40.4,
+     :lng -80.09,
+     :artist "artist 4",
+     :title "title 4",
+     :album "album 4",
+     :genre "genre 4"}])
 
 ;; add a new song to the model
 (defn add-song [songdata]
@@ -27,8 +51,14 @@
 ;;;; METADATA CRUD METHODS ;;;;
 
 ;; get metadata associated with a particular user
+;; this will return a mapping of metadata keywords 
+;; an the frequencies at which they are used
 (defn get-meta [id]
-  ["this" "is" "some" "metadata"])
+  {:one 1,
+   :two 2,
+   :three 3,
+   :four 4,
+   :five 5})
 
 
 

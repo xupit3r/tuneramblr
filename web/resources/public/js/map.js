@@ -27,6 +27,8 @@ SONGMAP._registerMapListeners = function(map) {
 };
 
 // add a new song location to the map
+// returns the song containing a handle to the 
+// map marker
 SONGMAP.addSong = function(songData) {
 	var latlng = new google.maps.LatLng(songData.lat, songData.lng);
 	var loc = new google.maps.Marker({
@@ -41,9 +43,8 @@ SONGMAP.addSong = function(songData) {
 	// add the marker to the location data
 	// and store that data in the SONGMAP
 	// model
-	var id = APP.songs.length;
 	songData.marker = loc;
-	APP.songs[id] = songData;
+	return songData;
 };
 
 SONGMAP.markerClick

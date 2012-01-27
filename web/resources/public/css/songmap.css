@@ -94,10 +94,6 @@ body {
 	text-align: left;
 }
 
-#map {
-	margin-top: 10px;
-}
-
 #metaside {
 	width: 210px;
 	height: 920px;
@@ -118,32 +114,23 @@ body {
 
 #meta-items {
 	margin-top: 10px;
-}
-
-#metaside input {
-	width: 13px;
-	height: 13px;
-	padding: 0px;
-	margin: 0px 5px 0px 0px;
-	position: relative;
-	top: -1px;
-}
-
-#metaside label {
-	display: block;
-	text-align: left;
-}
-
-#metaside ul {
 	list-style: none;
 }
 
-#metaside li {
-	text-align: left;
+#meta-items li {
+	float: left;
+	height: 35px;
+	margin: 0 10px;
+}
+
+#meta-items li:hover {
+	color: grey;
+	cursor: default;
 }
 
 #map {
  	float: right;
+ 	margin-top: 10px;
 }
 
 /*

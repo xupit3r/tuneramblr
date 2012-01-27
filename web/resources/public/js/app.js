@@ -69,7 +69,8 @@ APP.setUserLocation = function() {
 					SONGMAP.center(position.coords.latitude,position.coords.longitude);
 				},
 				function(error) {
-					console.log("Oh NOES! No location!")
+					console.log("Oh NOES! No location!");
+					setTimeout(APP.setUserLocation, 500);
 				}
 		);
 	} else {
@@ -105,7 +106,10 @@ APP.placeSongs = function(songs) {
 	// add them to the map
 	for (var idx in songs) {
 		var song = songs[idx];
-		SONGMAP.addSong(song);
+		var placedSong = SONGMAP.addSong(song);
+		if(placedSong) {
+			APP.songs[APP.songs.length];
+		}
 	}
 };
 
@@ -123,28 +127,41 @@ APP.getMetadata = function(id) {
 	
 };
 
+// calculates the font size of the 
+// meta property text
+APP.calcMetaFontSize = function(freq) {
+	// we want a value between 1 and 2
+	// this means our fonts will have 
+	// a range between the current font
+	// size and double the current font 
+	// size
+	return (freq / 10 < 1) ? 
+				(freq / 10 + 1) + "em": 
+				(freq / 10 > 2) ? 
+						"2em" : 
+						(freq / 10) + "em";
+};
+
 APP.fillMetadata = function(metadata) {
 	// iterate over the metadata and 
 	// add it to the panel
-	if (metadata.length > 0) {
-		// we want to build a fragment and then 
-		// inject that fragment into the DOM
-		// (less expensive)
-		var frag = document.createDocumentFragment();
-		var fdiv = frag.appendChild(document.createElement("div"));
-		fdiv.id = "meta-items";
-		for (var idx in metadata) {
-			var metaItem = metadata[idx];
-			var tmpInp = document.createElement("input");
-			var tmpLbl = document.createElement("label");
-			var lblTxt = document.createTextNode(metaItem);
-			tmpInp.type = "checkbox";
-			tmpInp.name = metaItem;
-			tmpInp.value = metaItem;
-			tmpLbl.appendChild(tmpInp);
-			tmpLbl.appendChild(lblTxt);
-			fdiv.appendChild(tmpLbl);
-		}
-		$("#metaside").append(frag);
+	// we want to build a fragment and then 
+	// inject that fragment into the DOM
+	// (less expensive)
+	var frag = document.createDocumentFragment();
+	var ful = frag.appendChild(document.createElement("ul"));
+	ful.id = "meta-items";
+	for (var idx in metadata) {
+		
+		// build the UI element
+		var freq = metadata[idx];
+		var property = idx;
+		var tmpLi = document.createElement("li");
+		var liTxt = document.createTextNode(property);
+		tmpLi.appendChild(liTxt);
+		// set the font size
+		tmpLi.style.fontSize = APP.calcMetaFontSize(freq);
+		ful.appendChild(tmpLi);
 	}
+	$("#metaside").append(frag);
 };
