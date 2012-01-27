@@ -32,7 +32,6 @@ HANDLERS.meta.item = {};
 // the onclick handler for metadata items 
 HANDLERS.meta.item.click = function (metaProp) {
 	var metaClick = function (ev) {
-		alert(metaProp);
 		if (APP.select.meta[metaProp]) {
 			// remove this property from the model
 			delete APP.select.meta[metaProp];
