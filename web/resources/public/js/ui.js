@@ -3,7 +3,7 @@ var UI = {};
 // UI for each section
 // of the site
 UI.functions = {};
-UI.metaside = {};
+UI.meta = {};
 UI.playlist = {};
 
 UI.functions.setup = function() {
@@ -14,12 +14,12 @@ UI.functions.reload = function() {
 
 };
 
-UI.metaside.setup = function() {
+UI.meta.setup = function() {
 	// setup the side pane for 
 	// all of the yummy meta-data
 };
 
-UI.metaside.reload = function() {
+UI.meta.reload = function() {
 
 };
 
@@ -43,4 +43,4 @@ UI.buildInfoBox = function (map, location, songData) {
 	
 	// return a function to handle the opening of the box
 	return (function () { map.openinfoBox(location, content);});
-}
+};

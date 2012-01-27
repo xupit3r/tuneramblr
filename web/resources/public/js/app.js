@@ -4,6 +4,11 @@ var APP = {};
 // model storage of the songs on the map
 APP.songs = [];
 
+// model storage for user selections
+APP.select = {};
+APP.select.meta = {};
+APP.select.songs = {};
+
 // executes when the DOM is ready
 $(document).ready(function() {
 	
@@ -19,27 +24,6 @@ $(document).ready(function() {
 	
 	// get the metadata
 	APP.getMetadata(57);
-	
-	// setup the function menu UI
-	UI.functions.setup();
-	
-	// setup the sidebar UI
-	UI.metaside.setup();
-
-	// setup the sidebar UI
-	UI.playlist.setup();
-	
-	// register handlers
-	
-	// this will always be called 
-	// on initial page load
-	HANDLERS.functions.setup();
-
-	// setup the sidebar handlers
-	HANDLERS.metaside.setup();
-	
-	// setup the playlist handlers
-	HANDLERS.playlist.setup();
 });
 
 APP.userLocation = null;
@@ -81,7 +65,7 @@ APP.setUserLocation = function() {
 	}
 };
 
-/* handle songs */
+/* songs */
 
 APP.getSongs = function() {
 	// we will use the user's current 
@@ -113,7 +97,7 @@ APP.placeSongs = function(songs) {
 	}
 };
 
-/* handle metadata */
+/* metadata */
 
 APP.getMetadata = function(id) {
 	// id will be a valid user id
@@ -159,9 +143,10 @@ APP.fillMetadata = function(metadata) {
 		var tmpLi = document.createElement("li");
 		var liTxt = document.createTextNode(property);
 		tmpLi.appendChild(liTxt);
-		// set the font size
 		tmpLi.style.fontSize = APP.calcMetaFontSize(freq);
+		tmpLi.onclick = HANDLERS.meta.item.click(property);
 		ful.appendChild(tmpLi);
 	}
 	$("#metaside").append(frag);
 };
+

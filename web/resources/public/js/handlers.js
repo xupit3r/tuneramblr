@@ -3,9 +3,10 @@ var HANDLERS = {};
 // handlers for each section
 // of the site
 HANDLERS.functions = {};
-HANDLERS.metaside = {};
+HANDLERS.meta = {};
 HANDLERS.playlist = {};
 
+/* function buttons (top) */
 HANDLERS.functions.setup = function() {
 	$("#fn_login").click(function () {
 		// present login form
@@ -18,29 +19,33 @@ HANDLERS.functions.setup = function() {
 };
 
 HANDLERS.functions.reload = function() {
-
+	// probably need this when a user logs in
 };
 
-HANDLERS.metaside.setup = function() {
-	// the elements that make up this 
-	// section are going to dictate
-	// what goes in here...
-	// not sure yet
 
-};
+/* metadata (sidepane) */
 
-HANDLERS.metaside.reload = function() {
+// space for metadata item handlers
+HANDLERS.meta.item = {};
 
-};
 
-HANDLERS.playlist.setup = function() {
-	// the elements that make up this 
-	// section are going to dictate
-	// what goes in here...
-	// not sure yet
-
-};
-
-HANDLERS.playlist.reload = function() {
-
+// the onclick handler for metadata items 
+HANDLERS.meta.item.click = function (metaProp) {
+	var metaClick = function (ev) {
+		alert(metaProp);
+		if (APP.select.meta[metaProp]) {
+			// remove this property from the model
+			delete APP.select.meta[metaProp];
+			
+			// update the styling
+			this.style.color = "black";
+			
+		} else {
+			// add this property to the model
+			APP.select.meta[metaProp] = metaProp;
+			this.style.color = "red";
+		}
+	};
+	
+	return metaClick;
 };
