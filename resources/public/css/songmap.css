@@ -1,18 +1,17 @@
 /*
  * setup the head of the document
  */
-
 html {
-	margin:0;
-	padding:0;
-	border:0;
+	margin: 0;
+	padding: 0;
+	border: 0;
 }
 
 body {
-  background: url(/img/noir-bg.png);
-  color: #d1d9e1;
-  padding: 60px;
-  font-family: 'Helvetica Neue',Helvetica,Verdana;
+	background: url(/img/noir-bg.png);
+	color: #d1d9e1;
+	padding: 60px;
+	font-family: 'Helvetica Neue', Helvetica, Verdana;
 }
 
 #ui_head {
@@ -31,7 +30,7 @@ body {
 	margin: 4px;
 	padding: 5px;
 	border: 2px solid #616363;
-    border-radius: 8px 8px 8px 8px;
+	border-radius: 8px 8px 8px 8px;
 }
 
 .fn_btn:hover {
@@ -51,7 +50,7 @@ body {
 }
 
 #banner {
-	color: #6bffbd;	
+	color: #6bffbd;
 	float: left;
 	font-family: 'Chelsea Market', cursive;
 	font-size: 60px;
@@ -68,22 +67,21 @@ body {
 /*
  * setup the body of the document
  */
- 
 #playlist {
 	width: 645px;
 	height: 200px;
 	color: black;
- 	float: left;
- 	padding: 15px;
- 	margin-top: 20px;
- 	background: none repeat scroll 0 0 	#F0F0F0 ;
-    border-radius: 8px 8px 8px 8px;
+	float: left;
+	padding: 15px;
+	margin-top: 20px;
+	background: none repeat scroll 0 0 #F0F0F0;
+	border-radius: 8px 8px 8px 8px;
 }
 
 #playlist h3 {
 	padding: 3px;
 	border: 1px solid #585858;
-    border-radius: 8px 8px 8px 8px;
+	border-radius: 8px 8px 8px 8px;
 }
 
 #playlist ul {
@@ -102,14 +100,14 @@ body {
 	margin-top: 10px;
 	margin-left: 20px;
 	padding: 15px;
-	background: none repeat scroll 0 0 	#F0F0F0 ;
+	background: none repeat scroll 0 0 #F0F0F0;
 	border-radius: 8px 8px 8px 8px;
 }
 
 #metaside h3 {
 	padding: 3px;
-	border: 1px solid #585858 ;
-    border-radius: 8px 8px 8px 8px;
+	border: 1px solid #585858;
+	border-radius: 8px 8px 8px 8px;
 }
 
 #meta-items {
@@ -129,51 +127,84 @@ body {
 }
 
 #map {
- 	float: right;
- 	margin-top: 10px;
+	float: right;
+	margin-top: 10px;
 }
 
 /*
  * Song Marker
  */
- 
 .song_mrkr {
 	color: black;
 	display: block;
 	text-align: left;
-};
+}
 
 .mrkr_artist {
 	margin-bottom: 2px;
-};
+}
 
 .mrkr_title {
 	margin-bottom: 2px;
-};
+}
 
 .mrkr_album {
 	margin-bottom: 2px;
-};
- 
- /*
+}
+
+/*
+ * popup stuff
+ */
+.modal_back {
+	border-width: 0;
+	margin: 0;
+	padding: 0;
+	background: black none repeat scroll 0 0;
+	display: none;
+	height: 2500px;
+	left: 0;
+	filter: alpha(opacity = 70);
+	opacity: 0.70;
+	top: 0;
+	width: 100%;
+	z-index: 50;
+	display: none;
+	position: fixed;
+	-moz-background-clip: -moz-initial;
+	-moz-background-origin: -moz-initial;
+	-moz-background-inline-policy: -moz-initial;
+}
+
+.modal {
+	position: absolute;
+	left: 45%;
+	top: 45%;
+	z-index: 51;
+	color: #000000;
+	background: #E5ECF9;
+	padding: 15px;
+	border: 1px solid #585858;
+	border-radius: 8px 8px 8px 8px;
+}
+
+
+/*
   * Landing page
   */
-  
 #land-title {
-  text-align: center;
-  width: 600px;
-  margin: 0px auto;
-  margin-top: 200px;
+	text-align: center;
+	width: 600px;
+	margin: 0px auto;
+	margin-top: 200px;
 }
+
 #land-title h1 {
-  color: #6bffbd;
-  font-size: 32px;
-  margin-bottom: 20px;
+	color: #6bffbd;
+	font-size: 32px;
+	margin-bottom: 20px;
 }
 
 #wrapper {
-  margin: 0 auto;
-  width: 1000px;
+	margin: 0 auto;
+	width: 1000px;
 }
- 
- 

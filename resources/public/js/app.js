@@ -26,6 +26,9 @@ $(document).ready(function() {
 	
 	// get the metadata
 	APP.getMetadata(TEST_USER);
+	
+	// setup the function handlers
+	HANDLERS.functions.setup();
 });
 
 APP.userLocation = null;
@@ -154,4 +157,18 @@ APP.fillMetadata = function(metadata) {
 	}
 	$("#metaside").append(frag);
 };
+
+
+/* user management */
+
+APP.updateUserUi = function (userdata) {
+	if(userdata && userdata.user) {
+		$("#fn_acct_create").hide();	
+		$("#fn_login").text("Logout as "+user);
+	} else {
+		alert("problem with user login!");
+	}
+};
+
+
 

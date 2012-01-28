@@ -18,6 +18,9 @@
       [:h1 {:id "banner"} "SONGMAP"]
       [:div {:id "functions"}
         [:div {:class "fn_btn"}
+               [:a {:id "fn_acct_create"
+                    :href "/user/add"} "Create Account"]]
+        [:div {:class "fn_btn"}
                [:a {:id "fn_login"} "Login"]]
         [:div {:class "fn_btn"} 
          [:a {:id "fn_settings"} "Settings"]]
