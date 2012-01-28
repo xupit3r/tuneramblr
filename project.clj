@@ -3,7 +3,6 @@
             :dependencies [[org.clojure/clojure "1.3.0"]
                            [noir "1.2.1"]
                            [clj-record "1.1.1"]
-                           [mysql/mysql-connector-java "5.1.6"]
-                           [org.apache.hbase/hbase "0.90.5"]]
+                           [congomongo "0.1.7"]]
             :main songmap.server)
 

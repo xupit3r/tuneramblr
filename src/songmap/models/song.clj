@@ -1,9 +1,8 @@
-(ns songmap.models.song
-  (:require clj-record.boot)
-  (:use [songmap.models.dbdef]))
+(ns songmap.models.song)
 
-;; prepare the typical
-;; db methods
-(clj-record.core/init-model
-  :table-name "song")
+;;;; functions for working with song
+;;;; data in the DB
+
+(defn add [data]
+  )
 

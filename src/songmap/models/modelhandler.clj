@@ -7,9 +7,7 @@
 ;; pull songs within a certain lattitude and 
 ;; longitude from the model
 (defn get-songs [lat lng]
-  ; just give me the only record in the
-  ; db, for right now
-  ;(song/find-records {:id "1"})
+  ; mock data for right now
   [{:lat 40.4,
     :lng -80.08,
     :artist "artist 1",
@@ -40,7 +38,7 @@
   ;we will want to pull any weather or user defined data
   ;from the songdata and add it to the model, probably 
   ;after we attempt to add the song.
-  (song/create {:lat (:lat songdata)
+  (song/add {:lat (:lat songdata)
                 :lng (:lng songdata)
                 :artist (:artist songdata)
                 :title (:title songdata) 
