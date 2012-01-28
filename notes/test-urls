@@ -1,4 +1,8 @@
 
-add a song:
+-- add songs --
 
-http://localhost:8080/songs/add?lat=40.3785914&lng=-80.0435467&artist=JOE&title=JOE_TITLE&album=JOE_ALBUM&genre=JOE_GENRE
+http://localhost:8080/songs/add?user=57&lat=40.3&lng=-80.1&artist=JOE&title=TITLE_1&album=ALBUM_1&genre=GENRE_1&weather=cloudy&userdef=fun,happy
+http://localhost:8080/songs/add?user=57&lat=40.4&lng=-80.2&artist=JOE&title=TITLE_2&album=ALBUM_2&genre=GENRE_2&weather=sunny&userdef=energy
+http://localhost:8080/songs/add?user=57&lat=40.5&lng=-80.3&artist=JOE&title=TITLE_3&album=ALBUM_3&genre=GENRE_3&weather=cloudy,rainy&userdef=slow,sad
+http://localhost:8080/songs/add?user=57&lat=40.6&lng=-80.4&artist=JOE&title=TITLE_4&album=ALBUM_4&genre=GENRE_4&weather=cloudy,cold&userdef=sad
+http://localhost:8080/songs/add?user=57&lat=40.7&lng=-80.5&artist=JOE&title=TITLE_5&album=ALBUM_5&genre=GENRE_5&weather=sunny&userdef=happy

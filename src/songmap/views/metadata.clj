@@ -9,5 +9,7 @@
 ;; models (user defined, weather, etc.)
 
 ;; handles a request for metadata
-(defpage [:post "/metadata/get"] {:keys [id]}
-  (response/json (modelhandler/get-meta id)))
+;; this includes weather and user defined
+;; properties
+(defpage [:post "/metadata/get"] {:keys [user]}
+  (response/json (modelhandler/get-meta user)))

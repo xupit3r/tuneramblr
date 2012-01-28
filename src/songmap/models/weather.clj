@@ -1,2 +1,0 @@
-(ns songmap.models.weather)
-

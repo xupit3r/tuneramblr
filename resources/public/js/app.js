@@ -12,6 +12,8 @@ APP.select.songs = {};
 // executes when the DOM is ready
 $(document).ready(function() {
 	
+	var TEST_USER = 57;
+	
 	// set the user's current 
 	// location on the map
 	APP.setUserLocation();
@@ -20,10 +22,10 @@ $(document).ready(function() {
 	SONGMAP.initMap("map", 12);
 	
 	// get songs
-	APP.getSongs();
+	APP.getSongs(TEST_USER);
 	
 	// get the metadata
-	APP.getMetadata(57);
+	APP.getMetadata(TEST_USER);
 });
 
 APP.userLocation = null;
@@ -67,7 +69,7 @@ APP.setUserLocation = function() {
 
 /* songs */
 
-APP.getSongs = function() {
+APP.getSongs = function(user) {
 	// we will use the user's current 
 	// location as means of determing 
 	// which songs to load...
@@ -76,11 +78,14 @@ APP.getSongs = function() {
 			type: "POST",
 			url: "/songs/get",
 			dataType: "json",
-			data: {lat: APP.userLocation.coords.latitude,
+			data: {user: user,
+				   lat: APP.userLocation.coords.latitude,
 				   lng: APP.userLocation.coords.longitude},
 			success: APP.placeSongs});
 	} else {
-		setTimeout(APP.getSongs,1000);
+		setTimeout(function () {
+					APP.getSongs(user);
+				},1000);
 	}
 	
 };
@@ -92,21 +97,21 @@ APP.placeSongs = function(songs) {
 		var song = songs[idx];
 		var placedSong = SONGMAP.addSong(song);
 		if(placedSong) {
-			APP.songs[APP.songs.length];
+			APP.songs[APP.songs.length] = placedSong;
 		}
 	}
 };
 
 /* metadata */
 
-APP.getMetadata = function(id) {
+APP.getMetadata = function(user) {
 	// id will be a valid user id
 	// or some arbitrary id if no 
 	// user is logged in
 	$.ajax({type: "POST",
 			url: "/metadata/get",
 			dataType: "json",
-			data: {id: id},
+			data: {user: user},
 			success: APP.fillMetadata});
 	
 };

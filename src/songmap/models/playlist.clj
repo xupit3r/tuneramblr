@@ -1,9 +1,14 @@
-(ns songmap.models.playlist)
+(ns songmap.models.playlist
+  (:use somnium.congomongo))
 
-;;;; modeling of a playlist
-;;;; and operations on that 
-;;;; playlist
+;;;; functions for working with playlist
+;;;; data in the DB
 
-(defn gimme-playlist [] 
-  (list "this" "is" "a" "playlist"))
+;; add data to the songs collection
+(defn add [data]
+  (if (insert! :playlists data)
+    {:added true, 
+     :message (str (:title data) " was added to the database")}
+    {:added false, 
+     :message (str (:title data) " was not added to the database")}))
 
