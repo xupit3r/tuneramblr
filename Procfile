@@ -1,1 +1,1 @@
-web: cd web;lein run
+web: lein run
