@@ -147,5 +147,5 @@
 ;; log a user out
 (defpage "/user/logout" {}
   (umanage/logout!)
-  (render "/test"))
+  (response/redirect "/test"))
 
