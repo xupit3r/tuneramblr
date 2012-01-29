@@ -1,6 +1,9 @@
 // namespace for operations on the map
 var SONGMAP = {};
 
+SONGMAP.defaults = {};
+SONGMAP.defaults.zoom = 9;
+
 SONGMAP.map = null;
 SONGMAP.infoBox = null;
 

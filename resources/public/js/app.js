@@ -1,8 +1,15 @@
 // general application stuff
 var APP = {};
 
+// TODO: get this from the cookie
+APP.username = ""
+
 // model storage of the songs on the map
 APP.songs = [];
+
+// model storage for metadata
+APP.meta = {};
+APP.meta.freqs = {};
 
 // model storage for user selections
 APP.select = {};
@@ -12,25 +19,22 @@ APP.select.songs = {};
 // executes when the DOM is ready
 $(document).ready(function() {
 	
-	var TEST_USER = 57;
-	
 	// set the user's current 
 	// location on the map
 	APP.setUserLocation();
 	
 	// initialize the map
-	SONGMAP.initMap("map", 12);
+	SONGMAP.initMap("map", SONGMAP.defaults.zoom);
 	
 	// get songs
-	APP.getSongs(TEST_USER);
-	
-	// get the metadata
-	APP.getMetadata(TEST_USER);
+	APP.getSongs();
 	
 	// setup the function handlers
 	HANDLERS.functions.setup();
 });
 
+
+// the map will be centered here
 APP.userLocation = null;
 
 APP.setUserLocation = function() {
@@ -72,28 +76,28 @@ APP.setUserLocation = function() {
 
 /* songs */
 
-APP.getSongs = function(user) {
-	// we will use the user's current 
-	// location as means of determing 
-	// which songs to load...
+APP.getSongs = function() {
 	if (APP.userLocation) {
 		$.ajax({
 			type: "POST",
 			url: "/songs/get",
 			dataType: "json",
-			data: {user: user,
+			data: {user: APP.username,
 				   lat: APP.userLocation.coords.latitude,
 				   lng: APP.userLocation.coords.longitude},
-			success: APP.placeSongs});
+			success: APP.handleUserSongs});
 	} else {
-		setTimeout(function () {
-					APP.getSongs(user);
-				},1000);
+		setTimeout(APP.getSongs,1000);
 	}
 	
 };
 
-APP.placeSongs = function(songs) {
+APP.handleUserSongs = function(songs) {
+	APP.processSongs(songs);
+	APP.fillMetadata(APP.meta.freqs);
+};
+
+APP.processSongs = function(songs) {
 	// iterate over the songs and
 	// add them to the map
 	for (var idx in songs) {
@@ -101,23 +105,12 @@ APP.placeSongs = function(songs) {
 		var placedSong = SONGMAP.addSong(song);
 		if(placedSong) {
 			APP.songs[APP.songs.length] = placedSong;
+			APP.recordFreqs(placedSong);
 		}
 	}
 };
 
 /* metadata */
-
-APP.getMetadata = function(user) {
-	// id will be a valid user id
-	// or some arbitrary id if no 
-	// user is logged in
-	$.ajax({type: "POST",
-			url: "/metadata/get",
-			dataType: "json",
-			data: {user: user},
-			success: APP.fillMetadata});
-	
-};
 
 // calculates the font size of the 
 // meta property text
@@ -132,6 +125,20 @@ APP.calcMetaFontSize = function(freq) {
 				(freq / 10 > 2) ? 
 						"2em" : 
 						(freq / 10) + "em";
+};
+
+APP.recordFreqs = function(song) {
+	var weather = song.weather ? song.weather.split(",") : [];
+	var userdef = song.userdef ? song.userdef.split(",") : [];
+	var metadata = userdef.concat(weather);
+	for(var idx in metadata) {
+		var metaitem = metadata[idx];
+		if(!APP.meta.freqs[metaitem]) {
+			APP.meta.freqs[metaitem] = 1;
+		} else {
+			APP.meta.freqs[metaitem] += 1
+		}
+	}
 };
 
 APP.fillMetadata = function(metadata) {

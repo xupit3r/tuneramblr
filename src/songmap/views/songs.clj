@@ -15,7 +15,7 @@
 ;; handle the addition of a song (POST)
 (defpage [:post "/songs/add"] {:keys [lat lng artist title album genre weather userdef]}
   (let [user (umanage/me)]
-    (response/json (modelhandler/add-song {:user user
+    (response/json (modelhandler/add-song {:username user
                                            :lat lat
                                            :lng lng
                                            :artist artist
@@ -28,7 +28,7 @@
 ;; handle the addition of a song (GET)
 (defpage [:get "/songs/add"] {:keys [lat lng artist title album genre weather userdef]}
   (let [user (umanage/me)]
-    (response/json (modelhandler/add-song {:user user
+    (response/json (modelhandler/add-song {:username user
                                            :lat lat
                                            :lng lng
                                            :artist artist

@@ -32,20 +32,6 @@
   (song/add songdata))
 
 
-;;;; METADATA METHODS ;;;;
-
-;; get metadata associated with a particular user
-;; this will return a mapping of metadata keywords 
-;; an the frequencies at which they are used
-(defn get-meta [id]
-  {:one 1,
-   :two 2,
-   :three 3,
-   :four 4,
-   :five 5})
-
-
-
 ;;;; PLAYLIST METHODS ;;;;
 
 (defn get-playlist [id]

@@ -23,7 +23,7 @@
 
 
 ;; TODO: REMOVE ME! ;;
-(def LOCK-USER-CREATION false)
+(def LOCK-USER-CREATION true)
 
 ;; define a user specific layout
 ;; (this layout will be used in 

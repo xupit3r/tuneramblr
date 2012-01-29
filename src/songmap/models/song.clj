@@ -16,4 +16,5 @@
 ;; the songs will be limited 
 ;; by latitutude and longitude
 (defn get-songs [username lat lng]
+  (println (str "username: " username))
   (fetch :songs :where {:username username}))
