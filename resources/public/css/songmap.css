@@ -52,7 +52,7 @@ body {
 #banner {
 	color: #6bffbd;
 	float: left;
-	font-family: 'Chelsea Market', cursive;
+	font-family: 'Sonsie One', cursive;
 	font-size: 60px;
 	padding-bottom: 5px;
 }
@@ -70,7 +70,7 @@ body {
 #playlist {
 	width: 645px;
 	height: 200px;
-	color: black;
+	color:#313F51;
 	float: left;
 	padding: 15px;
 	margin-top: 20px;
@@ -79,9 +79,10 @@ body {
 }
 
 #playlist h3 {
+	font-size: 1.15em;
+	color:#313F51;
 	padding: 3px;
-	border: 1px solid #585858;
-	border-radius: 8px 8px 8px 8px;
+	font-family: 'Titan One', cursive;
 }
 
 #playlist ul {
@@ -95,7 +96,7 @@ body {
 #metaside {
 	width: 210px;
 	height: 920px;
-	color: black;
+	color:#313F51;
 	float: left;
 	margin-top: 10px;
 	margin-left: 20px;
@@ -105,9 +106,10 @@ body {
 }
 
 #metaside h3 {
+	color:#313F51;
+	font-size: 1.15em;
 	padding: 3px;
-	border: 1px solid #585858;
-	border-radius: 8px 8px 8px 8px;
+	font-family: 'Titan One', cursive;
 }
 
 #meta-items {
@@ -185,6 +187,16 @@ body {
 	padding: 15px;
 	border: 1px solid #585858;
 	border-radius: 8px 8px 8px 8px;
+}
+
+/*
+ * footer stuff
+ */
+#footer_copy {
+	margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
 }
 
 

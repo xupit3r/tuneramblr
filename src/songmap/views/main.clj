@@ -1,4 +1,4 @@
-(ns songmap.views.welcome
+(ns songmap.views.main
   (:require [songmap.views.common :as common]
             [songmap.models.user.umanage :as umanage])
   (:use [noir.core :only [defpage]]
@@ -41,13 +41,15 @@
         [:div {:id "metaside"}
          (if username
            [:h3 (str username "'s Metadata")]
-           [:h3 "Collected Metadata"])]]
+           [:h3 "Metadata Near You"])]]
        [:div {:class "span-17 last"}
         [:div {:id "map", :style "width: 100%;height: 700px"}]]
        [:div {:class "span-17 last prepend-7"}
         [:div {:id "playlist"}
          (if username
            [:h3 (str username "'s Playlists")]
-           [:h3 "Playlists"])]]]
+           [:h3 "Playlists Near You"])]]]
       [:div {:id "ui_foot"}
-       [:div {:class "container"}]])))
+       [:div {:class "container"}
+        [:p {:id "footer_copy"}
+         "&copy; 2012 Joe D'Alessandro"]]])))

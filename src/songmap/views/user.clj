@@ -31,16 +31,15 @@
 ;;  forms)
 (defpartial layout [title & content]
   (html5
-    [:head
-     [:title title]
-     (include-css "/css/screen.css"
-                  "/css/ie.css"
-                  "/css/reset.css" 
-                  "/css/songmap.css"
-                  "/css/overcast.css"
-                  "http://fonts.googleapis.com/css?family=Chelsea+Market")]
-    [:body 
-     content]))
+    (common/build-head title
+                       [:blueprint
+                        :songmap.css
+                        :forms.css
+                        :sonsie-font])
+    [:body
+     [:div {:class "sm-form"}
+      [:h3 title]
+      content]]))
 
 ;; validate user form
 (defn valid? [{:keys [email username password re-password]}]
@@ -99,7 +98,7 @@
 ;; user creation page (GET)
 (defpage  "/user/add" {:as user}
   (layout
-    "new songmap account"
+    "Create a Songmap Account"
     (form-to [:post "/user/add"]
              (user-fields user)
              (submit-button "Create user"))))
@@ -134,7 +133,7 @@
 ;; user login page (GET)
 (defpage "/user/login" {:as user}
   (layout
-    "login"
+    "Songmap Login"
     (form-to [:post "/user/login"]
              (user-login-fields user)
              (submit-button "Login"))))

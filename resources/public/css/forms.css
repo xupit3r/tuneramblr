@@ -1,0 +1,12 @@
+
+/* override */
+.sm-form {
+	position: absolute;
+	left: 40%;
+	top: 50%;	
+}
+
+.sm-form h3 {
+	color: #6bffbd;
+	font-family: 'Sonsie One', cursive;
+}
