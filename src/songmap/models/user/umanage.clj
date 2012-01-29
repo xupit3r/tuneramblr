@@ -13,7 +13,7 @@
 
 ;; grab a user from the database
 (defn pull-user [username]
-  (fetch-one :user :where {:username username}))
+  (fetch-one :users :where {:username username}))
 
 
 ;; create a user
