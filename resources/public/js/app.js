@@ -1,9 +1,6 @@
 // general application stuff
 var APP = {};
 
-// TODO: get this from the cookie
-APP.username = ""
-
 // model storage of the songs on the map
 APP.songs = [];
 

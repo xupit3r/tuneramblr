@@ -14,5 +14,8 @@
 (defn line-sep []
   (System/getProperty "line.separator"))
 
+(defn current-time []
+  (System/currentTimeMillis))
+
 
 

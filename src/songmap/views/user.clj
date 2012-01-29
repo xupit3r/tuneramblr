@@ -8,7 +8,7 @@
   (:use [noir.core :only [defpage defpartial render]]
         [hiccup.form-helpers]
         [hiccup.core :only [html]]
-        [hiccup.page-helpers :only [html5]]))
+        [hiccup.page-helpers :only [html5 include-css]]))
 
 
 ;;;; handling user login/logout and creation activities
@@ -32,7 +32,13 @@
 (defpartial layout [title & content]
   (html5
     [:head
-     [:title title]]
+     [:title title]
+     (include-css "/css/screen.css"
+                  "/css/ie.css"
+                  "/css/reset.css" 
+                  "/css/songmap.css"
+                  "/css/overcast.css"
+                  "http://fonts.googleapis.com/css?family=Chelsea+Market")]
     [:body 
      content]))
 
@@ -138,4 +144,9 @@
   (if (umanage/login! user)
     (response/redirect "/test")
     (render "/user/login" user)))
+
+;; log a user out
+(defpage "/user/logout" {}
+  (umanage/logout!)
+  (render "/test"))
 
