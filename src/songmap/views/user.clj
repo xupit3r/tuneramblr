@@ -2,6 +2,8 @@
   (:require [songmap.models.user.umanage :as umanage]
             [noir.response :as response]
             [noir.validation :as vali]
+            [noir.session :as session]
+            [noir.cookies :as cookie]
             [songmap.views.common :as common])
   (:use [noir.core :only [defpage defpartial render]]
         [hiccup.form-helpers]
@@ -21,7 +23,7 @@
 
 
 ;; TODO: REMOVE ME! ;;
-(def LOCK-USER-CREATION true)
+(def LOCK-USER-CREATION false)
 
 ;; define a user specific layout
 ;; (this layout will be used in 
@@ -36,51 +38,59 @@
 
 ;; validate user form
 (defn valid? [{:keys [email username password re-password]}]
-  (vali/rule (vali/has-value? email)
-             [:email "We require an email address, please enter one."])
-  (vali/rule (vali/is-email? email)
-             [:email "Please enter a valid email address."])
-  (vali/rule (vali/has-value? username)
-             [:username "We require an username, please enter one."])
-  (vali/rule (vali/min-length? username MIN-USERNAME-LENGTH)
-             [:username (str 
-                          "We require that your username be a minimum of " 
-                          MIN-USERNAME-LENGTH 
-                          " characters long.")])
-  (vali/rule (vali/max-length? username MAX-USERNAME-LENGTH)
-                          [:username (str 
-                          "We require that your username be a maximum of " 
-                          MAX-USERNAME-LENGTH 
-                          " characters long.")])
-  (vali/rule (vali/min-length? password MIN-PASSWORD-LENGTH)
-                          [:password (str 
-                          "We require that your password be a minimum of " 
-                          MIN-PASSWORD-LENGTH 
-                          " characters long.")])
-  (vali/rule (not (= password re-password))
-             [:re-password "The entered passwords must match!"])
+  (if (not (umanage/pull-user username))
+    (do
+      (vali/rule (vali/has-value? email)
+                 [:email "We require an email address, please enter one."])
+      (vali/rule (vali/is-email? email)
+                 [:email "Please enter a valid email address."])
+      (vali/rule (vali/has-value? username)
+                 [:username "We require an username, please enter one."])
+      (vali/rule (vali/min-length? username MIN-USERNAME-LENGTH)
+                 [:username (str 
+                              "We require that your username be a minimum of " 
+                              MIN-USERNAME-LENGTH 
+                              " characters long.")])
+      (vali/rule (vali/max-length? username MAX-USERNAME-LENGTH)
+                 [:username (str 
+                              "We require that your username be a maximum of " 
+                              MAX-USERNAME-LENGTH 
+                              " characters long.")])
+      (vali/rule (vali/min-length? password MIN-PASSWORD-LENGTH)
+                 [:password (str 
+                              "We require that your password be a minimum of " 
+                              MIN-PASSWORD-LENGTH 
+                              " characters long.")])
+      (vali/rule (not (= password re-password))
+                 [:re-password "The entered passwords must match!"]))
+    (vali/set-error :username "This username already exists, :-( "))
   (not (vali/errors? :email :username :password :re-password)))
-
+  
 ;; our error partial
 (defpartial error-disp [[first-error]]
   [:p.error first-error])
 
 (defpartial user-fields [{:keys [email username password re-password]}]
-  (vali/on-error :email error-disp)
-  (label "email" "Email address: ")
-  (text-field "email" email)
-  (vali/on-error :username error-disp)
-  (label "username" "Desired username: ")
-  (text-field "username" username)
-  (vali/on-error :password error-disp)
-  (label "password" "Enter desired password: ")
-  (password-field "password" nil)
-  (label "password" "Re-enter password: ")
-  (password-field "password" nil)
-  (vali/on-error :re-password error-disp))
+  [:table
+   [:tr
+    [:td (label "email" "Email address: ")]
+    [:td (text-field "email" email)]
+    [:td (vali/on-error :email error-disp)]]
+   [:tr
+    [:td (label "username" "Desired username: ")]
+    [:td (text-field "username" username)]
+    [:td (vali/on-error :username error-disp)]]
+  [:tr
+   [:td (label "password" "Enter desired password: ")]
+   [:td (password-field "password" nil)]
+   [:td (vali/on-error :password error-disp)]]
+  [:tr
+   [:td (label "password" "Re-enter password: ")]
+   [:td (password-field "password" nil)]
+   [:td (vali/on-error :re-password error-disp)]]])
 
 
-;; GET user creation form
+;; user creation page (GET)
 (defpage  "/user/add" {:as user}
   (layout
     "new songmap account"
@@ -89,36 +99,43 @@
              (submit-button "Create user"))))
   
 
-;; handle the user creation POST
+;; handle the user creation (POST)
 (defpage [:post "/user/add"] {:as user}
   (if (valid? user)
-    (layout
-      "User Created!"
       (if LOCK-USER-CREATION
         [:p "User creation is locked down."]
-        [:p (str "The user "
-                 (umanage/create-user
-                   (:email user)
-                   (:username user)
-                   (:password user))
-                 " has been created!")]))
-    (render "/user/add" user)))
+        (do
+          (umanage/create-user user)
+          (response/redirect "/test")))
+      (render "/user/add" user)))
   
   
+
+;;;; login/logout ;;;;
+
+;; setup user login form content
+(defpartial user-login-fields [{:keys [username]}]
+  (vali/on-error :username error-disp)
+  [:table
+   [:tr
+    [:td (label "username" "Username: ")]
+    [:td (text-field "username" username)]]
+   [:tr
+    [:td (label "password" "Password: ")]
+    [:td (password-field "password" nil)]]])
   
  
-;; user login
-(defpage "/user/login/page" {}
-  (html5
-    [:table
-     [:tr
-      [:td {:class "label"} "username:&nbsp;"]
-      [:td [:input {:type "text"
-                    :name "username"}]]]
-     [:tr
-      [:td {:class "label"} "password: &nbsp;"]
-      [:td [:input {:type "password"
-                    :name "password"}]]]]
-    [:input {:type "button"
-             :value "Login"}]))
+;; user login page (GET)
+(defpage "/user/login" {:as user}
+  (layout
+    "login"
+    (form-to [:post "/user/login"]
+             (user-login-fields user)
+             (submit-button "Login"))))
+
+;; handle authentication (POST)
+(defpage [:post "/user/login"] {:as user}
+  (if (umanage/login! user)
+    (response/redirect "/test")
+    (render "/user/login" user)))
 

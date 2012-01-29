@@ -15,5 +15,5 @@
 ;; get songs for a user
 ;; the songs will be limited 
 ;; by latitutude and longitude
-(defn get-songs [user lat lng]
-  (fetch :songs :where {:user user}))
+(defn get-songs [username lat lng]
+  (fetch :songs :where {:username username}))

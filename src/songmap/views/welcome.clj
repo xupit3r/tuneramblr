@@ -21,7 +21,8 @@
                [:a {:id "fn_acct_create"
                     :href "/user/add"} "Create Account"]]
         [:div {:class "fn_btn"}
-               [:a {:id "fn_login"} "Login"]]
+               [:a {:id "fn_login"
+                    :href "/user/login"} "Login"]]
         [:div {:class "fn_btn"} 
          [:a {:id "fn_settings"} "Settings"]]
         [:div {:class "fn_btn"} 

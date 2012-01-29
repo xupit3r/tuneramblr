@@ -8,11 +8,21 @@
 (defn no-id [mp]
   (dissoc mp :_id))
 
-;; pull songs within a certain lattitude and 
-;; longitude from the model
+;; need to define what "near by"
+;; means. once we do that, we 
+;; can return the songs (anonymously)
+;; for display on the map
+(defn get-songs-near-by [lat lng] 
+  [])
+  
+
+;; if we have a user, pull songs 
+;; for that user, otherwise just 
+;; get the songs near by
 (defn get-songs [user lat lng]
-  (let [results (song/get-songs user lat lng)]
-    (map no-id results)))
+  (if user
+      (map no-id (song/get-songs user lat lng))
+      (map no-id (get-songs-near-by lat lng))))
 
 ;; add a new song to the model
 (defn add-song [songdata]
