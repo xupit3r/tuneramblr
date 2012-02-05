@@ -1,12 +1,12 @@
 # songmap
 
-Songmap is an application for collecting all kinds of metadata related to musical enjoyment.  This metadata could include: weather, images, feelings and attitudes, company, etc.  Using this metadata, a user could make playlists that fit a particular mood or desire.
+Songmap is an application for collecting all kinds of metadata (weather, images, attitudes, company, etc.) related to musical enjoyment.  It aims to allow people to explore our world using music as a guide.  Log (map) and share points of enjoyment.  
 
-The web application (web) and the associated mobile applications (mobile) are include.
+This includes the web application portion.
 
 ## License
 
-Copyright (C) 2011 Joe D'Alessandro
+Copyright (C) 2012 Joe D'Alessandro
 
 Distributed under the Eclipse Public License, the same as Clojure.
 
