@@ -13,5 +13,5 @@
   (println ">>> initializing Mongo DB connection...")
   (set-connection! db-conn)
   (println ">>> connection initialized!")
-  (println (str ">>> authenticated: " (authenticate db-conn "test" "test"))))
+  (println (str ">>> authenticated: " (authenticate db-conn "test" "t3stpasst3st"))))
 
