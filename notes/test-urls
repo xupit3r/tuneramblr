@@ -6,3 +6,6 @@ http://localhost:8080/songs/add?lat=40.004&lng=-80.002&artist=JOE&title=TITLE_2&
 http://localhost:8080/songs/add?lat=40.005&lng=-80.003&artist=JOE&title=TITLE_3&album=ALBUM_3&genre=GENRE_3&weather=cloudy,rainy&userdef=slow,sad
 http://localhost:8080/songs/add?lat=40.006&lng=-80.004&artist=JOE&title=TITLE_4&album=ALBUM_4&genre=GENRE_4&weather=cloudy,cold&userdef=sad
 http://localhost:8080/songs/add?lat=40.007&lng=-80.005&artist=JOE&title=TITLE_5&album=ALBUM_5&genre=GENRE_5&weather=sunny&userdef=happy
+
+-- add songs (mobile) --
+http://localhost:8080/mobile/songs/add?lat=40.007&lng=-80.005&artist=JOE&title=TITLE_5&album=ALBUM_5&genre=GENRE_5&weather=sunny&userdef=happy&username=xupit3r&password=password
