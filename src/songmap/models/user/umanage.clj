@@ -40,18 +40,37 @@
 (defn lookup-password [username]
   (fetch-one :users :where {:username username}))
 
+;; checks that the provided username/password combo is
+;; valid
+(defn u-p-combo-good? [username password]
+  (let [{stored-pass :password} (pull-user username)]
+    (and stored-pass 
+         (crypt/compare password stored-pass))))
+
 ;; authenticate a user
 (defn login! [{:keys [username password] :as user}]
-  (let [{stored-pass :password} (pull-user username)]
-    (if (and stored-pass
-             (crypt/compare password stored-pass))
-      (session/put! :username username)
-      (vali/set-error :username "Invalid username/password combo"))))
+  (if (u-p-combo-good? username password)
+    (session/put! :username username)
+    (vali/set-error :username "Invalid username/password combo")))
 
 
 ;; logs a user out:
 ;; 1. clears session
 (defn logout! []
   (session/clear!))
+
+
+;;;; mobile user management ;;;;
+
+;; mobile login will not build a session for the user, but will 
+;; instead build a cookie to be used for future requests
+(defn mobile-login! [{:keys [username password] :as user}]
+  (when (u-p-combo-good? username password) 
+    (cookie/put! :username username)
+    (cookie/put! :mobile 1)))
+
+;; logout of the mobile application will be
+;; consist of desctroying the cookie on the
+;; client side
   
 
