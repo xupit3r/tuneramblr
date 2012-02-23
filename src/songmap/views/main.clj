@@ -17,7 +17,7 @@
     (common/layout
       [:div {:id "ui_head"}
        [:div {:class "span-24 last"}
-        [:h1 {:id "banner"} "SONGMAP"]
+        [:h1 {:id "banner"} "GeoBeat"]
         [:div {:id "functions"}
          (when (not username)
            [:div {:class "fn_btn"}
@@ -33,7 +33,7 @@
          [:div {:class "fn_btn"} 
           [:a {:id "fn_settings"} "Settings"]]
          [:div {:class "fn_btn"} 
-          [:a {:id "fn_about"} "About Songmap"]]]]
+          [:a {:id "fn_about"} "About GeoBeat"]]]]
        [:div {:class "span-24 last"}
         [:h3 {:id "subbanner"} "your music, your world"]]]
       [:div {:id "ui_body"}
