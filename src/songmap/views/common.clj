@@ -27,7 +27,7 @@
 
 (defpartial layout [& content]
   (html5
-    (build-head "GeoBeat"
+    (build-head "songmap"
                 [:blueprint
                 :songmap.css
                 :titan-font

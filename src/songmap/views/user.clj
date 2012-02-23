@@ -133,7 +133,7 @@
 ;; user login page (GET)
 (defpage "/user/login" {:as user}
   (layout
-    "Songmap Login"
+    "GeoBeat Login"
     (form-to [:post "/user/login"]
              (user-login-fields user)
              (submit-button "Login"))))
