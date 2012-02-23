@@ -9,7 +9,7 @@
   (common/layout
     [:div {:id "land-title"} 
      [:h1 "Welcome to GeoBeat"]
-     [:p "it is your music, it is your world"]]))
+     [:p "your music, your world"]]))
 
 ;; test space (eventually the main page)
 (defpage "/test" []
