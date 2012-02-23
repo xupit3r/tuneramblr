@@ -98,7 +98,7 @@
 ;; user creation page (GET)
 (defpage  "/user/add" {:as user}
   (layout
-    "Create a Songmap Account"
+    "Create a GeoBeat Account"
     (form-to [:post "/user/add"]
              (user-fields user)
              (submit-button "Create user"))))
