@@ -8,8 +8,8 @@
 (defpage "/" []
   (common/layout
     [:div {:id "land-title"} 
-     [:h1 "Welcome to Songmap"]
-     [:p "We will be up and running soon!"]]))
+     [:h1 "Welcome to GeoBeat"]
+     [:p "it is your music, it is your world"]]))
 
 ;; test space (eventually the main page)
 (defpage "/test" []
