@@ -52,7 +52,7 @@
                                            :userdef userdef}))
     (response/json {:added false :message "failed to authenticate user"})))
 
-;; mobile song additio (POST)
+;; mobile song addition (POST)
 (defpage [:post "/mobile/songs/add"] {:keys [lat lng artist title album genre weather userdef username password]}
   (if (umanage/login! {:username username :password password})
     (response/json (modelhandler/add-song {:username username
@@ -64,7 +64,7 @@
                                            :genre genre
                                            :weather weather
                                            :userdef userdef}))
-    (response/json {:added false :message "failed to authenticate user"})))
+    (response/json {:added false :message (str "failed to authenticate user: " username)})))
 
 
 
