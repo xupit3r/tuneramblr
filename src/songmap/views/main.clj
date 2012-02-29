@@ -8,7 +8,7 @@
 (defpage "/" []
   (common/layout
     [:div {:id "land-title"} 
-     [:h1 "Welcome to GeoBeat"]
+     [:h1 "Welcome to tuneramblr"]
      [:p "your music, your world"]]))
 
 ;; test space (eventually the main page)
@@ -17,7 +17,7 @@
     (common/layout
       [:div {:id "ui_head"}
        [:div {:class "span-24 last"}
-        [:h1 {:id "banner"} "GeoBeat"]
+        [:h1 {:id "banner"} "tuneramblr"]
         [:div {:id "functions"}
          (when (not username)
            [:div {:class "fn_btn"}
@@ -33,7 +33,7 @@
          [:div {:class "fn_btn"} 
           [:a {:id "fn_settings"} "Settings"]]
          [:div {:class "fn_btn"} 
-          [:a {:id "fn_about"} "About GeoBeat"]]]]
+          [:a {:id "fn_about"} "About tuneramblr"]]]]
        [:div {:class "span-24 last"}
         [:h3 {:id "subbanner"} "your music, your world"]]]
       [:div {:id "ui_body"}
@@ -41,14 +41,14 @@
         [:div {:id "metaside"}
          (if username
            [:h3 (str username "'s Metadata")]
-           [:h3 "Metadata Near You"])]]
+           [:h3 "Rambl'n Near You"])]]
        [:div {:class "span-17 last"}
         [:div {:id "map", :style "width: 100%;height: 700px"}]]
        [:div {:class "span-17 last prepend-7"}
         [:div {:id "playlist"}
          (if username
            [:h3 (str username "'s Playlists")]
-           [:h3 "Playlists Near You"])]]]
+           [:h3 "Rambles Near You"])]]]
       [:div {:id "ui_foot"}
        [:div {:class "container"}
         [:p {:id "footer_copy"}

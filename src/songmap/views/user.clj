@@ -98,7 +98,7 @@
 ;; user creation page (GET)
 (defpage  "/user/add" {:as user}
   (layout
-    "Create a GeoBeat Account"
+    "Create a tuneramblr Account"
     (form-to [:post "/user/add"]
              (user-fields user)
              (submit-button "Create user"))))
@@ -133,7 +133,7 @@
 ;; user login page (GET)
 (defpage "/user/login" {:as user}
   (layout
-    "GeoBeat Login"
+    "tuneramblr Login"
     (form-to [:post "/user/login"]
              (user-login-fields user)
              (submit-button "Login"))))
