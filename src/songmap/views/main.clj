@@ -4,15 +4,8 @@
   (:use [noir.core :only [defpage]]
         [hiccup.core :only [html]]))
 
-;; landing page (for right now)
-(defpage "/" []
-  (common/layout
-    [:div {:id "land-title"} 
-     [:h1 "Welcome to tuneramblr"]
-     [:p "your music, your world"]]))
-
 ;; test space (eventually the main page)
-(defpage "/test" []
+(defpage "/" []
   (let [username (umanage/me)]
     (common/layout
       [:div {:id "ui_head"}
@@ -53,3 +46,10 @@
        [:div {:class "container"}
         [:p {:id "footer_copy"}
          "&copy; 2012 Joe D'Alessandro"]]])))
+
+;; landing page (for right now)
+(defpage "/welcome" []
+  (common/layout
+    [:div {:id "land-title"} 
+     [:h1 "Welcome to tuneramblr"]
+     [:p "your music, your world"]]))

@@ -44,16 +44,15 @@ UI.overlay = function(content) {
     // NEED TO ADD SOME FUNCTIONALITY TO CLOSE IT
 };
 
-// UI Event Handler Builders //
-
-UI.buildInfoBox = function (map, location, songData) {
+// builds the marker popup UI content
+UI.buildSongMarkerPopupContent = function (location, songData) {
 	// build up the content to be displayed in the info box
 	var content = "<div class='song_mrkr'>";
 	content += "<p class='mrkr_artist'>Artist: "+songData.artist+"</p>";
 	content += "<p class='mrkr_title'>Title: "+songData.title+"</p>";
 	content += "<p class='mrkr_album'>Album: "+songData.album+"</p>";
 	content += "</div>";
-	
-	// return a function to handle the opening of the box
-	return (function () { map.openinfoBox(location, content);});
+	return content;
 };
+
+// UI Event Handler Builders //

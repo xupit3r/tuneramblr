@@ -111,7 +111,7 @@
         [:p "User creation is locked down."]
         (do
           (umanage/create-user user)
-          (response/redirect "/test")))
+          (response/redirect "/")))
       (render "/user/add" user)))
   
   
@@ -141,13 +141,13 @@
 ;; handle authentication (POST)
 (defpage [:post "/user/login"] {:as user}
   (if (umanage/login! user)
-    (response/redirect "/test")
+    (response/redirect "/")
     (render "/user/login" user)))
 
 ;; log a user out
 (defpage "/user/logout" {}
   (umanage/logout!)
-  (response/redirect "/test"))
+  (response/redirect "/"))
 
 
 ;;;; mobile login/logout logic ;;;;

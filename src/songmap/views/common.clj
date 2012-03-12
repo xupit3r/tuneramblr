@@ -11,7 +11,8 @@
    :titan-font (include-css "http://fonts.googleapis.com/css?family=Titan+One")
    :chelsea-font (include-css "http://fonts.googleapis.com/css?family=Chelsea+Market")
    :sonsie-font (include-css "http://fonts.googleapis.com/css?family=Sonsie+One")
-   :map-api (include-js "http://maps.google.com/maps/api/js?sensor=false")
+   :leaflet (include-js "http://code.leafletjs.com/leaflet-0.3.1/leaflet.js")
+   :leaflet-css (include-css "http://code.leafletjs.com/leaflet-0.3.1/leaflet.css")
    :jquery (include-js "/js/jquery.js")
    :jquery.ui (include-js "/js/jquery-ui.js")
    :app.js (include-js "/js/app.js") 
@@ -27,15 +28,16 @@
 
 (defpartial layout [& content]
   (html5
-    (build-head "tunramblr"
+    (build-head "tuneramblr"
                 [:blueprint
                 :songmap.css
                 :titan-font
                 :sonsie-font
-                :map-api
                 :jquery
                 :app.js
                 :map.js
+                :leaflet
+                :leaflet-css
                 :handlers.js
                 :ui.js])
     [:body

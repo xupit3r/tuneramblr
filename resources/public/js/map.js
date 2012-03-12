@@ -3,24 +3,34 @@ var SONGMAP = {};
 
 SONGMAP.defaults = {};
 SONGMAP.defaults.zoom = 9;
+SONGMAP.defaults.maxZoom = 16;
+
+SONGMAP.tiles = {};
+
+// holds the Open Street Map tile URLS
+SONGMAP.tiles.url = {};
+SONGMAP.tiles.url.osm = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 SONGMAP.map = null;
-SONGMAP.infoBox = null;
+SONGMAP.zoom = SONGMAP.defaults.zoom;
 
+// initialize the map
 SONGMAP.initMap = function(elm, zm) {
-	var options = {
-		zoom: zm,
-		mapTypeId : google.maps.MapTypeId.ROADMAP,
-		disableDefaultUI : true,
-		scrollwheel : false
-	};
-	SONGMAP.map = new google.maps.Map(document.getElementById(elm), options);
-	SONGMAP._registerMapListeners(SONGMAP.map);
+	SONGMAP.zoom = zm;
+	SONGMAP.map = new L.Map(elm, {
+		zoom : zm
+	});
+	SONGMAP.map.addLayer(new L.TileLayer(SONGMAP.tiles.url.osm, {
+		maxZoom : SONGMAP.defaults.maxZoom
+	}));
+	
+	// disable the scroll wheel Zoom (i find it annoying)
+	SONGMAP.map.scrollWheelZoom.disable()
 };
 
 // center the map at some location
 SONGMAP.center = function(lat, lng) {
-	SONGMAP.map.setCenter(new google.maps.LatLng(lat, lng));
+	SONGMAP.map.setView(new L.LatLng(lat, lng), SONGMAP.zoom, true);
 };
 
 // register all necessary map events
@@ -30,70 +40,41 @@ SONGMAP._registerMapListeners = function(map) {
 };
 
 // add a new song location to the map
-// returns the song containing a handle to the 
+// returns the song containing a handle to the
 // map marker
 SONGMAP.addSong = function(songData) {
-	var latlng = new google.maps.LatLng(songData.lat, songData.lng);
-	var loc = new google.maps.Marker({
-		map : SONGMAP.map,
-		position : latlng
-	});
+	var latlng = new L.LatLng(songData.lat, songData.lng);
+	var marker = new L.Marker(latlng);
+	var popup = UI.buildSongMarkerPopupContent(marker, songData);
 	
-	// setup a click listener for the marker
-	var mcf = UI.buildInfoBox(SONGMAP, loc, songData);
-	google.maps.event.addListener(loc, "click", mcf);
+	// add the popup to the marker and add the marker to the map
+	marker.bindPopup(popup);
+	SONGMAP.map.addLayer(marker);
 
 	// add the marker to the location data
 	// and store that data in the SONGMAP
 	// model
-	songData.marker = loc;
+	songData.marker = marker;
 	return songData;
 };
 
-SONGMAP.markerClick
-
 // hide a location
 SONGMAP.hideLocation = function(loc) {
-	loc.setVisible(false);
+	//TODO: implement for OSM
 };
 
 // make visible a hidden location
 SONGMAP.showLocation = function(loc) {
-	loc.setVisible(true);
+	//TODO: implement for OSM
 };
 
 // move the location to the center of the map
 SONGMAP.scrollToLocation = function(lat, lng) {
-	SONGMAP.map.panTo(new google.maps.LatLng(lat, lng));
+	//TODO: implement for OSM
 };
 
 // close any open infoBox windows and
 // remove the location
 SONGMAP.removeLocation = function(loc) {
-	// if there is an infoBox opened
-	// for this location, we must close
-	// it before removing the location
-	if (SONGMAP.infoBox != null) {
-		SONGMAP.infoBox.close();
-	}
-	loc.setMap(null);
-};
-
-SONGMAP.closeInfoBox = function() {
-	if (SONGMAP.infoBox != null) {
-		SONGMAP.infoBox.close();
-	}
-};
-
-// opens an infoBox over a location on
-// the map, and fills the infoBox with
-// the provided content
-SONGMAP.openinfoBox = function(loc, content) {
-	if (SONGMAP.infoBox != null) {
-		SONGMAP.infoBox.close();
-	}
-	SONGMAP.infoBox = new google.maps.InfoWindow({
-		content : content
-	});
-	SONGMAP.infoBox.open(SONGMAP.map, loc);
+	//TODO: implement for OSM
 };
