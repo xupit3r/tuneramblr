@@ -2,7 +2,7 @@
 var SONGMAP = {};
 
 SONGMAP.defaults = {};
-SONGMAP.defaults.zoom = 9;
+SONGMAP.defaults.zoom = 13;
 SONGMAP.defaults.maxZoom = 16;
 
 SONGMAP.tiles = {};
