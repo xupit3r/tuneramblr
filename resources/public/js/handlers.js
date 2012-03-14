@@ -4,7 +4,7 @@ var HANDLERS = {};
 // of the site
 HANDLERS.functions = {};
 HANDLERS.meta = {};
-HANDLERS.playlist = {};
+HANDLERS.map = {};
 
 /* function buttons (top) */
 HANDLERS.functions.setup = function() {
@@ -16,7 +16,7 @@ HANDLERS.functions.reload = function() {
 };
 
 
-/* metadata (sidepane) */
+/* metadata */
 
 // space for metadata item handlers
 HANDLERS.meta.item = {};
@@ -40,4 +40,21 @@ HANDLERS.meta.item.click = function (metaProp) {
 	};
 	
 	return metaClick;
+};
+
+
+/* map */
+
+
+// handle map dragging
+HANDLERS.map.dragend = function(e) {
+	// FIXME: we only want to make this call when necessary
+	APP.getSongs();
+};
+
+
+// handle map zooming
+HANDLERS.map.zoomend = function(e) {
+	// FIXME: we only want to make this call when necessary
+	APP.getSongs();
 };
