@@ -30,26 +30,20 @@
        [:div {:class "span-24 last"}
         [:h3 {:id "subbanner"} "your music, your world"]]]
       [:div {:id "ui_body"}
-       [:div {:class "span-7", :style "height: 700px"}
-        [:div {:id "metaside"}
-         (if username
-           [:h3 (str username "'s Metadata")]
-           [:h3 "Rambl'n Near You"])]]
-       [:div {:class "span-17 last"}
-        [:div {:id "map", :style "width: 100%;height: 700px"}]]
-       [:div {:class "span-17 last prepend-7"}
-        [:div {:id "playlist"}
-         (if username
-           [:h3 (str username "'s Playlists")]
-           [:h3 "Rambles Near You"])]]]
+       [:div {:class "span-24 last"}
+        [:div {:id "metacloud", :style "width:100%;height: 150px"}
+         [:div {:id "cloud_holder", :style "width:100%;height: 200px"}]]]
+       [:div {:class "span-24 last"}
+        [:div {:id "map", :style "width: 100%;height: 300px"}]]
+       [:div {:class "span-12"}
+        [:div {:id "tracks", :style "width:100%"}
+         [:div {:id "tracks_holder", :style "height: 300px;overflow-y:auto"}
+          [:table {:id "tracks_table", :style "width:100%;height: 300px"}]]]]
+       [:div {:class "span-12 last"}
+        [:div {:id "playlists", :style "width:100%;height: 300px"}
+         [:div {:id "playlists_holder", :style "height: 300px;overflow-y:auto"}
+          [:table {:id "playlists_table", :style "width:100%;height: 300px"}]]]]]
       [:div {:id "ui_foot"}
        [:div {:class "container"}
         [:p {:id "footer_copy"}
          "&copy; 2012 Joe D'Alessandro"]]])))
-
-;; landing page (for right now)
-(defpage "/welcome" []
-  (common/layout
-    [:div {:id "land-title"} 
-     [:h1 "Welcome to tuneramblr"]
-     [:p "your music, your world"]]))

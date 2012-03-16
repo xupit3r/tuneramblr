@@ -15,6 +15,8 @@
    :leaflet-css (include-css "http://code.leafletjs.com/leaflet-0.3.1/leaflet.css")
    :jquery (include-js "/js/jquery.js")
    :jquery.ui (include-js "/js/jquery-ui.js")
+   :jqcloud (include-js "/js/jqcloud.js")
+   :jqcloud-css (include-css "/css/jqcloud.css")
    :app.js (include-js "/js/app.js") 
    :map.js (include-js "/js/map.js") 
    :handlers.js (include-js "/js/handlers.js") 
@@ -34,6 +36,8 @@
                 :titan-font
                 :sonsie-font
                 :jquery
+                :jqcloud
+                :jqcloud-css
                 :app.js
                 :map.js
                 :leaflet

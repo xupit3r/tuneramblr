@@ -18,7 +18,7 @@ $(document).ready(function() {
 
 	// gets the user's location and sets up the map
 	APP.setupMap();
-	
+
 	// retrieve the songs
 	APP.getSongs();
 
@@ -97,16 +97,72 @@ APP.handleUserSongs = function(songs) {
 };
 
 APP.processSongs = function(songs) {
-	// iterate over the songs and
-	// add them to the map
-	for ( var idx in songs) {
-		var song = songs[idx];
-		var placedSong = SONGMAP.addSong(song);
-		if (placedSong) {
-			APP.songs[APP.songs.length] = placedSong;
-			APP.recordFreqs(placedSong);
+
+	if (!APP.util.isEmpty(songs)) {
+		// iterate over the songs and
+		// add them to the map, as
+		// we are doing that, build
+		// a document fragment that will
+		// later be injected into the DOM
+		var frag = document.createDocumentFragment();
+		var tableHead = APP.buildTrackHead();
+		var tableBody = document.createElement("tbody");
+		frag.appendChild(tableHead);
+		frag.appendChild(tableBody);
+		for ( var idx in songs) {
+			var song = songs[idx];
+			var placedSong = SONGMAP.addSong(song);
+			if (placedSong) {
+				APP.songs[APP.songs.length] = placedSong;
+				APP.recordFreqs(placedSong);
+				tableBody.appendChild(APP.buildTrackNode(placedSong));
+			}
 		}
+		$("#tracks_table").append(frag);
 	}
+};
+
+APP.buildTrackHead = function() {
+	var tableHead = document.createElement("thead");
+	var headRow = tableHead.appendChild(document.createElement("tr"));
+
+	// track title
+	var titleHead = tableHead.appendChild(document.createElement("th"));
+	titleHead.appendChild(document.createTextNode("Title"));
+
+	// track artist
+	var artistHead = tableHead.appendChild(document.createElement("th"));
+	artistHead.appendChild(document.createTextNode("Artist"));
+
+	// track album
+	var albumHead = tableHead.appendChild(document.createElement("th"));
+	albumHead.appendChild(document.createTextNode("Album"));
+
+	return tableHead;
+};
+
+APP.buildTrackNode = function(song) {
+	var trackNode = document.createElement("tr");
+
+	// title cell
+	var trackTitle = document.createElement("td");
+	trackTitle.appendChild(document.createTextNode(song.title));
+	trackNode.appendChild(trackTitle);
+
+	// artist cell
+	var trackArtist = document.createElement("td");
+	trackArtist.appendChild(document.createTextNode(song.artist));
+	trackNode.appendChild(trackArtist);
+
+	// album cell
+	var trackAlbum = document.createElement("td");
+	trackAlbum.appendChild(document.createTextNode(song.album));
+	trackNode.appendChild(trackAlbum);
+
+	// TODO: marker interaction
+	// TODO: metadata interaction
+
+	return trackNode;
 };
 
 /* metadata */
@@ -121,6 +177,14 @@ APP.calcMetaFontSize = function(freq) {
 	// size
 	return (freq / 10 < 1) ? (freq / 10 + 1) + "em" : (freq / 10 > 2) ? "2em"
 			: (freq / 10) + "em";
+};
+
+// calculates the font size of the
+// meta property text
+APP.calcMetaWeight = function(freq) {
+	// just return the frequency count, for now...
+	// may want to change this in future...
+	return freq;
 };
 
 APP.recordFreqs = function(song) {
@@ -138,27 +202,17 @@ APP.recordFreqs = function(song) {
 };
 
 APP.fillMetadata = function(metadata) {
-	// iterate over the metadata and
-	// add it to the panel
-	// we want to build a fragment and then
-	// inject that fragment into the DOM
-	// (less expensive)
-	var frag = document.createDocumentFragment();
-	var ful = frag.appendChild(document.createElement("ul"));
-	ful.id = "meta-items";
-	for ( var idx in metadata) {
-
-		// build the UI element
-		var freq = metadata[idx];
-		var property = idx;
-		var tmpLi = document.createElement("li");
-		var liTxt = document.createTextNode(property);
-		tmpLi.appendChild(liTxt);
-		tmpLi.style.fontSize = APP.calcMetaFontSize(freq);
-		tmpLi.onclick = HANDLERS.meta.item.click(property);
-		ful.appendChild(tmpLi);
+	var phrases = [];
+	var idx = 0;
+	for ( var phrase in metadata) {
+		phrases[idx] = {};
+		phrases[idx].weight = APP.calcMetaWeight(metadata[phrase]);
+		phrases[idx].text = phrase;
+		idx++;
 	}
-	$("#metaside").append(frag);
+
+	// build a word cloud using JQCloud
+	$("#cloud_holder").jQCloud(phrases);
 };
 
 /* user management */
@@ -170,4 +224,17 @@ APP.updateUserUi = function(userdata) {
 	} else {
 		alert("problem with user login!");
 	}
+};
+
+/* utility methods */
+APP.util = {};
+
+// check if a collection is empty or not
+APP.util.isEmpty = function(map) {
+	for ( var key in map) {
+		if (map.hasOwnProperty(key)) {
+			return false;
+		}
+	}
+	return true;
 };
