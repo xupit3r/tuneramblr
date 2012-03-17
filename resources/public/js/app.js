@@ -158,6 +158,12 @@ APP.buildTrackNode = function(song) {
 	var trackAlbum = document.createElement("td");
 	trackAlbum.appendChild(document.createTextNode(song.album));
 	trackNode.appendChild(trackAlbum);
+	
+	// add click handler to the row
+	var latlng = song.marker.getLatLng();
+	$(trackNode).click(function(ev){
+		SONGMAP.panTo(song.marker.getLatLng());
+	});
 
 	// TODO: marker interaction
 	// TODO: metadata interaction
@@ -213,10 +219,13 @@ APP.fillMetadata = function(metadata) {
 		idx++;
 	}
 
+	// empty out the container (this is done to avoid overlap)
+	$("#cloud_holder").empty();
+
 	// build a word cloud using JQCloud
 	$("#cloud_holder").jQCloud(phrases, {
-		width: 960,
-		height: 150
+		width : 960,
+		height : 150
 	});
 };
 

@@ -145,6 +145,10 @@ body {
 	color: #009;
 }
 
+#tracks_table tbody tr {
+	cursor: pointer;
+}
+
 #playlists_table {
     float: left;
 	font-size: 10px;

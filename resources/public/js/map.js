@@ -87,8 +87,8 @@ SONGMAP.getMapCenterInfo = function() {
 
 // pans the map to some location specified by the latitude and longitude of the
 // location
-SONGMAP.panTo = function(lat, lng) {
-	SONGMAP.map.panTo(new L.LatLng(lat, lng));
+SONGMAP.panTo = function(latlng) {
+	SONGMAP.map.panTo(latlng);
 };
 
 // removes a location from the map
