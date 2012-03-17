@@ -208,11 +208,16 @@ APP.fillMetadata = function(metadata) {
 		phrases[idx] = {};
 		phrases[idx].weight = APP.calcMetaWeight(metadata[phrase]);
 		phrases[idx].text = phrase;
+		phrases[idx].handlers = HANDLERS.meta.getMetaHandlers(phrase);
+		phrases[idx].customClass = "metaword";
 		idx++;
 	}
 
 	// build a word cloud using JQCloud
-	$("#cloud_holder").jQCloud(phrases);
+	$("#cloud_holder").jQCloud(phrases, {
+		width: 960,
+		height: 150
+	});
 };
 
 /* user management */

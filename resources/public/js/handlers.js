@@ -22,20 +22,27 @@ HANDLERS.functions.reload = function() {
 HANDLERS.meta.item = {};
 
 
+HANDLERS.meta.getMetaHandlers = function(metaProp) {
+	var mhs = {
+		click: HANDLERS.meta.item.click(metaProp)
+	};
+	
+	return mhs;
+};
+
+
 // the onclick handler for metadata items 
 HANDLERS.meta.item.click = function (metaProp) {
 	var metaClick = function (ev) {
 		if (APP.select.meta[metaProp]) {
 			// remove this property from the model
 			delete APP.select.meta[metaProp];
-			
-			// update the styling
-			this.style.color = "black";
+			$(this).removeClass("mselect");
 			
 		} else {
 			// add this property to the model
 			APP.select.meta[metaProp] = metaProp;
-			this.style.color = "red";
+			$(this).addClass("mselect");
 		}
 	};
 	

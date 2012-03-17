@@ -24,8 +24,6 @@
             [:a {:id "fn_login"
                  :href "/user/login"} "Login"])]
          [:div {:class "fn_btn"} 
-          [:a {:id "fn_settings"} "Settings"]]
-         [:div {:class "fn_btn"} 
           [:a {:id "fn_about"} "About tuneramblr"]]]]
        [:div {:class "span-24 last"}
         [:h3 {:id "subbanner"} "your music, your world"]]]

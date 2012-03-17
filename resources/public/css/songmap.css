@@ -75,6 +75,15 @@ body {
 	border-radius: 8px 8px 8px 8px;
 }
 
+.metaword {
+	cursor: pointer;
+}
+
+#cloud_holder > span.mselect {
+	background: #F9F99F;
+	border-radius: 8px 8px 8px 8px;
+}
+
 #tracks {
 	color: #F0F0F0;
 	float: left;
