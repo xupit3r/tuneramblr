@@ -117,9 +117,17 @@ APP.processSongs = function(songs) {
 		}
 		
 		// set the table options
+		
+		// set the height of the table to 300px
 		tableData.sScrollY = "300px";
+		
+		// don't paginate the table
 		tableData.bPaginate = false;
+		
+		// don't supply a search filter
 		tableData.bFilter = false;
+		
+		// don't display any info at the bottom of the table
 		tableData.bInfo = false;
 		
 		$("#tracks_table").dataTable(tableData);
