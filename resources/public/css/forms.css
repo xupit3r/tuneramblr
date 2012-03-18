@@ -1,12 +1,16 @@
 
 /* override */
 .sm-form {
+	color: #00CCFF;
+	font-family: 'Sonsie One', cursive;
 	position: absolute;
 	left: 40%;
-	top: 50%;	
+	top: 40%;	
+	background: #404040;
+	padding: 15px;
+	border-radius: 8px 8px 8px 8px;
 }
 
-.sm-form h3 {
-	color: #6bffbd;
-	font-family: 'Sonsie One', cursive;
+.sm-form label {
+	margin-right: 5px;
 }

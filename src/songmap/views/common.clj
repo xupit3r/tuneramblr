@@ -17,6 +17,7 @@
    :jquery.ui (include-js "/js/jquery-ui.js")
    :jqcloud (include-js "/js/jqcloud.js")
    :jqcloud-css (include-css "/css/jqcloud.css")
+   :datatables (include-js "/js/datatables.js")
    :app.js (include-js "/js/app.js") 
    :map.js (include-js "/js/map.js") 
    :handlers.js (include-js "/js/handlers.js") 
@@ -38,6 +39,7 @@
                 :jquery
                 :jqcloud
                 :jqcloud-css
+                :datatables
                 :app.js
                 :map.js
                 :leaflet
