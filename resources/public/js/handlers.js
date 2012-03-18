@@ -34,10 +34,13 @@ HANDLERS.songs.table.rowClick = function(ev) {
 
 	// pull the song (NOTE: if a song is recorde multiple times, this is going
 	// to grab the last instance to be added to this map... going to fix this)
-	var songInfo = APP.songs.placed[key];
-	
+	var song = APP.songs.placed[key];
+
 	// pan to the songs location on the map
-	SONGMAP.panTo(songInfo.marker.getLatLng());
+	SONGMAP.panTo(song.marker.getLatLng());
+
+	// open the pop up so the user knows which marker represents the song
+	song.marker.openPopup();
 
 };
 
