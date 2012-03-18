@@ -4,6 +4,9 @@ var APP = {};
 // model storage for stuff about songs
 APP.songs = {};
 
+// reference to the tracks table
+APP.songs.table;
+
 // storage for songs placed on the map
 APP.songs.placed = {}
 
@@ -114,7 +117,8 @@ APP.processSongs = function(songs) {
 				// i am going to need to get to these songs later. to facilitate
 				// that, I am going to use the combination of title, artist, and
 				// album as the key
-				var key = placedSong.title + placedSong.artist + placedSong.album;
+				var key = placedSong.title + placedSong.artist
+						+ placedSong.album;
 				APP.songs.placed[key] = placedSong;
 				APP.recordFreqs(placedSong);
 				tableData.aaData[row] = APP.buildTrackRow(placedSong);
@@ -128,19 +132,19 @@ APP.processSongs = function(songs) {
 		tableData.aoColumns = APP.buildTrackCols();
 
 		// set the height of the table to 300px
-		tableData.sScrollY = "300px";
+		tableData.sScrollY = "200px";
+
+		// only include the table! (p.s. get to know sDom, it is pretty useful)
+		tableData.sDom = "t";
 
 		// don't paginate the table
 		tableData.bPaginate = false;
-
-		// don't supply a search filter
-		tableData.bFilter = false;
 
 		// don't display any info at the bottom of the table
 		tableData.bInfo = false;
 
 		// initialize the dataTable
-		$("#tracks_table").dataTable(tableData);
+		APP.songs.table = $("#tracks_table").dataTable(tableData);
 
 		// setup the row click handler
 		$("#tracks_table tbody tr")
@@ -195,6 +199,7 @@ APP.recordFreqs = function(song) {
 	var weather = song.weather ? song.weather.split(",") : [];
 	var userdef = song.userdef ? song.userdef.split(",") : [];
 	var metadata = userdef.concat(weather);
+	song.metadata = metadata;
 	for ( var idx in metadata) {
 		var metaitem = metadata[idx];
 		if (!APP.meta.freqs[metaitem]) {
@@ -225,19 +230,6 @@ APP.fillMetadata = function(metadata) {
 		width : 960,
 		height : 150
 	});
-	
-	// TODO: filter table as words/phrases are selected from the word cloud
-};
-
-/* user management */
-
-APP.updateUserUi = function(userdata) {
-	if (userdata && userdata.user) {
-		$("#fn_acct_create").hide();
-		$("#fn_login").text("Logout as " + user);
-	} else {
-		alert("problem with user login!");
-	}
 };
 
 /* utility methods */

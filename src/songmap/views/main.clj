@@ -32,11 +32,11 @@
         [:div {:class "span-24 last"}
          [:div {:id "metacloud", :style "width:100%;height: 150px"}
           [:div {:id "cloud_holder", :style "width:100%;height: 200px"}]]]
-        [:div {:class "span-24 last"}
-         [:div {:id "map", :style "width: 100%;height: 300px"}]]
-        [:div {:class "span-24 last"}
+                [:div {:class "span-24 last"}
          [:div {:id "tracks", :style "width:100%"}
-           [:table {:id "tracks_table", :class "display"}]]]]
+           [:table {:id "tracks_table", :class "display"}]]]
+        [:div {:class "span-24 last"}
+         [:div {:id "map", :style "width: 100%;height: 300px"}]]]
       [:div {:id "ui_foot"}
        [:div {:class "span-24 last"}
         [:div {:id "tuneramblr_copy"}

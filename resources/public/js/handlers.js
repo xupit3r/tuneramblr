@@ -44,6 +44,33 @@ HANDLERS.songs.table.rowClick = function(ev) {
 
 };
 
+// space for the table filter handlers
+HANDLERS.songs.table.filters = {};
+
+// table filtering (extends datatables). follows the data tables API. RETURNS:
+// true if row should be kept, false otherwise
+HANDLERS.songs.table.filters.meta = function(oSettings, oData, iDataIndex) {
+
+	// pull the song and the global meta data
+	var key = oData[0] + oData[1] + oData[2];
+	console.log(key);
+	var song = APP.songs.placed[key];
+	var selectedMetadata = APP.select.meta;
+
+	// go through this song's metadata, if it posses a piece of meta data that
+	// exists in the set of selected metadata than keep it
+	for (var i = 0; i < song.metadata.length; i++) {
+		var meta = song.metadata[i];
+		if (selectedMetadata[meta]) {
+			return true;
+		}
+	}
+	return false;
+};
+
+// add the filtering extension to the datatables plugin
+$.fn.dataTableExt.afnFiltering.push(HANDLERS.songs.table.filters.meta);
+
 /* metadata */
 
 // space for metadata item handlers
@@ -71,6 +98,10 @@ HANDLERS.meta.item.click = function(metaProp) {
 			APP.select.meta[metaProp] = metaProp;
 			$(this).addClass("mselect");
 		}
+
+		// re-draw the table as the selection/deselection of meta data will
+		// affect the contents of the table
+		APP.songs.table.fnDraw();
 	};
 
 	return metaClick;
