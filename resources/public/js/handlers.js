@@ -5,6 +5,7 @@ var HANDLERS = {};
 HANDLERS.functions = {};
 HANDLERS.meta = {};
 HANDLERS.map = {};
+HANDLERS.songs = {};
 
 /* function buttons (top) */
 HANDLERS.functions.setup = function() {
@@ -13,6 +14,31 @@ HANDLERS.functions.setup = function() {
 
 HANDLERS.functions.reload = function() {
 	// probably need this when a user logs in
+};
+
+/* songs */
+
+// handlers for the song table
+HANDLERS.songs.table = {};
+
+// song row click
+HANDLERS.songs.table.rowClick = function(ev) {
+	// pull the data cells in this row
+	var cells = $("td", this);
+
+	// build the key
+	var title = $(cells[0]).text();
+	var artist = $(cells[1]).text();
+	var album = $(cells[2]).text();
+	var key = title + artist + album;
+
+	// pull the song (NOTE: if a song is recorde multiple times, this is going
+	// to grab the last instance to be added to this map... going to fix this)
+	var songInfo = APP.songs.placed[key];
+	
+	// pan to the songs location on the map
+	SONGMAP.panTo(songInfo.marker.getLatLng());
+
 };
 
 /* metadata */

@@ -1,8 +1,11 @@
 // general application stuff
 var APP = {};
 
-// model storage of the songs on the map
-APP.songs = [];
+// model storage for stuff about songs
+APP.songs = {};
+
+// storage for songs placed on the map
+APP.songs.placed = {}
 
 // model storage for metadata
 APP.meta = {};
@@ -98,42 +101,54 @@ APP.handleUserSongs = function(songs) {
 
 APP.processSongs = function(songs) {
 
+	// only carry out these actions if we have songs to display
 	if (!APP.util.isEmpty(songs)) {
-		// iterate over the songs and
-		// add them to the map
+		// add the songs to the map and the table
 		var tableData = {};
-		tableData.aoColumns = APP.buildTrackCols();
 		tableData.aaData = [];
 		var row = 0;
-		for (var idx in songs) {
+		for ( var idx in songs) {
 			var song = songs[idx];
 			var placedSong = SONGMAP.addSong(song);
 			if (placedSong) {
-				APP.songs[APP.songs.length] = placedSong;
+				// i am going to need to get to these songs later. to facilitate
+				// that, I am going to use the combination of title, artist, and
+				// album as the key
+				var key = placedSong.title + placedSong.artist + placedSong.album;
+				APP.songs.placed[key] = placedSong;
 				APP.recordFreqs(placedSong);
-				tableData.aaData[row] = APP.buildTrackRow(song);
+				tableData.aaData[row] = APP.buildTrackRow(placedSong);
 				row++;
 			}
 		}
-		
-		// set the table options
-		
+
+		/* initialize the table */
+
+		// set the table's headers
+		tableData.aoColumns = APP.buildTrackCols();
+
 		// set the height of the table to 300px
 		tableData.sScrollY = "300px";
-		
+
 		// don't paginate the table
 		tableData.bPaginate = false;
-		
+
 		// don't supply a search filter
 		tableData.bFilter = false;
-		
+
 		// don't display any info at the bottom of the table
 		tableData.bInfo = false;
-		
+
+		// initialize the dataTable
 		$("#tracks_table").dataTable(tableData);
+
+		// setup the row click handler
+		$("#tracks_table tbody tr")
+				.live('click', HANDLERS.songs.table.rowClick);
 	}
 };
 
+// build a definition of the table's column headers
 APP.buildTrackCols = function() {
 	var cols = [];
 	cols[0] = {};
@@ -145,23 +160,12 @@ APP.buildTrackCols = function() {
 	return cols;
 };
 
+// build a representation of the track's row in the table
 APP.buildTrackRow = function(song) {
 	var row = [];
 	row[0] = song.title;
 	row[1] = song.artist;
 	row[2] = song.album;
-	
-	// need to add on click handler
-	
-	// add click handler to the row
-//	var latlng = song.marker.getLatLng();
-//	$(trackNode).click(function(ev){
-//		SONGMAP.panTo(song.marker.getLatLng());
-//	});
-
-	// TODO: marker interaction
-	// TODO: metadata interaction
-	
 	return row;
 };
 
@@ -221,6 +225,8 @@ APP.fillMetadata = function(metadata) {
 		width : 960,
 		height : 150
 	});
+	
+	// TODO: filter table as words/phrases are selected from the word cloud
 };
 
 /* user management */
