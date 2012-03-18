@@ -100,75 +100,61 @@ APP.processSongs = function(songs) {
 
 	if (!APP.util.isEmpty(songs)) {
 		// iterate over the songs and
-		// add them to the map, as
-		// we are doing that, build
-		// a document fragment that will
-		// later be injected into the DOM
-		var frag = document.createDocumentFragment();
-		var tableHead = APP.buildTrackHead();
-		var tableBody = document.createElement("tbody");
-		frag.appendChild(tableHead);
-		frag.appendChild(tableBody);
-		for ( var idx in songs) {
+		// add them to the map
+		var tableData = {};
+		tableData.aoColumns = APP.buildTrackCols();
+		tableData.aaData = [];
+		var row = 0;
+		for (var idx in songs) {
 			var song = songs[idx];
 			var placedSong = SONGMAP.addSong(song);
 			if (placedSong) {
 				APP.songs[APP.songs.length] = placedSong;
 				APP.recordFreqs(placedSong);
-				tableBody.appendChild(APP.buildTrackNode(placedSong));
+				tableData.aaData[row] = APP.buildTrackRow(song);
+				row++;
 			}
 		}
-		$("#tracks_table").append(frag);
+		
+		// set the table options
+		tableData.sScrollY = "300px";
+		tableData.bPaginate = false;
+		tableData.bFilter = false;
+		tableData.bInfo = false;
+		
+		$("#tracks_table").dataTable(tableData);
 	}
 };
 
-APP.buildTrackHead = function() {
-	var tableHead = document.createElement("thead");
-	var headRow = tableHead.appendChild(document.createElement("tr"));
-
-	// track title
-	var titleHead = tableHead.appendChild(document.createElement("th"));
-	titleHead.appendChild(document.createTextNode("Title"));
-
-	// track artist
-	var artistHead = tableHead.appendChild(document.createElement("th"));
-	artistHead.appendChild(document.createTextNode("Artist"));
-
-	// track album
-	var albumHead = tableHead.appendChild(document.createElement("th"));
-	albumHead.appendChild(document.createTextNode("Album"));
-
-	return tableHead;
+APP.buildTrackCols = function() {
+	var cols = [];
+	cols[0] = {};
+	cols[0].sTitle = "Title";
+	cols[1] = {};
+	cols[1].sTitle = "Artist";
+	cols[2] = {};
+	cols[2].sTitle = "Album";
+	return cols;
 };
 
-APP.buildTrackNode = function(song) {
-	var trackNode = document.createElement("tr");
-
-	// title cell
-	var trackTitle = document.createElement("td");
-	trackTitle.appendChild(document.createTextNode(song.title));
-	trackNode.appendChild(trackTitle);
-
-	// artist cell
-	var trackArtist = document.createElement("td");
-	trackArtist.appendChild(document.createTextNode(song.artist));
-	trackNode.appendChild(trackArtist);
-
-	// album cell
-	var trackAlbum = document.createElement("td");
-	trackAlbum.appendChild(document.createTextNode(song.album));
-	trackNode.appendChild(trackAlbum);
+APP.buildTrackRow = function(song) {
+	var row = [];
+	row[0] = song.title;
+	row[1] = song.artist;
+	row[2] = song.album;
+	
+	// need to add on click handler
 	
 	// add click handler to the row
-	var latlng = song.marker.getLatLng();
-	$(trackNode).click(function(ev){
-		SONGMAP.panTo(song.marker.getLatLng());
-	});
+//	var latlng = song.marker.getLatLng();
+//	$(trackNode).click(function(ev){
+//		SONGMAP.panTo(song.marker.getLatLng());
+//	});
 
 	// TODO: marker interaction
 	// TODO: metadata interaction
-
-	return trackNode;
+	
+	return row;
 };
 
 /* metadata */

@@ -7,7 +7,6 @@
   {:blueprint (include-css "/css/screen.css" "/css/ie.css")
    :songmap.css (include-css "/css/songmap.css")
    :forms.css (include-css "/css/forms.css")
-   :overcast.css (include-css "/css/overcast.css")
    :titan-font (include-css "http://fonts.googleapis.com/css?family=Titan+One")
    :chelsea-font (include-css "http://fonts.googleapis.com/css?family=Chelsea+Market")
    :sonsie-font (include-css "http://fonts.googleapis.com/css?family=Sonsie+One")
@@ -18,6 +17,7 @@
    :jqcloud (include-js "/js/jqcloud.js")
    :jqcloud-css (include-css "/css/jqcloud.css")
    :datatables (include-js "/js/datatables.js")
+   :table-css (include-css "/css/table.css")
    :app.js (include-js "/js/app.js") 
    :map.js (include-js "/js/map.js") 
    :handlers.js (include-js "/js/handlers.js") 
@@ -40,6 +40,7 @@
                 :jqcloud
                 :jqcloud-css
                 :datatables
+                :table-css
                 :app.js
                 :map.js
                 :leaflet

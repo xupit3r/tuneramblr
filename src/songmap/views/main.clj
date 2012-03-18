@@ -36,8 +36,7 @@
          [:div {:id "map", :style "width: 100%;height: 300px"}]]
         [:div {:class "span-24 last"}
          [:div {:id "tracks", :style "width:100%"}
-          [:div {:id "tracks_holder", :style "height: 300px;overflow-y:auto"}
-           [:table {:id "tracks_table", :style "width:100%;height: 300px"}]]]]]
+           [:table {:id "tracks_table", :class "display"}]]]]
       [:div {:id "ui_foot"}
        [:div {:class "span-24 last"}
         [:div {:id "tuneramblr_copy"}
