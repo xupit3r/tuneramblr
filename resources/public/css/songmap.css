@@ -8,10 +8,19 @@ html {
 }
 
 body {
-	background: url(/img/noir-bg.png);
-	color: #d1d9e1;
-	padding: 60px;
+	background: url(/img/square_back.png);
+	background-repeat: repeat;
 	font-family: 'Helvetica Neue', Helvetica, Verdana;
+}
+
+#ui_body_wrapper {
+    margin-left: 125px;
+}
+
+#ui_body_main {
+	background: #404040;
+	padding: 15px;
+	border-radius: 8px 8px 8px 8px;
 }
 
 #ui_head {
@@ -34,23 +43,24 @@ body {
 }
 
 .fn_btn:hover {
-	background: none repeat scroll 0 0 #6BFFBD;
-	opacity: 0.7;
+	background: none repeat scroll 0 0 #F9F99F;
+	opacity: 0.85;
+	cursor: pointer;
 }
 
 #functions a {
-	color: #D1D9E1;
+	color: #00CCFF;
 	padding-left: 10px;
 	padding-right: 10px;
 	text-decoration: none;
 }
 
 #functions a:hover {
-	cursor: default;
+	cursor: pointer;
 }
 
 #banner {
-	color: #6bffbd;
+	color: #00CCFF;
 	float: left;
 	font-family: 'Sonsie One', cursive;
 	font-size: 60px;
@@ -58,7 +68,7 @@ body {
 }
 
 #subbanner {
-	color: #6bffbd;
+	color: #00CCFF;
 	float: left;
 	padding-left: 20px;
 	padding-bottom: 10px;
@@ -81,6 +91,7 @@ body {
 
 #cloud_holder > span.mselect {
 	background: #F9F99F;
+	opacity: 0.85;
 	border-radius: 8px 8px 8px 8px;
 }
 
@@ -204,9 +215,27 @@ body {
 /*
  * footer stuff
  */
-#footer_copy {
-	margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 200px;
+
+#ui_foot {
+	padding-top: 15px;
+} 
+
+#tuneramblr_copy {
+	color: #00CCFF;
+	float: left;
+    margin-top: 15px;
+    font-size: 10px;
+}
+
+#map_copy {
+	color: #00CCFF;
+	float: left;
+    margin-top: 15px;
+    margin-left: 20px;
+    font-size: 10px;
+}
+
+#back_labs {
+	float: right;
+	margin-top: 15px;
 }
