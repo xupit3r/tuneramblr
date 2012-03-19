@@ -5,15 +5,10 @@
 ;;;; SONG METHODS ;;;;
 
 ;; strip out the id keys
+;; (they are useless outside 
+;;  the context of the DB)
 (defn no-id [mp]
   (dissoc mp :_id))
-
-;; need to define what "near by"
-;; means. once we do that, we 
-;; can return the songs (anonymously)
-;; for display on the map
-(defn get-songs-near-by [lat lng] 
-  [])
   
 
 ;; if we have a user, pull songs 
@@ -22,7 +17,7 @@
 (defn get-songs [user lat lng]
   (if user
       (map no-id (song/get-songs user lat lng))
-      (map no-id (get-songs-near-by lat lng))))
+      (map no-id (song/get-songs-near-by lat lng))))
 
 ;; add a new song to the model
 (defn add-song [songdata]

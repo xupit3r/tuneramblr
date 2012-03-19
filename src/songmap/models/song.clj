@@ -1,5 +1,6 @@
 (ns songmap.models.song
-   (:use somnium.congomongo))
+   (:use somnium.congomongo)
+   (:require [songmap.models.util :as util]))
 
 ;;;; functions for working with song
 ;;;; data in the DB
@@ -17,3 +18,21 @@
 ;; by latitutude and longitude
 (defn get-songs [username lat lng]
   (fetch :songs :where {:username username}))
+
+;; "near by" will be defined as a 10 mile radius 
+;; (for right now)
+(def NEAR_BY_MILES 10.0)
+
+;; get all songs that appear within a 10 mile 
+;; radius of the user's location
+(defn get-songs-near-by [lat lng] 
+  (let [clat (util/m2lat NEAR_BY_MILES)
+        clng (util/m2lng NEAR_BY_MILES lat)]
+    ;; fetch all songs where the lat/lng +/- 
+    ;; the degrees equivalent of NEAR_BY_MILES
+    (fetch :songs
+           :where {:lat {:$gt (- lat clat)
+                         :$lt (+ lat clat)}
+                   :lng {:$gt (- lng clng)
+                         :$lt (+ lng clng)}})))
+    
