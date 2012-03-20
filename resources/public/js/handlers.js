@@ -53,19 +53,19 @@ HANDLERS.songs.table.filters.meta = function(oSettings, oData, iDataIndex) {
 
 	// pull the song and the global meta data
 	var key = oData[0] + oData[1] + oData[2];
-	console.log(key);
 	var song = APP.songs.placed[key];
 	var selectedMetadata = APP.select.meta;
 
-	// go through this song's metadata, if it posses a piece of meta data that
-	// exists in the set of selected metadata than keep it
-	for (var i = 0; i < song.metadata.length; i++) {
-		var meta = song.metadata[i];
-		if (selectedMetadata[meta]) {
-			return true;
+	// only keep songs that possess all the selected properties
+	for ( var meta in selectedMetadata) {
+		if (!song.metadata.hasOwnProperty(meta)) {
+			// it doesn't possess the current selected metadata, filter it out!
+			return false;
 		}
 	}
-	return false;
+
+	// this song possessed all the selected metadata, keep it!
+	return true;
 };
 
 // add the filtering extension to the datatables plugin

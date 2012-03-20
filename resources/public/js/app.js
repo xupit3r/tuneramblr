@@ -177,18 +177,6 @@ APP.buildTrackRow = function(song) {
 
 // calculates the font size of the
 // meta property text
-APP.calcMetaFontSize = function(freq) {
-	// we want a value between 1 and 2
-	// this means our fonts will have
-	// a range between the current font
-	// size and double the current font
-	// size
-	return (freq / 10 < 1) ? (freq / 10 + 1) + "em" : (freq / 10 > 2) ? "2em"
-			: (freq / 10) + "em";
-};
-
-// calculates the font size of the
-// meta property text
 APP.calcMetaWeight = function(freq) {
 	// just return the frequency count, for now...
 	// may want to change this in future...
@@ -199,7 +187,7 @@ APP.recordFreqs = function(song) {
 	var weather = song.weather ? song.weather.split(",") : [];
 	var userdef = song.userdef ? song.userdef.split(",") : [];
 	var metadata = userdef.concat(weather);
-	song.metadata = metadata;
+	song.metadata = APP.util.arrToMap(metadata);
 	for ( var idx in metadata) {
 		var metaitem = metadata[idx];
 		if (!APP.meta.freqs[metaitem]) {
@@ -244,3 +232,11 @@ APP.util.isEmpty = function(map) {
 	}
 	return true;
 };
+
+APP.util.arrToMap = function(arr) {
+	var map = {};
+	for(var i = 0; i < arr.length; i++) {
+		map[arr[i]] = arr[i];
+	}
+	return map;
+}
