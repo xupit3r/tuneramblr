@@ -36,6 +36,49 @@
            (Math/cos (* lat 
                    DEGREES_TO_RADIANS))))
      RADIANS_TO_DEGREES))
+
+
+;;;; stats help
+
+;; creates a vector of tuples 
+;; the first of each tuple is the 
+;; word/phrase and the second is 
+;; a talley of one (to indicate that 
+;; this current tuple represents a 
+;; single instance of the word/phrase)
+(defn tuplize [phrases]
+      (map #(vector % 1) phrases))
+
+;; creates a grouping of all unique instances 
+;; of words (tokens) in a list
+(defn group-instances [tuplized]
+  (->> 
+    (group-by first tuplized)
+    (map (fn [[k v]]
+           {k (map second v)}))
+    (apply merge-with conj)))
+
+;; sum up the value portion 
+;; of a key value pair
+(defn sum-v [[k v]]
+  {k (sum v)})
+
+;; build a final mapping of frequency 
+;; counts of word/phrases 
+;; (word/phrase -> frequency)
+(defn build-freq-map [instances]
+    (apply merge 
+           (map sum-v instances)))
+
+
+;; builds a frequency count
+;; of words/phrases appearing 
+;; in a string
+(defn word-freq [phrases]
+  (->> 
+    (tuplize phrases)
+    (group-instances)
+    (build-freq-map)))
      
         
 
