@@ -97,9 +97,12 @@ APP.getSongs = function() {
 
 };
 
-APP.handleUserSongs = function(songs) {
-	APP.processSongs(songs);
-	APP.fillMetadata(APP.meta.freqs);
+APP.handleUserSongs = function(resp) {
+	// process the songs (build the table and add the locations to the map)
+	APP.processSongs(resp.songs);
+	
+	// build the word cloud
+	APP.fillMetadata(resp.freqs);
 };
 
 APP.processSongs = function(songs) {
@@ -120,7 +123,6 @@ APP.processSongs = function(songs) {
 				var key = placedSong.title + placedSong.artist
 						+ placedSong.album;
 				APP.songs.placed[key] = placedSong;
-				APP.recordFreqs(placedSong);
 				tableData.aaData[row] = APP.buildTrackRow(placedSong);
 				row++;
 			}
@@ -183,32 +185,20 @@ APP.calcMetaWeight = function(freq) {
 	return freq;
 };
 
-APP.recordFreqs = function(song) {
-	var weather = song.weather ? song.weather.split(",") : [];
-	var userdef = song.userdef ? song.userdef.split(",") : [];
-	var metadata = userdef.concat(weather);
-	song.metadata = APP.util.arrToMap(metadata);
-	for ( var idx in metadata) {
-		var metaitem = metadata[idx];
-		if (!APP.meta.freqs[metaitem]) {
-			APP.meta.freqs[metaitem] = 1;
-		} else {
-			APP.meta.freqs[metaitem] += 1
-		}
-	}
-};
-
-APP.fillMetadata = function(metadata) {
+APP.fillMetadata = function(freqs) {
 	var phrases = [];
 	var idx = 0;
-	for ( var phrase in metadata) {
+	for (var phrase in freqs) {
 		phrases[idx] = {};
-		phrases[idx].weight = APP.calcMetaWeight(metadata[phrase]);
+		phrases[idx].weight = APP.calcMetaWeight(freqs[phrase]);
 		phrases[idx].text = phrase;
 		phrases[idx].handlers = HANDLERS.meta.getMetaHandlers(phrase);
 		phrases[idx].customClass = "metaword";
 		idx++;
 	}
+	
+	// store these in the scope for possible use later
+	APP.meta.freqs = freqs;
 
 	// empty out the container (this is done to avoid overlap)
 	$("#cloud_holder").empty();
@@ -235,7 +225,7 @@ APP.util.isEmpty = function(map) {
 
 APP.util.arrToMap = function(arr) {
 	var map = {};
-	for(var i = 0; i < arr.length; i++) {
+	for ( var i = 0; i < arr.length; i++) {
 		map[arr[i]] = arr[i];
 	}
 	return map;

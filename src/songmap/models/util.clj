@@ -18,7 +18,14 @@
   (System/currentTimeMillis))
 
 
-;;;; distance utility functions
+;;;; maths ;;;;;
+
+;; sum up values in a list
+(defn sum [lst]
+  (apply + lst))
+
+
+;;;; distance utility functions ;;;;
 
 (def EARTH_RADIUS 3960.0)
 (def DEGREES_TO_RADIANS (/ (Math/PI) 180.0))
@@ -38,7 +45,7 @@
      RADIANS_TO_DEGREES))
 
 
-;;;; stats help
+;;;; stats'n'at ;;;;
 
 ;; creates a vector of tuples 
 ;; the first of each tuple is the 
