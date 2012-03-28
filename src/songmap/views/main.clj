@@ -3,9 +3,8 @@
             [songmap.models.user.umanage :as umanage])
   (:use [noir.core :only [defpage]]
         [hiccup.core :only [html]]))
-(defpage "/repeat" [] 
-  (common/layout))
-  
+
+;; the main page for the app.
 (defpage "/" []
   (let [username (umanage/me)]
     (common/layout

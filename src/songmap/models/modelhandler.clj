@@ -14,6 +14,8 @@
 (defn no-id [mp]
   (dissoc mp :_id))
 
+;; creates a list (vector) of all monitored 
+;; metadata for a given song
 (defn join-meta [{userdef :userdef 
                   weather :weather}]
   (concat (.split userdef USER_DEF_DELIM)
@@ -22,7 +24,9 @@
 
 ;; if we have a user, pull songs 
 ;; for that user, otherwise just 
-;; get the songs near by
+;; get the songs near by.  the return 
+;; value of this function is a map of 
+;; songs and metadata frequencies.
 (defn get-songs [user lat lng]
   (let [result (if user
                  (map no-id (song/get-songs user lat lng))

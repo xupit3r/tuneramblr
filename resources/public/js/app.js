@@ -100,9 +100,19 @@ APP.getSongs = function() {
 APP.handleUserSongs = function(resp) {
 	// process the songs (build the table and add the locations to the map)
 	APP.processSongs(resp.songs);
-	
+
 	// build the word cloud
 	APP.fillMetadata(resp.freqs);
+};
+
+//returns a key that will be used to store
+//and later lookup the song within the model
+APP.getSongKey = function(song) {
+	// i am going to need to get to these songs later. to facilitate
+	// that, I am going to use the combination of title, artist, and
+	// album as the key
+	var key = song.title + song.artist + song.album;
+	return key;
 };
 
 APP.processSongs = function(songs) {
@@ -117,11 +127,7 @@ APP.processSongs = function(songs) {
 			var song = songs[idx];
 			var placedSong = SONGMAP.addSong(song);
 			if (placedSong) {
-				// i am going to need to get to these songs later. to facilitate
-				// that, I am going to use the combination of title, artist, and
-				// album as the key
-				var key = placedSong.title + placedSong.artist
-						+ placedSong.album;
+				var key = APP.getSongKey(song); 
 				APP.songs.placed[key] = placedSong;
 				tableData.aaData[row] = APP.buildTrackRow(placedSong);
 				row++;
@@ -188,7 +194,7 @@ APP.calcMetaWeight = function(freq) {
 APP.fillMetadata = function(freqs) {
 	var phrases = [];
 	var idx = 0;
-	for (var phrase in freqs) {
+	for ( var phrase in freqs) {
 		phrases[idx] = {};
 		phrases[idx].weight = APP.calcMetaWeight(freqs[phrase]);
 		phrases[idx].text = phrase;
@@ -196,7 +202,7 @@ APP.fillMetadata = function(freqs) {
 		phrases[idx].customClass = "metaword";
 		idx++;
 	}
-	
+
 	// store these in the scope for possible use later
 	APP.meta.freqs = freqs;
 

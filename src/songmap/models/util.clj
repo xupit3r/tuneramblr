@@ -14,6 +14,7 @@
 (defn line-sep []
   (System/getProperty "line.separator"))
 
+;; get the current system time
 (defn current-time []
   (System/currentTimeMillis))
 
@@ -86,8 +87,3 @@
     (tuplize phrases)
     (group-instances)
     (build-freq-map)))
-     
-        
-
-
-
