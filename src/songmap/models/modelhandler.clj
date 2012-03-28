@@ -13,6 +13,11 @@
 ;;  the context of the DB)
 (defn no-id [mp]
   (dissoc mp :_id))
+
+(defn join-meta [{userdef :userdef 
+                  weather :weather}]
+  (concat (.split userdef USER_DEF_DELIM)
+          (.split weather USER_DEF_DELIM)))
   
 
 ;; if we have a user, pull songs 
@@ -22,12 +27,18 @@
   (let [result (if user
                  (map no-id (song/get-songs user lat lng))
                  (map no-id (song/get-songs-near-by lat lng)))]
-    {:songs result,
+    {:songs (map (fn [sng] 
+                   (assoc sng :metadata 
+                          (apply 
+                            array-map 
+                            (flatten 
+                              (map 
+                                #(vector (keyword %) %)
+                                (join-meta sng)))))) 
+                 result)
      :freqs (util/word-freq
-                 (mapcat (fn [{weather :weather 
-                               userdef :userdef}]
-                           (concat (.split userdef USER_DEF_DELIM)
-                                   (.split weather USER_DEF_DELIM))) result))}))
+              (mapcat (fn [sng]
+                        (join-meta sng)) result))}))
      
 ;; add a new song to the model
 (defn add-song [songdata]
