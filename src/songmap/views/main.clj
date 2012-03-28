@@ -9,7 +9,7 @@
 (defpage "/" []
   (let [username (umanage/me)]
     (common/layout
-      [:div {:id "ui_body_wrapper"}
+      [:div {:id "ui_body_wrapper", :class "container"}
       [:div {:id "ui_body_main", :class "span-24 last"}
        [:div {:id "ui_head"}
         [:div {:class "span-24 last"}

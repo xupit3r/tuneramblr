@@ -13,10 +13,6 @@ body {
 	font-family: 'Helvetica Neue', Helvetica, Verdana;
 }
 
-#ui_body_wrapper {
-    margin-left: 125px;
-}
-
 #ui_body_main {
 	background: #404040;
 	padding: 15px;

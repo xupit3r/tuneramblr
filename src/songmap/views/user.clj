@@ -37,9 +37,10 @@
                         :forms.css
                         :sonsie-font])
     [:body
-     [:div {:class "sm-form"}
-      [:h3 title]
-      content]]))
+     [:div {:class "sm-form container"}
+      [:div {:id "form_content", :class "span-24"}
+        [:h3 title]
+       content]]]))
 
 ;; validate user form
 (defn valid? [{:keys [email username password re-password]}]
