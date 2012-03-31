@@ -7,12 +7,15 @@
 ;;;; here.
 
 ;; add an image to the store
-;; this places the image in mongo's
-;; GridFS. returns the name of
+;; it is assumed that the image is 
+;; a byte array.  Note, this places 
+;; the image in mongo's GridFS store. 
+;; returns the key of the file
 (defn add-img [song]
   (when (:img song)
     (let [iname (util/get-iname song)]
-      (if (insert-file! 
+      (if (insert-file!
+            :imgFs
             (:img song)
             :filename iname)
         (assoc song :img iname)

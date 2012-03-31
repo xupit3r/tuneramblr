@@ -96,12 +96,13 @@
 ;; this is using commons-codec 1.3 
 ;; which does not have a decode 
 ;; method that accepts a string 
-;; so, we need to pull the bytes, decode 
-;; and rebuild the decoded string
-(defn dec-img [{img :img}] 
-  (new java.lang.String 
-       (Base64/decodeBase64
-         (.getBytes img))))
+;; so, we need to pull the bytes,
+;; decode.  returns the decoded 
+;; byte array as that will be what 
+;; we will be storing
+(defn dec-img [{img :img}]  
+  (Base64/decodeBase64
+    (.getBytes img)))
 
 ;; define an image name
 (defn get-iname [{user :username
