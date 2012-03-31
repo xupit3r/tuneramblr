@@ -1,4 +1,5 @@
-(ns songmap.models.util)
+(ns songmap.models.util
+  (import  org.apache.commons.codec.binary.Base64))
 
 ;;;; general utility functions
 
@@ -87,3 +88,16 @@
     (tuplize phrases)
     (group-instances)
     (build-freq-map)))
+
+;;;; image util functions
+
+
+;; decodes a base 64 encoded image
+(defn dec-img [{img :img}] 
+  (Base64/decodeBase64 img))
+
+;; define an image name
+(defn get-iname [{user :username
+                  lat :lat
+                  lng :lng}]
+  (str user lat lng (current-time)))

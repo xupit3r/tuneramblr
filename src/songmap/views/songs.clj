@@ -48,6 +48,3 @@
                                            :userdef userdef
                                            :img img}))
     (response/json {:added false :message (str "failed to authenticate user: " username)})))
-
-
-

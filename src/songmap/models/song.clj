@@ -1,13 +1,16 @@
 (ns songmap.models.song
-   (:use somnium.congomongo)
-   (:require [songmap.models.util :as util]))
+  (:use somnium.congomongo)
+  (:require [songmap.models.util :as util]
+            [songmap.models.image :as image]))
 
 ;;;; functions for working with song
 ;;;; data in the DB
 
 ;; add data to the songs collection
 (defn add [data]
-  (if (insert! :songs data)
+  (if (insert! :songs 
+               (image/add-img
+                 (assoc data :img (util/dec-img data))))
     {:added true, 
      :message (str (:title data) " was added to the database")}
     {:added false, 
