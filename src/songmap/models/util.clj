@@ -93,8 +93,15 @@
 
 
 ;; decodes a base 64 encoded image
+;; this is using commons-codec 1.3 
+;; which does not have a decode 
+;; method that accepts a string 
+;; so, we need to pull the bytes, decode 
+;; and rebuild the decoded string
 (defn dec-img [{img :img}] 
-  (Base64/decodeBase64 img))
+  (new java.lang.String 
+       (Base64/decodeBase64
+         (.getBytes img))))
 
 ;; define an image name
 (defn get-iname [{user :username
