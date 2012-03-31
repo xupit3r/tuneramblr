@@ -1,6 +1,9 @@
 // general application stuff
 var APP = {};
 
+APP.img = {};
+APP.img.url = "/image/ugen/";
+
 // model storage for stuff about songs
 APP.songs = {};
 

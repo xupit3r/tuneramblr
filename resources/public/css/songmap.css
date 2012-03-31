@@ -135,18 +135,16 @@ table.display tbody tr:hover td {
 .song_mrkr {
 	color: black;
 	display: block;
-	text-align: left;
+	text-align: center;
+	font-size: 10px;
 }
 
-.mrkr_artist {
-	margin-bottom: 2px;
-}
-
-.mrkr_title {
-	margin-bottom: 2px;
-}
-
-.mrkr_album {
+.song_mrkr img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100px;
+	height: 100px;
 	margin-bottom: 2px;
 }
 

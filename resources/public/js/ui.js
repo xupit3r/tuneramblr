@@ -37,9 +37,15 @@ UI.playlist.reload = function() {
 UI.buildSongMarkerPopupContent = function (location, songData) {
 	// build up the content to be displayed in the info box
 	var content = "<div class='song_mrkr'>";
-	content += "<p class='mrkr_artist'>Artist: "+songData.artist+"</p>";
-	content += "<p class='mrkr_title'>Title: "+songData.title+"</p>";
-	content += "<p class='mrkr_album'>Album: "+songData.album+"</p>";
+	
+	// if this song has an image, display it
+	if (songData.img) {
+		content += "<img src='"+APP.img.url+songData.img+"'/>"
+	}
+	
+	// setup the other meta data
+	content += "<p class='mrkr_title'>"+songData.title+"</p>";
+	content += "<p class='mrkr_artist'>"+songData.artist+"</p>";
 	content += "</div>";
 	return content;
 };
