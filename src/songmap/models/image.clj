@@ -10,7 +10,6 @@
 ;; it is assumed that the image is 
 ;; a byte array.  Note, this places 
 ;; the image in mongo's GridFS store. 
-;; returns the key of the file
 (defn add-img [song]
   (when (:img song)
     (let [iname (util/get-iname song)]
@@ -25,8 +24,8 @@
 ;; this retrieves an image from the 
 ;; 
 (defn get-img [iname]
-  ; just get it!
- )
+  (fetch-one-file :imgFs 
+                  :where {:filename iname}))
                   
                      
 

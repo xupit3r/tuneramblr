@@ -108,4 +108,7 @@
 (defn get-iname [{user :username
                   lat :lat
                   lng :lng}]
-  (str user lat lng (current-time)))
+  (str user 
+       (.hashCode lat)
+       (.hashCode lng)
+       (current-time)))
