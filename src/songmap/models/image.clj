@@ -16,16 +16,19 @@
       (if (insert-file!
             :imgFs
             (:img song)
-            :filename iname)
+            :filename iname
+            :contentType "image/jpeg")
         (assoc song :img iname)
         (assoc song :img nil)))))
 
 ;; retrieve an image from the store
 ;; this retrieves an image from the 
-;; 
+;; gridFs datastore.
 (defn get-img [iname]
-  (fetch-one-file :imgFs 
-                  :where {:filename iname}))
+  (stream-from 
+    :imgFs 
+    (fetch-one-file :imgFs
+                    :where {:filename iname})))
                   
                      
 

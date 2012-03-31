@@ -9,18 +9,16 @@
 ;;;; for images (this is the interface through 
 ;;;; which image operations will occur).
 
-
-;; image content type map
-(def content-types {:jpeg "image/jpeg"})
-
 ;; test
 (defpage "/image/ugen" {}
   (response/empty))
 
-;; get image
+;; get image.  note: the route pattern 
+;; (by default) will only match up the first 
+;; . or / 
 (defpage "/image/ugen/:iname" {iname :iname}
   (response/content-type
-    (:jpeg content-types)
+    "image/jpeg"
     (image/get-img iname)))
   
   

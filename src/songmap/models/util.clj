@@ -19,6 +19,9 @@
 (defn current-time []
   (System/currentTimeMillis))
 
+;; image content type map
+(def content-types {:jpeg "image/jpeg"})
+
 
 ;;;; maths ;;;;;
 
