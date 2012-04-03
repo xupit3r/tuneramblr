@@ -17,10 +17,11 @@
    :jqcloud (include-js "/js/jqcloud.js")
    :jqcloud-css (include-css "/css/jqcloud.css")
    :datatables (include-js "/js/dataTables.js")
+   :drawium (include-js "http://serve.drawium.com/7371748_1023.js")
    :table-css (include-css "/css/table.css")
    :app.js (include-js "/js/app.js") 
    :map.js (include-js "/js/map.js") 
-   :handlers.js (include-js "/js/handlers.js") 
+   :handlers.js (include-js "/js/handlers.js")
    :ui.js (include-js "/js/ui.js")})
 
 (defpartial build-head [title to-include]
@@ -40,6 +41,7 @@
                 :jqcloud
                 :jqcloud-css
                 :datatables
+                :drawium
                 :table-css
                 :app.js
                 :map.js
