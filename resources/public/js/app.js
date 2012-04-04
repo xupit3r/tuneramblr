@@ -219,6 +219,15 @@ APP.fillMetadata = function(freqs) {
 	});
 };
 
+/* playlists */
+APP.genPlaylist = function() {
+	var songs = APP.songs.table ? APP.songs.table : null;
+	if(songs != null) {
+		// do some stuff here.
+	}
+};
+
+
 /* utility methods */
 APP.util = {};
 
