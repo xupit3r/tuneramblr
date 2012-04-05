@@ -148,6 +148,33 @@ table.display tbody tr:hover td {
 	margin-bottom: 2px;
 }
 
+/*
+ * playlist button
+ */
+#btn_playlist {
+	float: right;
+	text-align: center;
+}
+ 
+#fn_playlist {
+	color: #00CCFF;
+	padding-left: 10px;
+	padding-right: 10px;
+	text-decoration: none;
+}
+
+#fn_playlist a:hover {
+	cursor: pointer;
+}
+
+.lnk_playlist {
+	color: #00CCFF;
+	padding-left: 10px;
+	padding-right: 10px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
 
 /*
  * footer stuff

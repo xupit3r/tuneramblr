@@ -50,9 +50,3 @@
   ;from the songdata and add it to the model, probably 
   ;after we attempt to add the song.
   (song/add songdata))
-
-
-;;;; PLAYLIST METHODS ;;;;
-
-(defn get-playlist [id]
-  ["this" "is" "a" "playlist"])

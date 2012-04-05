@@ -11,11 +11,18 @@
 
 
 ;; generates a new playlist given the title 
-;; and set of songs to be included.  the response
-;; will be of an undecided standard format
+;; and set of songs to be included. the response 
+;; will be metadata related to the playlist (it 
+;; is expected that a link will be generated to 
+;; the list)
 (defpage [:post "/playlist/gen"] {:keys [title songs]}
-  (response/xml
+  (response/json
     (playlist/generate (umanage/me)
                      title
                      songs)))
+
+;; retrieve a saved playlist
+(defpage "/playlist/get/:pname" {pname :pname}
+  (response/xml 
+    (playlist/get-playlist pname)))
 

@@ -6,10 +6,12 @@ HANDLERS.functions = {};
 HANDLERS.meta = {};
 HANDLERS.map = {};
 HANDLERS.songs = {};
+HANDLERS.playlist = {};
 
 /* function buttons (top) */
 HANDLERS.functions.setup = function() {
-	// setup any handlers here...
+	// add the click handler for the generate playlist button
+	$("#btn_playlist").click(HANDLERS.playlist.genClick);
 };
 
 HANDLERS.functions.reload = function() {
@@ -119,4 +121,31 @@ HANDLERS.map.dragend = function(e) {
 HANDLERS.map.zoomend = function(e) {
 	// TODO: when necessary, grab new songs (be sure to clear all necessary data
 	// structures: map, DOM scopes, tables, etc.)
+};
+
+/* playlist */
+HANDLERS.playlist.genClick = function() {
+	if(APP.songs.table != null) {
+		// where am I getting the title? user entered?
+		var title = "playlist title";
+		
+		// retrieve the songs that are currently in the table
+		// FIXME: this retrieves all nodes (not just the visible ones)
+		var rows = APP.songs.table.fnGetNodes()
+		
+		// build a song list from the rows
+		var songs = [];
+		for(var i = 0; i < rows.length; i++) {
+			var row = rows[i];
+			var cells = $("td", row);
+			songs[i] = {};
+			songs[i].title = $(cells[0]).text();
+			songs[i].artist = $(cells[1]).text();
+			songs[i].album = $(cells[2]).text();
+		}
+		
+		// make a call to generate the playlist 
+		APP.generatePlaylist(title, songs);
+		
+	}
 };

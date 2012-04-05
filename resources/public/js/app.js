@@ -33,6 +33,8 @@ $(document).ready(function() {
 
 	// setup the function handlers
 	HANDLERS.functions.setup();
+	
+	// TODO: if a user is logged in, retrieve his/her playlists
 });
 
 // store the user location for later use
@@ -219,12 +221,40 @@ APP.fillMetadata = function(freqs) {
 	});
 };
 
-/* playlists */
-APP.genPlaylist = function() {
-	var songs = APP.songs.table ? APP.songs.table : null;
+/* playlist */
+APP.generatePlaylist = function(title, songs) {
+	// if we have some songs, make a call to generate the playlist
 	if(songs != null) {
-		// do some stuff here.
+		$.ajax({
+			type : "POST",
+			url : "/playlist/gen",
+			dataType : "json",
+			data : {
+				title: title,
+				songs: songs
+			},
+			success : APP.handlePlaylist
+		});
+	} else {
+		console.log("hmmm, that playlist should have had some songs.");
 	}
+};
+
+APP.handlePlaylist = function(resp) {
+	// utilize the data URI and create a link to the response data
+	if(resp.added == true) {
+		var listLink = document.createElement("a");
+		$(listLink).attr("href", APP.buildPlaylistLink(resp));
+		$(listLink).addClass("lnk_playlist");
+		$(listLink).append(document.createTextNode(resp.title));
+		$("#playlists").append(listLink);
+	}
+};
+
+APP.buildPlaylistLink = function(listData) {
+	var pname = listData.pname;
+	var link = "/playlist/get/"+pname;
+	return link;
 };
 
 
@@ -247,4 +277,4 @@ APP.util.arrToMap = function(arr) {
 		map[arr[i]] = arr[i];
 	}
 	return map;
-}
+};
