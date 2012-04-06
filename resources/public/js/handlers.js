@@ -130,8 +130,7 @@ HANDLERS.playlist.genClick = function() {
 		var title = "playlist title";
 		
 		// retrieve the songs that are currently in the table
-		// FIXME: this retrieves all nodes (not just the visible ones)
-		var rows = APP.songs.table.fnGetNodes()
+		var rows = APP.songs.table.$("tbody tr");
 		
 		// build a song list from the rows
 		var songs = [];

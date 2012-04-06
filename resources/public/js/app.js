@@ -278,3 +278,12 @@ APP.util.arrToMap = function(arr) {
 	}
 	return map;
 };
+
+
+/* table API extension methods */
+
+$.fn.dataTableExt.oApi.nonFiltered = function(oSettings) {
+	
+	// get the nodes for the
+	var nodes = this.oApi._fnGetTrNodes(oSettings);
+};

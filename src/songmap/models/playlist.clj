@@ -1,7 +1,7 @@
 (ns songmap.models.playlist
   (:require [songmap.models.util :as util])
   (:use somnium.congomongo
-        hiccup.page-helpers))
+        clojure.contrib.prxml))
 
 ;;;; functions for working with playlist
 ;;;; data in the DB
@@ -31,12 +31,13 @@
   (if (not (nil? user))
     (add {
           :pname (str user (util/current-time)),
-          :playlist (xhtml (map (fn [song]
-                                  [:song
-                                   [:title (:title song)]
-                                   [:artist (:artist song)]
-                                   [:album (:album song)]])
-                                (vals songs))),
+          :playlist (with-out-str 
+                      (prxml (map (fn [song]
+                                    [:song
+                                     [:title (:title song)]
+                                     [:artist (:artist song)]
+                                     [:album (:album song)]])
+                                  (vals songs)))),
           :title title,
           :user user})
     {:added false,
