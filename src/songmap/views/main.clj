@@ -34,11 +34,13 @@
          [:div {:id "metacloud", :style "width:100%;height: 150px"}
           [:div {:id "cloud_holder", :style "width:100%;height: 200px"}]]]
         [:div {:class "span-24 last"} "&nbsp;"]
-        [:div {:class "span-18"}
-         [:div {:id "playlists"} "&nbsp;"]]
-        [:div {:class "span-6 last"}
-         [:div {:id "btn_playlist", :class "fn_btn"}
-          [:a {:id "fn_playlist"} "Generate a Playlist"]]]
+        (when username
+            [:div {:class "span-18"}
+             [:div {:id "playlists"} "&nbsp;"]])
+        (when username
+          [:div {:class "span-6 last"}
+           [:div {:id "btn_playlist", :class "fn_btn"}
+            [:a {:id "fn_playlist"} "Generate a Playlist"]]])
         [:div {:class "span-24 last"}
          [:div {:id "tracks", :style "width:100%"}
           [:table {:id "tracks_table", :class "display"}]]]

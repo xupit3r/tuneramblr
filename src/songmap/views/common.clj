@@ -16,6 +16,8 @@
    :jquery.ui (include-js "/js/jquery-ui.js")
    :jqcloud (include-js "/js/jqcloud.js")
    :jqcloud-css (include-css "/css/jqcloud.css")
+   :impromptu (include-js "/js/impromptu.js")
+   :impromptu-css (include-css "/css/impromptu.css")
    :datatables (include-js "/js/dataTables.js")
    :drawium (include-js "http://serve.drawium.com/7371748_1023.js")
    :table-css (include-css "/css/table.css")
@@ -40,6 +42,8 @@
                 :jquery
                 :jqcloud
                 :jqcloud-css
+                :impromptu
+                :impromptu-css
                 :datatables
                 :drawium
                 :table-css

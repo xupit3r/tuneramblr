@@ -31,10 +31,12 @@ $(document).ready(function() {
 	// retrieve the songs
 	APP.getSongs();
 
+	// retrieve playlists (only returns something if
+	// this is for a logged in user)
+	APP.getPlaylists();
+
 	// setup the function handlers
 	HANDLERS.functions.setup();
-	
-	// TODO: if a user is logged in, retrieve his/her playlists
 });
 
 // store the user location for later use
@@ -110,8 +112,8 @@ APP.handleUserSongs = function(resp) {
 	APP.fillMetadata(resp.freqs);
 };
 
-//returns a key that will be used to store
-//and later lookup the song within the model
+// returns a key that will be used to store
+// and later lookup the song within the model
 APP.getSongKey = function(song) {
 	// i am going to need to get to these songs later. to facilitate
 	// that, I am going to use the combination of title, artist, and
@@ -132,7 +134,7 @@ APP.processSongs = function(songs) {
 			var song = songs[idx];
 			var placedSong = SONGMAP.addSong(song);
 			if (placedSong) {
-				var key = APP.getSongKey(song); 
+				var key = APP.getSongKey(song);
 				APP.songs.placed[key] = placedSong;
 				tableData.aaData[row] = APP.buildTrackRow(placedSong);
 				row++;
@@ -224,39 +226,60 @@ APP.fillMetadata = function(freqs) {
 /* playlist */
 APP.generatePlaylist = function(title, songs) {
 	// if we have some songs, make a call to generate the playlist
-	if(songs != null) {
+	if (songs != null) {
 		$.ajax({
 			type : "POST",
-			url : "/playlist/gen",
+			url : "/playlists/gen",
 			dataType : "json",
 			data : {
-				title: title,
-				songs: songs
+				title : title,
+				songs : songs
 			},
-			success : APP.handlePlaylist
+			success : APP.handleAddedPlaylist
 		});
 	} else {
 		console.log("hmmm, that playlist should have had some songs.");
 	}
 };
 
-APP.handlePlaylist = function(resp) {
+APP.getPlaylists = function() {
+	$.ajax({
+		type : "POST",
+		url : "/playlists/ulists",
+		dataType : "json",
+		success : APP.handleUserPlaylists
+	});
+};
+
+APP.handleAddedPlaylist = function(resp) {
 	// utilize the data URI and create a link to the response data
-	if(resp.added == true) {
-		var listLink = document.createElement("a");
-		$(listLink).attr("href", APP.buildPlaylistLink(resp));
-		$(listLink).addClass("lnk_playlist");
-		$(listLink).append(document.createTextNode(resp.title));
-		$("#playlists").append(listLink);
+	if (resp.added == true) {
+		var link = APP.buildPlaylistLink(resp);
+		$("#playlists").append(link);
 	}
 };
 
-APP.buildPlaylistLink = function(listData) {
-	var pname = listData.pname;
-	var link = "/playlist/get/"+pname;
-	return link;
+APP.handleUserPlaylists = function(resp) {
+	// if this is an anon user, the response
+	// will be null
+	if (resp != null) {
+		var frag = document.createDocumentFragment();
+		for ( var i = 0; i < resp.length; i++) {
+			frag.appendChild(APP.buildPlaylistLink(resp[i]));
+		}
+		$("#playlists").append(frag);
+	}
 };
 
+// just note that pObj has to have a minimum
+// of pname and title attributes
+APP.buildPlaylistLink = function(pObj) {
+	var listLink = document.createElement("a");
+	$(listLink).attr("href", "/playlists/get/" + pObj.pname);
+	$(listLink).addClass("lnk_playlist");
+	$(listLink).append(document.createTextNode(pObj.title));
+	return listLink;
+};
 
 /* utility methods */
 APP.util = {};
@@ -277,13 +300,4 @@ APP.util.arrToMap = function(arr) {
 		map[arr[i]] = arr[i];
 	}
 	return map;
-};
-
-
-/* table API extension methods */
-
-$.fn.dataTableExt.oApi.nonFiltered = function(oSettings) {
-	
-	// get the nodes for the
-	var nodes = this.oApi._fnGetTrNodes(oSettings);
 };

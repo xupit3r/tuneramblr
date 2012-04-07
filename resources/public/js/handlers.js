@@ -125,26 +125,50 @@ HANDLERS.map.zoomend = function(e) {
 
 /* playlist */
 HANDLERS.playlist.genClick = function() {
-	if(APP.songs.table != null) {
-		// where am I getting the title? user entered?
-		var title = "playlist title";
-		
-		// retrieve the songs that are currently in the table
-		var rows = APP.songs.table.$("tbody tr");
-		
-		// build a song list from the rows
-		var songs = [];
-		for(var i = 0; i < rows.length; i++) {
-			var row = rows[i];
-			var cells = $("td", row);
-			songs[i] = {};
-			songs[i].title = $(cells[0]).text();
-			songs[i].artist = $(cells[1]).text();
-			songs[i].album = $(cells[2]).text();
-		}
-		
-		// make a call to generate the playlist 
-		APP.generatePlaylist(title, songs);
-		
+	// if the table is not yet available, just
+	// silently fail
+	if (APP.songs.table != null) {
+		var inHtml = "Enter a title: <input type='text' id='listTitle' name='listTitle' value='' />"
+		$.prompt(inHtml, {
+			submit : HANDLERS.playlist.finishGen,
+			buttons : {
+				Ok : true
+			}
+		});
 	}
+};
+
+HANDLERS.playlist.finishGen = function(e, v, m, f) {
+
+	// check that a playlist name was actually entered
+	// if not, keep the dialog open and highlight the
+	// text field
+	if (f.listTitle == "") {
+		var inp = m.children("#listTitle");
+		inp.css("border", "solid #ff0000 1px");
+		return false;
+	}
+
+	// where am I getting the title? user entered?
+	var title = f.listTitle;
+	
+	// retrieve the songs that are currently in the table
+	var rows = APP.songs.table.$("tbody tr");
+
+	// build a song list from the rows
+	var songs = [];
+	for ( var i = 0; i < rows.length; i++) {
+		var row = rows[i];
+		var cells = $("td", row);
+		songs[i] = {};
+		songs[i].title = $(cells[0]).text();
+		songs[i].artist = $(cells[1]).text();
+		songs[i].album = $(cells[2]).text();
+	}
+
+	// make a call to generate the playlist
+	APP.generatePlaylist(title, songs);
+
+	// true will close the dialog
+	return true;
 };

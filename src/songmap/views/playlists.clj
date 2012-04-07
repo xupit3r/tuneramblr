@@ -15,14 +15,22 @@
 ;; will be metadata related to the playlist (it 
 ;; is expected that a link will be generated to 
 ;; the list)
-(defpage [:post "/playlist/gen"] {:keys [title songs]}
+(defpage [:post "/playlists/gen"] {:keys [title songs]}
   (response/json
     (playlist/generate (umanage/me)
                      title
                      songs)))
 
+;; get all of the user's playslists
+(defpage [:post "/playlists/ulists"] {}
+  (if (not (nil? (umanage/me)))
+    (response/json
+      (playlist/lists-by-user (umanage/me)))
+    (response/empty)))
+          
+
 ;; retrieve a saved playlist
-(defpage "/playlist/get/:pname" {pname :pname}
+(defpage "/playlists/get/:pname" {pname :pname}
   (response/xml 
     (playlist/get-playlist pname)))
 

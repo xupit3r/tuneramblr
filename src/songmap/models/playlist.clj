@@ -25,6 +25,17 @@
       :playlists 
       :where {:pname pname})))
 
+;; playlist ids for all playlists
+;; associated with this user
+(defn lists-by-user [username]
+  (map
+    (fn [res]
+      {:pname (:pname res),
+       :title (:title res)})
+    (fetch
+      :playlists
+      :where {:user username})))
+  
 ;; generate and save a playlist from 
 ;; the provided songs
 (defn generate [user title songs]
@@ -44,6 +55,7 @@
      :message (str "Anon users cannont generate playlists at this time, sorry :-( ")}))
 
 ;; TODO: add generation for anon user
+;; what the hell am I going to do in that situation?
 
 
 
