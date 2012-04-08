@@ -199,28 +199,33 @@ APP.calcMetaWeight = function(freq) {
 };
 
 APP.fillMetadata = function(freqs) {
-	var phrases = [];
-	var idx = 0;
-	for ( var phrase in freqs) {
-		phrases[idx] = {};
-		phrases[idx].weight = APP.calcMetaWeight(freqs[phrase]);
-		phrases[idx].text = phrase;
-		phrases[idx].handlers = HANDLERS.meta.getMetaHandlers(phrase);
-		phrases[idx].customClass = "metaword";
-		idx++;
+	
+	// if there are no songs, freqs comes back 
+	// as null
+	if (freqs != null) {
+		var phrases = [];
+		var idx = 0;
+		for ( var phrase in freqs) {
+			phrases[idx] = {};
+			phrases[idx].weight = APP.calcMetaWeight(freqs[phrase]);
+			phrases[idx].text = phrase;
+			phrases[idx].handlers = HANDLERS.meta.getMetaHandlers(phrase);
+			phrases[idx].customClass = "metaword";
+			idx++;
+		}
+
+		// store these in the scope for possible use later
+		APP.meta.freqs = freqs;
+
+		// empty out the container (this is done to avoid overlap)
+		$("#cloud_holder").empty();
+
+		// build a word cloud using JQCloud
+		$("#cloud_holder").jQCloud(phrases, {
+			width : 960,
+			height : 150
+		});
 	}
-
-	// store these in the scope for possible use later
-	APP.meta.freqs = freqs;
-
-	// empty out the container (this is done to avoid overlap)
-	$("#cloud_holder").empty();
-
-	// build a word cloud using JQCloud
-	$("#cloud_holder").jQCloud(phrases, {
-		width : 960,
-		height : 150
-	});
 };
 
 /* playlist */
