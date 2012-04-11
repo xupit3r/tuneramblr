@@ -43,12 +43,14 @@
     (add {
           :pname (str user (util/current-time)),
           :playlist (with-out-str 
-                      (prxml (map (fn [song]
-                                    [:song
-                                     [:title (:title song)]
-                                     [:artist (:artist song)]
-                                     [:album (:album song)]])
-                                  (vals songs)))),
+                      (prxml
+                        [:playlist {:xmlns "http://xspf.org/ns/0/"}
+                         (map (fn [song]
+                               [:song
+                                [:title (:title song)]
+                                [:creator (:artist song)]
+                                [:album (:album song)]])
+                              (vals songs))])),
           :title title,
           :user user})
     {:added false,

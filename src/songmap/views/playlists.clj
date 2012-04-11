@@ -26,7 +26,7 @@
   (if (not (nil? (umanage/me)))
     (response/json
       (playlist/lists-by-user (umanage/me)))
-    (response/empty)))
+    (response/json {})))
           
 
 ;; retrieve a saved playlist
