@@ -149,7 +149,7 @@ HANDLERS.playlist.finishGen = function(e, v, m, f) {
 		return false;
 	}
 
-	// where am I getting the title? user entered?
+	// pull the title from the dialog
 	var title = f.listTitle;
 	
 	// retrieve the songs that are currently in the table

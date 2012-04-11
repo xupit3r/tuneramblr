@@ -1,6 +1,7 @@
 (ns songmap.views.playlists
   (:require [songmap.models.playlist :as playlist]
             [songmap.models.user.umanage :as umanage]
+            [ring.util.response :as rr]
             [noir.response :as response])
   (:use noir.core
         hiccup.core
@@ -21,7 +22,8 @@
                      title
                      songs)))
 
-;; get all of the user's playslists
+;; get all of the user's playslists. if there 
+;; are none, respond with an empty JSON map
 (defpage [:post "/playlists/ulists"] {}
   (if (not (nil? (umanage/me)))
     (response/json
@@ -29,8 +31,14 @@
     (response/json {})))
           
 
-;; retrieve a saved playlist
+;; retrieve a saved playlist.  be sure to add 
+;; the content-disposition header property to 
+;; indicate to the browser that it should prompt 
+;; to save/open the file
 (defpage "/playlists/get/:pname" {pname :pname}
-  (response/xml 
-    (playlist/get-playlist pname)))
+  (rr/header
+    (response/xml 
+      (playlist/get-playlist pname))
+    "content-disposition"
+    (str "attachment; " + pname + ".xml")))
 
