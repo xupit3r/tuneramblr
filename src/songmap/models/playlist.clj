@@ -20,10 +20,9 @@
 ;; retrieve a playlist given a pname (id)
 ;; note this only returns the play list content
 (defn get-playlist [pname]
-  (:playlist
-    (fetch-one 
-      :playlists 
-      :where {:pname pname})))
+  (fetch-one 
+    :playlists 
+    :where {:pname pname}))
 
 ;; playlist ids for all playlists
 ;; associated with this user

@@ -36,9 +36,10 @@
 ;; indicate to the browser that it should prompt 
 ;; to save/open the file
 (defpage "/playlists/get/:pname" {pname :pname}
-  (rr/header
-    (response/xml 
-      (playlist/get-playlist pname))
-    "content-disposition"
-    (str "attachment; " + pname + ".xml")))
+  (let [plist (playlist/get-playlist pname)]
+    (rr/header
+      (response/xml 
+        (:playlist plist))
+      "content-disposition"
+      (str "attachment; " + (:title plist) + ".xml"))))
 
