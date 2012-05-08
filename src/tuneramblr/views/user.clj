@@ -1,10 +1,10 @@
-(ns songmap.views.user
-  (:require [songmap.models.user.umanage :as umanage]
+(ns tuneramblr.views.user
+  (:require [tuneramblr.models.user.umanage :as umanage]
             [noir.response :as response]
             [noir.validation :as vali]
             [noir.session :as session]
             [noir.cookies :as cookie]
-            [songmap.views.common :as common])
+            [tuneramblr.views.common :as common])
   (:use [noir.core :only [defpage defpartial render]]
         [hiccup.form-helpers]
         [hiccup.core :only [html]]

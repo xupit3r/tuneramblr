@@ -1,7 +1,7 @@
-(ns songmap.models.song
+(ns tuneramblr.models.song
   (:use somnium.congomongo)
-  (:require [songmap.models.util :as util]
-            [songmap.models.image :as image]))
+  (:require [tuneramblr.models.util :as util]
+            [tuneramblr.models.image :as image]))
 
 ;;;; functions for working with song
 ;;;; data in the DB

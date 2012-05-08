@@ -1,5 +1,5 @@
-(ns songmap.models.user.umanage
-  (:require [songmap.models.util :as util] 
+(ns tuneramblr.models.user.umanage
+  (:require [tuneramblr.models.util :as util] 
             [noir.util.crypt :as crypt] 
             [noir.session :as session]
             [noir.cookies :as cookie]

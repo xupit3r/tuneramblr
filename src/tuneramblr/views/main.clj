@@ -1,6 +1,6 @@
-(ns songmap.views.main
-  (:require [songmap.views.common :as common]
-            [songmap.models.user.umanage :as umanage])
+(ns tuneramblr.views.main
+  (:require [tuneramblr.views.common :as common]
+            [tuneramblr.models.user.umanage :as umanage])
   (:use [noir.core :only [defpage]]
         [hiccup.core :only [html]]))
 

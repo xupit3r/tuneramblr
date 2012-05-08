@@ -1,5 +1,5 @@
-(ns songmap.models.playlist
-  (:require [songmap.models.util :as util])
+(ns tuneramblr.models.playlist
+  (:require [tuneramblr.models.util :as util])
   (:use somnium.congomongo
         clojure.contrib.prxml))
 

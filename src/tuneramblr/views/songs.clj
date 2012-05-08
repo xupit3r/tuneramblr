@@ -1,9 +1,9 @@
-(ns songmap.views.songs
+(ns tuneramblr.views.songs
   (:require [noir.response :as response]
             [noir.session :as session]
-            [songmap.views.common :as common]
-            [songmap.models.modelhandler :as modelhandler]
-            [songmap.models.user.umanage :as umanage])
+            [tuneramblr.views.common :as common]
+            [tuneramblr.models.modelhandler :as modelhandler]
+            [tuneramblr.models.user.umanage :as umanage])
   (:use [noir.core :only [defpage]]
         [hiccup.core :only [html]]))
 

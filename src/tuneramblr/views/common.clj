@@ -1,4 +1,4 @@
-(ns songmap.views.common
+(ns tuneramblr.views.common
   (:use [noir.core :only [defpartial]]
         [hiccup.page-helpers :only [include-css include-js html5]]))
 

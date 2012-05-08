@@ -1,6 +1,6 @@
-(ns songmap.views.playlists
-  (:require [songmap.models.playlist :as playlist]
-            [songmap.models.user.umanage :as umanage]
+(ns tuneramblr.views.playlists
+  (:require [tuneramblr.models.playlist :as playlist]
+            [tuneramblr.models.user.umanage :as umanage]
             [ring.util.response :as rr]
             [noir.response :as response])
   (:use noir.core

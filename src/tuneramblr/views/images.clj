@@ -1,5 +1,5 @@
-(ns songmap.views.images
-  (:require [songmap.models.image :as image]
+(ns tuneramblr.views.images
+  (:require [tuneramblr.models.image :as image]
             [noir.response :as response])
   (:use noir.core
         hiccup.core

@@ -1,6 +1,6 @@
-(ns songmap.server
+(ns tuneramblr.server
   (:require [noir.server :as server]
-            [songmap.dbdef :as db]))
+            [tuneramblr.dbdef :as db]))
 
 (server/load-views "src/songmap/views/")
 
@@ -10,5 +10,5 @@
     ; initialize the database
     (db/init-db)
     (server/start port {:mode mode
-                        :ns 'songmap})))
+                        :ns 'tuneramblr})))
 

@@ -1,6 +1,6 @@
-(ns songmap.models.modelhandler
-   (:require [songmap.models.song :as song]
-             [songmap.models.util :as util]))
+(ns tuneramblr.models.modelhandler
+   (:require [tuneramblr.models.song :as song]
+             [tuneramblr.models.util :as util]))
 
 
 ;;;; SONG METHODS ;;;;

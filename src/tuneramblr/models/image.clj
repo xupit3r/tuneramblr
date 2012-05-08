@@ -1,5 +1,5 @@
-(ns songmap.models.image
-  (:require [songmap.models.util :as util])
+(ns tuneramblr.models.image
+  (:require [tuneramblr.models.util :as util])
   (:use somnium.congomongo))
 
 

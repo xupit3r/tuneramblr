@@ -1,4 +1,4 @@
-(ns songmap.dbdef
+(ns tuneramblr.dbdef
   (:use somnium.congomongo))
 
 ;; define our database connection
