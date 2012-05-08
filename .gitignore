@@ -62,4 +62,9 @@ bin/
 # Scratch Files #
 #################
 scratch.txt
+
+##############
+# Lein Files #
+##############
 .lein-failures
+.lein-deps-sum
