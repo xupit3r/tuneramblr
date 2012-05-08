@@ -3,14 +3,14 @@
         tuneramblr.trprops))
 
 ;; db properties keys
-(def MONGO_COLLECTION_PROP :tr.mongo.collection)
+(def MONGO_DBNAME_PROP :tr.mongo.dbname)
 (def MONGO_HOST_PROP :tr.mongo.host)
 (def MONGO_PORT_PROP :tr.mongo.port)
 (def MONGO_USERNAME_PROP :tr.mongo.username)
 (def MONGO_PASSWORD_PROP :tr.mongo.password)
 
 ;; define our database connection
-(def db-conn (make-connection (read-str-prop MONGO_COLLECTION_PROP)
+(def db-conn (make-connection (read-str-prop MONGO_DBNAME_PROP)
                               :host (read-str-prop MONGO_HOST_PROP)
                               :port (read-int-prop MONGO_PORT_PROP)))
 
