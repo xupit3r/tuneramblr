@@ -1,12 +1,18 @@
 (ns tuneramblr.dbdef
-  (:use somnium.congomongo))
+  (:use somnium.congomongo
+        tuneramblr.trprops))
+
+;; db properties keys
+(def MONGO_COLLECTION_PROP :tr.mongo.collection)
+(def MONGO_HOST_PROP :tr.mongo.host)
+(def MONGO_PORT_PROP :tr.mongo.port)
+(def MONGO_USERNAME_PROP :tr.mongo.username)
+(def MONGO_PASSWORD_PROP :tr.mongo.password)
 
 ;; define our database connection
-;; this namespace can be included in
-;; whatever models i define (awesome!)
-(def db-conn (make-connection "app2658583"
-                              :host "staff.mongohq.com"
-                              :port 10028))
+(def db-conn (make-connection (read-str-prop MONGO_COLLECTION_PROP)
+                              :host (read-str-prop MONGO_HOST_PROP)
+                              :port (read-int-prop MONGO_PORT_PROP)))
 
 ;; initialize mongo
 (defn init-db []
@@ -14,5 +20,7 @@
   (set-connection! db-conn)
   (println ">>> connection initialized!")
   (println (str ">>> authenticated: " 
-                (authenticate db-conn "test" "t3stpasst3st"))))
+                (authenticate db-conn 
+                              (read-str-prop MONGO_USERNAME_PROP)
+                              (read-str-prop MONGO_PASSWORD_PROP)))))
 

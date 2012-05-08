@@ -68,3 +68,8 @@ scratch.txt
 ##############
 .lein-failures
 .lein-deps-sum
+
+##############
+# Properties #
+##############
+tuneramblr.properties
