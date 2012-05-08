@@ -2,7 +2,7 @@
   (:require [noir.server :as server]
             [tuneramblr.dbdef :as db]))
 
-(server/load-views "src/songmap/views/")
+(server/load-views "src/tuneramblr/views/")
 
 (defn -main [& m]
   (let [mode (keyword (or (first m) :dev))
