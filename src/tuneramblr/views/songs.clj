@@ -8,7 +8,7 @@
         [hiccup.core :only [html]]))
 
 ;;;; GENERAL NOTE:
-;;;; if a request parameter parameter must be 
+;;;; if a request parameter must be 
 ;;;; interpreted as a type other than String 
 ;;;; you must be sure to EXPLICTLY convert/cast 
 ;;;; to the desired type
@@ -32,7 +32,8 @@
                                            :genre genre
                                            :weather weather
                                            :userdef userdef
-                                           :img img}))))
+                                           :img img
+                                           :tstamp (Long/valueOf tstamp)}))))
 
 ;; mobile song addition (POST)
 (defpage [:post "/mobile/songs/add"] {:keys [lat lng artist title album genre weather userdef username password img]}
@@ -46,5 +47,6 @@
                                            :genre genre
                                            :weather weather
                                            :userdef userdef
-                                           :img img}))
+                                           :img img
+                                           :tstamp (Long/valueOf tstamp)}))
     (response/json {:added false :message (str "failed to authenticate user: " username)})))
