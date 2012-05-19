@@ -6,7 +6,7 @@
 ;;;; SONG METHODS ;;;;
 
 ;; the delimiter for userdefined metadata
-(def USER_DEF_DELIM ",");
+(def USER_DEF_DELIM ",")
 
 ;; strip out the id keys
 ;; (they are useless outside 

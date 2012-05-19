@@ -21,7 +21,8 @@
                                            (Double/valueOf lng)))))
 
 ;; handle the addition of a song (POST)
-(defpage [:post "/songs/add"] {:keys [lat lng artist title album genre weather userdef img]}
+;; TODO: add the timezone here
+(defpage [:post "/songs/add"] {:keys [lat lng artist title album genre weather userdef img tstamp]}
   (let [user (umanage/me)]
     (response/json (modelhandler/add-song {:username user
                                            :lat (Double/valueOf lat)
@@ -36,7 +37,8 @@
                                            :tstamp (Long/valueOf tstamp)}))))
 
 ;; mobile song addition (POST)
-(defpage [:post "/mobile/songs/add"] {:keys [lat lng artist title album genre weather userdef username password img]}
+;; TODO: add the timezone here
+(defpage [:post "/mobile/songs/add"] {:keys [lat lng artist title album genre weather userdef username password img tstamp]}
   (if (umanage/login! {:username username :password password})
     (response/json (modelhandler/add-song {:username username
                                            :lat (Double/valueOf lat)

@@ -1,7 +1,8 @@
 (ns tuneramblr.models.song
   (:use somnium.congomongo)
   (:require [tuneramblr.models.util :as util]
-            [tuneramblr.models.image :as image]))
+            [tuneramblr.models.image :as image])
+  (:import (java.util Calendar)))
 
 ;;;; functions for working with song
 ;;;; data in the DB
@@ -38,4 +39,38 @@
                          :$lt (+ lat clat)}
                    :lng {:$gt (- lng clng)
                          :$lt (+ lng clng)}})))
+
+
+;; 60 minutes in an hour
+;; 60 seconds in a minute
+;; 1000 milliseconds in a second
+(def HOURS_FACTOR (* 60 60 1000))
+
+;; convert to hours into the day
+;; TODO: this should accept a timezone
+(defn hours-into-day [tstamp]
+  (let [cal (Calendar/getInstance)]
+    (.setTimeInMillis cal tstamp)
+    (.get cal Calendar/HOUR_OF_DAY))) 
+
+;; get songs before some date
+(defn get-songs-before-date [tstamp]
+  (fetch :songs
+         :where {:tstamp {:lt$ tstamp}}))
+
+;; get songs after some date
+(defn get-songs-after-date [tstamp]
+  (fetch :songs
+         :where {:tstamp {:gt$ tstamp}}))
+
+;; take a timestamp and convert it into
+;; a discrete (enumerated) time value 
+;; (e.g. "morning")
+(defn get-discrete-time [tstamp]
+  (let [hours-in (hours-into-day tstamp)]
+    (cond
+      (< hours-in 12) "morning"
+      (< hours-in 17) "afternoon"
+      true "evening")))
+    
     
