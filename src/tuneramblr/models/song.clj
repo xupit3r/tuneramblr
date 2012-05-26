@@ -5,13 +5,15 @@
   (:import (java.util Calendar)))
 
 ;;;; functions for working with song
-;;;; data in the DB
+;;;; data
 
 ;; add data to the songs collection
 (defn add [data]
-  (if (insert! :songs 
-               (image/add-img
-                 (assoc data :img (util/dec-img data))))
+  (if (insert! :songs
+               (if (:img data)
+                 (image/add-img
+                   (assoc data :img (util/dec-img data)))
+                 data))
     {:added true, 
      :message (str (:title data) " was added to the database")}
     {:added false, 
@@ -41,10 +43,6 @@
                          :$lt (+ lng clng)}})))
 
 
-;; 60 minutes in an hour
-;; 60 seconds in a minute
-;; 1000 milliseconds in a second
-(def HOURS_FACTOR (* 60 60 1000))
 
 ;; convert to hours into the day
 ;; TODO: this should accept a timezone
