@@ -17,13 +17,10 @@
 ;;;; user creation ;;;;
 
 ;; some basic user rules
-(def MIN-USERNAME-LENGTH 5)
+(def MIN-USERNAME-LENGTH 3)
 (def MAX-USERNAME-LENGTH 20)
 (def MIN-PASSWORD-LENGTH 6)
 
-
-;; TODO: REMOVE ME! ;;
-(def LOCK-USER-CREATION true)
 
 ;; define a user specific layout
 ;; (this layout will be used in 
@@ -108,12 +105,10 @@
 ;; handle the user creation (POST)
 (defpage [:post "/user/add"] {:as user}
   (if (valid? user)
-      (if LOCK-USER-CREATION
-        [:p "User creation is locked down."]
-        (do
-          (umanage/create-user user)
-          (response/redirect "/")))
-      (render "/user/add" user)))
+    (do
+      (umanage/create-user user)
+      (response/redirect "/"))
+    (render "/user/add" user)))
   
   
 
