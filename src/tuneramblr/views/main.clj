@@ -12,7 +12,7 @@
       [:div {:id "ui_body_main", :class "span-24 last"}
        [:div {:id "ui_head"}
         [:div {:class "span-24 last"}
-         [:h1 {:id "banner"} "tuneramblr"]
+         [:h1 {:id "banner"} [:img {:src "/img/tuneramblr_logo.png"}]]
          [:div {:id "functions"}
           (when (not username)
             [:div {:class "fn_btn"}
@@ -26,9 +26,8 @@
              [:a {:id "fn_login"
                   :href "/user/login"} "Login"])]
           [:div {:class "fn_btn"} 
-           [:a {:id "fn_about"} "About tuneramblr"]]]]
-        [:div {:class "span-24 last"}
-         [:h3 {:id "subbanner"} "your music, your world"]]]
+           [:a {:id "fn_about"
+                :href "javascript:APP.about()"} "About tuneramblr"]]]]]
        [:div {:id "ui_body"}
         [:div {:class "span-24 last"}
          [:div {:id "metacloud", :style "width:100%;height: 150px"}

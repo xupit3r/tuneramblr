@@ -13,7 +13,7 @@
 ;;;; you must be sure to EXPLICTLY convert/cast 
 ;;;; to the desired type
 
-;; handles a request for songs
+;; handles a request for songs near a defined location
 (defpage [:post "/songs/get"] {:keys [lat lng]}
   (let [user (umanage/me)]
     (response/json (modelhandler/get-songs user 

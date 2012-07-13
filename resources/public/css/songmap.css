@@ -28,6 +28,7 @@ body {
 }
 
 #functions {
+	margin-top: 40px;
 	float: right;
 }
 
@@ -56,11 +57,14 @@ body {
 }
 
 #banner {
-	color: #00CCFF;
 	float: left;
-	font-family: 'Sonsie One', cursive;
-	font-size: 60px;
-	padding-bottom: 5px;
+	width: 143px;
+	height: 99px;
+}
+
+#banner img {
+	width: 100%;
+	height: 100%;
 }
 
 #subbanner {

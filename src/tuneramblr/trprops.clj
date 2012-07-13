@@ -14,10 +14,10 @@
   (load-props "props/tuneramblr.properties"))
 
 (defn read-str-prop [property]
-  (str (get TUNERAMBLR_PROPERTIES
-            property)))
+  (get TUNERAMBLR_PROPERTIES
+       property))
 
 (defn read-int-prop [property]
-  (int (get TUNERAMBLR_PROPERTIES
-            property)))
+  (Integer/parseInt
+    (read-str-prop property)))
 

@@ -16,12 +16,15 @@
    :jquery.ui (include-js "/js/jquery-ui.js")
    :jqcloud (include-js "/js/jqcloud.js")
    :jqcloud-css (include-css "/css/jqcloud.css")
+   :jquery.masonry.js (include-js "/js/jquery.masonry.js")
+   :jquery.imagesloaded.js (include-js "/js/jquery.imagesloaded.js")
    :impromptu (include-js "/js/impromptu.js")
    :impromptu-css (include-css "/css/impromptu.css")
    :datatables (include-js "/js/dataTables.js")
    :drawium (include-js "http://serve.drawium.com/7371748_1023.js")
    :table-css (include-css "/css/table.css")
-   :app.js (include-js "/js/app.js") 
+   :app.js (include-js "/js/app.js")
+   :images.js (include-js "/js/images.js") 
    :map.js (include-js "/js/map.js") 
    :handlers.js (include-js "/js/handlers.js")
    :ui.js (include-js "/js/ui.js")})
@@ -42,6 +45,7 @@
                 :jquery
                 :jqcloud
                 :jqcloud-css
+                :jquery.masonry.js
                 :impromptu
                 :impromptu-css
                 :datatables

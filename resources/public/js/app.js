@@ -28,9 +28,6 @@ $(document).ready(function() {
 	// gets the user's location and sets up the map
 	APP.setupMap();
 
-	// retrieve the songs
-	APP.getSongs();
-
 	// retrieve playlists (only returns something if
 	// this is for a logged in user)
 	APP.getPlaylists();
@@ -46,61 +43,74 @@ APP.userLocation = {};
 // location, for centering purposes)
 APP.setupMap = function() {
 
+	// retrieve the user location and setup the map
+	APP.getUserLocation(function(position) {
+
+		// I read that FF sometimes
+		// calls this multiple times
+		// let's avoid that, if we
+		// have already set a location,
+		// just return
+		if (APP.userLocation.isSet) {
+			return;
+		}
+
+		// record the user's location
+		APP.userLocation.lat = position.coords.latitude;
+		APP.userLocation.lng = position.coords.longitude;
+		APP.userLocation.isSet = true;
+		
+		// setup the centering info
+		centerinfo = {
+				lat : position.coords.latitude,
+				lng : position.coords.longitude
+		};
+
+		// initialize the map and center it at the user's location
+		SONGMAP.initMap("map", SONGMAP.defaults.zoom, centerinfo);
+		
+		// now, request the songs 
+		APP.getSongs(centerinfo);
+		
+	}, function() {
+		// just use the map defaults
+		SONGMAP.initMap("map", SONGMAP.defaults.zoom, SONGMAP.defaults.center);
+	}, function(error) {
+		console.log("Oh NOES! No location!");
+	});
+};
+
+APP.getUserLocation = function(hLocation, hNoApi, hError) {
 	// does this browser expose a
 	// geolocation API?
 	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(function(position) {
-
-			// I read that FF sometimes
-			// calls this multiple times
-			// let's avoid that, if we
-			// have already set a location,
-			// just return
-			if (APP.userLocation.isSet) {
-				return;
-			}
-
-			// record the user's location
-			APP.userLocation.lat = position.coords.latitude;
-			APP.userLocation.lng = position.coords.longitude;
-			APP.userLocation.isSet = true;
-
-			// initialize the map and center it at the user's location
-			SONGMAP.initMap("map", SONGMAP.defaults.zoom, {
-				lat : position.coords.latitude,
-				lng : position.coords.longitude
-			});
-		}, function(error) {
-			console.log("Oh NOES! No location!");
-			setTimeout(APP.setUserLocation, 500);
-		});
+		// call the browser's location API
+		navigator.geolocation.getCurrentPosition(hLocation, hError);
 	} else {
-		// initialize the map (uses the default center since we could not
-		// retrieve user location
-		SONGMAP.initMap("map", SONGMAP.defaults.zoom, SONGMAP.defaults.center);
+		// we have no API, we shall carry on!
+		hNoApi();
 	}
 };
 
 /* songs */
 
-APP.getSongs = function() {
-	if (APP.userLocation.isSet) {
-		var centerInfo = SONGMAP.getMapCenterInfo();
-		$.ajax({
-			type : "POST",
-			url : "/songs/get",
-			dataType : "json",
-			data : {
-				user : APP.username,
-				lat : centerInfo.lat,
-				lng : centerInfo.lng,
-				zoom : centerInfo.zoom
-			},
-			success : APP.handleUserSongs
-		});
-	} else {
-		setTimeout(APP.getSongs, 1000);
+APP.getSongs = function(centerinfo) {
+	var data = {};
+	if ((typeof centerinfo != "undefined") && (centerinfo != null)) {
+		data = {
+			lat : centerinfo.lat,
+			lng : centerinfo.lng,
+		}
 	}
+
+	// make the call
+	$.ajax({
+		type : "POST",
+		url : "/songs/get",
+		dataType : "json",
+		data : data,
+		success : APP.handleUserSongs
+	});
 
 };
 
@@ -199,8 +209,8 @@ APP.calcMetaWeight = function(freq) {
 };
 
 APP.fillMetadata = function(freqs) {
-	
-	// if there are no songs, freqs comes back 
+
+	// if there are no songs, freqs comes back
 	// as null
 	if (freqs != null) {
 		var phrases = [];
@@ -306,3 +316,19 @@ APP.util.arrToMap = function(arr) {
 	}
 	return map;
 };
+
+/* About */
+APP.about = function() {
+	$.ajax({
+		type : "GET",
+		url : "/about",
+		dataType : "json",
+		success : APP.displayAbout
+	});
+};
+
+APP.displayAbout = function(response) {
+	$.prompt(response.about);
+};
+
+
