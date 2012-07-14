@@ -5,7 +5,7 @@
 ;; possible files to include (css, js, etc.)
 (def includes 
   {:blueprint (include-css "/css/screen.css" "/css/ie.css")
-   :songmap.css (include-css "/css/songmap.css")
+   :tuneramblr.css (include-css "/css/tuneramblr.css")
    :forms.css (include-css "/css/forms.css")
    :titan-font (include-css "http://fonts.googleapis.com/css?family=Titan+One")
    :chelsea-font (include-css "http://fonts.googleapis.com/css?family=Chelsea+Market")
@@ -39,7 +39,7 @@
   (html5
     (build-head "tuneramblr"
                 [:blueprint
-                :songmap.css
+                :tuneramblr.css
                 :titan-font
                 :sonsie-font
                 :jquery
@@ -52,6 +52,7 @@
                 :drawium
                 :table-css
                 :app.js
+                :images.js
                 :map.js
                 :leaflet
                 :leaflet-css

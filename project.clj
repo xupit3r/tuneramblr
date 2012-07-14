@@ -4,6 +4,6 @@
                            [noir "1.2.1"]
                            [congomongo "0.1.7"]
                            [prxml "1.3.0"]
-                           [clj-http "0.3.6"]]
+                           [clj-http "0.4.4"]]
             :main tuneramblr.server)
 

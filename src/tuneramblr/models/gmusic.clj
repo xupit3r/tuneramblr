@@ -12,10 +12,14 @@
 ;; makes stuff more readable
 (def AUTH_TOKEN_SEP "\n")
 
+;; defines the User-Agent to use for the requests
+(def GOOGLE_MUSIC_USER_AGENT "Music Manager (1, 0, 24, 7712 - Windows)")
+
+
 ;; Google Music URLs
 (def GOOGLE_LOGIN_URL "https://www.google.com/accounts/ClientLogin")
-(def GOOGLE_MUSIC_SERVICE_URL "https://play.google.com/music/listen?hl=en&u=0")
-(def GOOGLE_MUSIC_GET_PLAYLISTS_URL "https://play.google.com/music/services/loadplaylist")
+(def GOOGLE_WEB_COOKIES_URL "https://www.google.com/accounts/TokenAuth?auth=")
+(def GOOGLE_MUSIC_ADD_PLAYLIST_URL "https://play.google.com/music/services/addplaylist?u=0&xt=")
 
 ;; Google OAuth 2.0 stuff
 
@@ -56,19 +60,36 @@
                      (second pair)]))
                 (.split body AUTH_TOKEN_SEP)))))
 
+;; get web cookies
+(defn getWebCookies [response]
+ (clj-http.cookies/get-cookies GOOGLE_COOKIE_STORE))
+
+
 ;; makes a request to the auth service
 ;; returns the full repsone from the request
 (defn makeAuthRequest [username password]
   ; is there an XT cookie in this cookie set?
   ; SEE: clientlogin.py for details about how this
   ; is to work
-  (client/post GOOGLE_LOGIN_URL
-               {:form-params
-                {:service "sj"
-                 :Email username
-                 :Passwd password}
-                :cookie-store GOOGLE_COOKIE_STORE}
-               {:as :json}))
+  (client/post 
+    GOOGLE_LOGIN_URL
+    {:form-params
+     {:service "sj"
+      :Email username
+      :Passwd password}
+     :cookie-store GOOGLE_COOKIE_STORE}
+    {:as :json}))
+
+;; adds a playlist to the account tied to the 
+;; auth token
+(defn addPlaylist [listname auth]
+  (client/post 
+    (str GOOGLE_MUSIC_ADD_PLAYLIST_URL auth)
+    {:headers 
+     {"User-Agent" GOOGLE_MUSIC_USER_AGENT}} 
+    {:form-params
+     {:title listname}}
+     {:as :json}))
 
 
 ;;;; SETTING UP THE OAUTH URL ;;;;

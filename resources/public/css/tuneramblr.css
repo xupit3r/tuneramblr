@@ -207,3 +207,15 @@ table.display tbody tr:hover td {
 	float: right;
 	margin-top: 15px;
 }
+
+/* 
+ * image stuff 
+ */
+ 
+ #img_grid {
+ 	height: 1000px;
+ }
+ .img_grid_item {
+ 	height: 50px;
+ 	width: 50px;
+ }
