@@ -66,11 +66,7 @@
 ;; instead build a cookie to be used for future requests
 (defn mobile-login! [{:keys [username password] :as user}]
   (when (u-p-combo-good? username password) 
-    (cookie/put! :username username)
-    (cookie/put! :mobile 1)))
-
-;; logout of the mobile application will be
-;; consist of desctroying the cookie on the
-;; client side
+    {:authresult true}
+    {:authresult false}))
   
 

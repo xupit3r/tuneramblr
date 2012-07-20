@@ -152,4 +152,5 @@
 ;; 1. a cookie if user was authenticated
 ;; 2. no cookie if the user was not authenticated
 (defpage [:post "/mobile/login"] {:as user}
-  (umanage/mobile-login! user))
+  (response/json 
+    (umanage/mobile-login! user)))
