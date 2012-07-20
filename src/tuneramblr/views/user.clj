@@ -151,6 +151,5 @@
 ;; this will either return:
 ;; 1. a cookie if user was authenticated
 ;; 2. no cookie if the user was not authenticated
-(defpage [:post "user/mobile/login"] {:as user}
-  (umanage/mobile-login! user)
-  (response/empty))
+(defpage [:post "/mobile/login"] {:as user}
+  (umanage/mobile-login! user))
