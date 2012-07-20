@@ -65,7 +65,7 @@
 ;; mobile login will not build a session for the user, but will 
 ;; instead build a cookie to be used for future requests
 (defn mobile-login! [{:keys [username password] :as user}]
-  (when (u-p-combo-good? username password) 
+  (if (u-p-combo-good? username password) 
     {:authresult true}
     {:authresult false}))
   
