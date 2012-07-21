@@ -1,6 +1,6 @@
 (ns tuneramblr.views.common
   (:use [noir.core :only [defpartial]]
-        [hiccup.page-helpers :only [include-css include-js html5]]))
+        [hiccup.page :only [include-css include-js html5]]))
 
 ;; possible files to include (css, js, etc.)
 (def includes 

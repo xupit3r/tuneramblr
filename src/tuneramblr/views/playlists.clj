@@ -4,8 +4,7 @@
             [ring.util.response :as rr]
             [noir.response :as response])
   (:use noir.core
-        hiccup.core
-        hiccup.page-helpers))
+        hiccup.core))
 
 
 ;;;; playlist interface

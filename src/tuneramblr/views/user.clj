@@ -6,9 +6,9 @@
             [noir.cookies :as cookie]
             [tuneramblr.views.common :as common])
   (:use [noir.core :only [defpage defpartial render]]
-        [hiccup.form-helpers]
+        [hiccup.form]
         [hiccup.core :only [html]]
-        [hiccup.page-helpers :only [html5 include-css]]))
+        [hiccup.page :only [html5 include-css]]))
 
 
 ;;;; handling user login/logout and creation activities

@@ -2,8 +2,7 @@
   (:require [tuneramblr.models.image :as image]
             [noir.response :as response])
   (:use noir.core
-        hiccup.core
-        hiccup.page-helpers))
+        hiccup.core))
 
 ;;;; All kinds of awesome request options 
 ;;;; for images (this is the interface through 

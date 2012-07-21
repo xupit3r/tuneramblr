@@ -15,9 +15,13 @@
                    (assoc data :img (util/dec-img data)))
                  data))
     {:added true, 
-     :message (str (:title data) " was added to the database")}
+     :message (str "We got " 
+                   (:title data) 
+                   ".  Ramble on!")}
     {:added false, 
-     :message (str (:title data) " was not added to the database")}))
+     :message (str "Whoops!  We dropped the ball.  " 
+                   (:title data) 
+                   " was not added to the database")}))
 
 ;; get songs for a user
 ;; the songs will be limited 
