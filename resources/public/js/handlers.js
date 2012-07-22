@@ -54,25 +54,26 @@ HANDLERS.songs.table.filters.meta = function(oSettings, oData, iDataIndex) {
 	var song = APP.songs.placed[key];
 	var selectedPhrases = APP.select.phrases;
 	var selectedImages = APP.select.images;
-	
-	// only keep songs that are associated with the selected images
-	for (var img in selectedImages) {
-		console.log(song.img + " === " + img);
-		if (!(song.img === img)) {
-			return false;
+
+	// only keep songs that possess one of the selected images
+	var hasImg = APP.util.isEmpty(selectedImages) ? true : false;
+	for ( var img in selectedImages) {
+		if (song.img === img) {
+			hasImg = true;
 		}
 	}
 
 	// only keep songs that possess all the selected phrases
+	var hasPhrases = true;
 	for ( var phrase in selectedPhrases) {
 		if (!song.metadata.hasOwnProperty(phrase)) {
 			// it doesn't possess the current selected metadata, filter it out!
-			return false;
+			hasPhrases = false;
 		}
 	}
 
 	// this song possessed all the selected metadata, keep it!
-	return true;
+	return (hasImg && hasPhrases);
 };
 
 // add the filtering extension to the datatables plugin
@@ -115,7 +116,7 @@ HANDLERS.meta.phrases.click = function(metaProp) {
 	return metaClick;
 };
 
-//the onclick handler for metadata items
+// the onclick handler for metadata items
 HANDLERS.meta.images.click = function(metaProp) {
 	var metaClick = function(ev) {
 		if (APP.select.images[metaProp]) {
@@ -137,7 +138,6 @@ HANDLERS.meta.images.click = function(metaProp) {
 
 	return metaClick;
 };
-
 
 /* playlist */
 HANDLERS.playlist.genClick = function() {
@@ -167,7 +167,7 @@ HANDLERS.playlist.finishGen = function(e, v, m, f) {
 
 	// pull the title from the dialog
 	var title = f.listTitle;
-	
+
 	// retrieve the songs that are currently in the table
 	var rows = APP.songs.table.$("tbody tr");
 
