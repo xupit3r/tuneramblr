@@ -22,27 +22,14 @@ APP.select = {};
 APP.select.meta = {};
 APP.select.songs = {};
 
+// default center location
+APP.defaults = {};
+APP.defaults.center = {lat: 40.37858996679397, lng: -80.04364013671875};
+
 // executes when the DOM is ready
 $(document).ready(function() {
 
 	// gets the user's location and sets up the map
-	APP.setupMap();
-
-	// retrieve playlists (only returns something if
-	// this is for a logged in user)
-	APP.getPlaylists();
-
-	// setup the function handlers
-	HANDLERS.functions.setup();
-});
-
-// store the user location for later use
-APP.userLocation = {};
-
-// sets up the map (this also includes attempting to retrieve the user's
-// location, for centering purposes)
-APP.setupMap = function() {
-
 	// retrieve the user location and setup the map
 	APP.getUserLocation(function(position) {
 
@@ -61,23 +48,37 @@ APP.setupMap = function() {
 		APP.userLocation.isSet = true;
 		
 		// setup the centering info
-		centerinfo = {
+		loccenter = {
 				lat : position.coords.latitude,
 				lng : position.coords.longitude
 		};
-
-		// initialize the map and center it at the user's location
-		SONGMAP.initMap("map", SONGMAP.defaults.zoom, centerinfo);
 		
 		// now, request the songs 
-		APP.getSongs(centerinfo);
+		APP.getSongs(loccenter);
 		
 	}, function() {
-		// just use the map defaults
-		SONGMAP.initMap("map", SONGMAP.defaults.zoom, SONGMAP.defaults.center);
+		// if we have no location API, 
+		// just use the default location (it 
+		// is in Pittsburgh :)
+		APP.getSongs(APP.defaults.center);
 	}, function(error) {
 		console.log("Oh NOES! No location!");
 	});
+
+	// retrieve playlists (only returns something if
+	// this is for a logged in user)
+	APP.getPlaylists();
+
+	// setup the function handlers
+	HANDLERS.functions.setup();
+});
+
+// store the user location for later use
+APP.userLocation = {};
+
+// sets up the map (this also includes attempting to retrieve the user's
+// location, for centering purposes)
+APP.setupMap = function() {
 };
 
 APP.getUserLocation = function(hLocation, hNoApi, hError) {
@@ -120,6 +121,9 @@ APP.handleUserSongs = function(resp) {
 
 	// build the word cloud
 	APP.fillMetadata(resp.freqs);
+	
+	// build image grid
+	IMG.buildImgGrid(resp.songs);
 };
 
 // returns a key that will be used to store
@@ -140,15 +144,12 @@ APP.processSongs = function(songs) {
 		var tableData = {};
 		tableData.aaData = [];
 		var row = 0;
-		for ( var idx in songs) {
+		for (var idx in songs) {
 			var song = songs[idx];
-			var placedSong = SONGMAP.addSong(song);
-			if (placedSong) {
-				var key = APP.getSongKey(song);
-				APP.songs.placed[key] = placedSong;
-				tableData.aaData[row] = APP.buildTrackRow(placedSong);
-				row++;
-			}
+			var key = APP.getSongKey(song);
+			APP.songs.placed[key] = song;
+			tableData.aaData[row] = APP.buildTrackRow(song);
+			row++;
 		}
 
 		/* initialize the table */

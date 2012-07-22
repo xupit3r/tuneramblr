@@ -29,13 +29,9 @@
            [:a {:id "fn_about"
                 :href "javascript:APP.about()"} "About tuneramblr"]]]]]
        [:div {:id "ui_body"}
-        [:div {:class "span-24 last"}
-         [:div {:id "metacloud", :style "width:100%;height: 150px"}
-          [:div {:id "cloud_holder", :style "width:100%;height: 200px"}]]]
-        [:div {:class "span-24 last"} "&nbsp;"]
         (when username
-            [:div {:class "span-18"}
-             [:div {:id "playlists"} "&nbsp;"]])
+          [:div {:class "span-18"}
+           [:div {:id "playlists"} "&nbsp;"]])
         (when username
           [:div {:class "span-6 last"}
            [:div {:id "btn_playlist", :class "fn_btn"}
@@ -44,7 +40,11 @@
          [:div {:id "tracks", :style "width:100%"}
           [:table {:id "tracks_table", :class "display"}]]]
         [:div {:class "span-24 last"}
-         [:div {:id "map", :style "width: 100%;height: 300px"}]]]
+         [:div {:id "metacloud", :style "width:100%;height: 150px"}
+          [:div {:id "cloud_holder", :style "width:100%;height: 200px"}]]]
+        [:div {:class "span-24 last"} "&nbsp;"]
+        [:div {:class "span-24 last"}
+         [:div {:id "img_grid", :style "width: 100%;height: 300px"}]]]
        [:div {:id "ui_foot"}
         [:div {:class "span-24 last"}
          [:div {:id "tuneramblr_copy"}

@@ -34,12 +34,11 @@ HANDLERS.songs.table.rowClick = function(ev) {
 	var album = $(cells[2]).text();
 	var key = title + artist + album;
 
-	// pull the song (NOTE: if a song is recorde multiple times, this is going
+	// pull the song (NOTE: if a song is record multiple times, this is going
 	// to grab the last instance to be added to this map... going to fix this)
 	var song = APP.songs.placed[key];
 
-	// pan to the songs location on the map
-	SONGMAP.panTo(song.marker.getLatLng());
+	// TODO: highlight related properties
 
 	// open the pop up so the user knows which marker represents the song
 	song.marker.openPopup();

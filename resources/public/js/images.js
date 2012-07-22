@@ -28,12 +28,9 @@ IMG.buildImgGrid = function(tracks) {
 		}
 	}
 
+	// insert the images into the DOM
 	var grid_container = $("#img_grid");
-
-	alert(content);
-
 	grid_container.append(content);
-
 	grid_container.masonry({
 		itemSelector: '.img_grid_item',
 	});
