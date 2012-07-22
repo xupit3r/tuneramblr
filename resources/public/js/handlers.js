@@ -40,9 +40,6 @@ HANDLERS.songs.table.rowClick = function(ev) {
 
 	// TODO: highlight related properties
 
-	// open the pop up so the user knows which marker represents the song
-	song.marker.openPopup();
-
 };
 
 // space for the table filter handlers
@@ -55,11 +52,20 @@ HANDLERS.songs.table.filters.meta = function(oSettings, oData, iDataIndex) {
 	// pull the song and the global meta data
 	var key = oData[0] + oData[1] + oData[2];
 	var song = APP.songs.placed[key];
-	var selectedMetadata = APP.select.meta;
+	var selectedPhrases = APP.select.phrases;
+	var selectedImages = APP.select.images;
+	
+	// only keep songs that are associated with the selected images
+	for (var img in selectedImages) {
+		console.log(song.img + " === " + img);
+		if (!(song.img === img)) {
+			return false;
+		}
+	}
 
-	// only keep songs that possess all the selected properties
-	for ( var meta in selectedMetadata) {
-		if (!song.metadata.hasOwnProperty(meta)) {
+	// only keep songs that possess all the selected phrases
+	for ( var phrase in selectedPhrases) {
+		if (!song.metadata.hasOwnProperty(phrase)) {
 			// it doesn't possess the current selected metadata, filter it out!
 			return false;
 		}
@@ -75,28 +81,29 @@ $.fn.dataTableExt.afnFiltering.push(HANDLERS.songs.table.filters.meta);
 /* metadata */
 
 // space for metadata item handlers
-HANDLERS.meta.item = {};
+HANDLERS.meta.phrases = {};
+HANDLERS.meta.images = {};
 
 HANDLERS.meta.getMetaHandlers = function(metaProp) {
 	var mhs = {
-		click : HANDLERS.meta.item.click(metaProp)
+		click : HANDLERS.meta.phrases.click(metaProp)
 	};
 
 	return mhs;
 };
 
 // the onclick handler for metadata items
-HANDLERS.meta.item.click = function(metaProp) {
+HANDLERS.meta.phrases.click = function(metaProp) {
 	var metaClick = function(ev) {
-		if (APP.select.meta[metaProp]) {
+		if (APP.select.phrases[metaProp]) {
 			// remove this property from the model and remove the selection from
 			// the cloud
-			delete APP.select.meta[metaProp];
+			delete APP.select.phrases[metaProp];
 			$(this).removeClass("mselect");
 
 		} else {
 			// add this property to the model and select it in the cloud
-			APP.select.meta[metaProp] = metaProp;
+			APP.select.phrases[metaProp] = metaProp;
 			$(this).addClass("mselect");
 		}
 
@@ -108,19 +115,29 @@ HANDLERS.meta.item.click = function(metaProp) {
 	return metaClick;
 };
 
-/* map */
+//the onclick handler for metadata items
+HANDLERS.meta.images.click = function(metaProp) {
+	var metaClick = function(ev) {
+		if (APP.select.images[metaProp]) {
+			// remove this property from the model and remove the selection from
+			// the cloud
+			delete APP.select.images[metaProp];
+			$(this).removeClass("mselect");
 
-// handle map dragging
-HANDLERS.map.dragend = function(e) {
-	// TODO: when necessary, grab new songs (be sure to clear all necessary data
-	// structures: map, DOM scopes, tables, etc.)
+		} else {
+			// add this property to the model and select it in the cloud
+			APP.select.images[metaProp] = metaProp;
+			$(this).addClass("mselect");
+		}
+
+		// re-draw the table as the selection/deselection of meta data will
+		// affect the contents of the table
+		APP.songs.table.fnDraw();
+	};
+
+	return metaClick;
 };
 
-// handle map zooming
-HANDLERS.map.zoomend = function(e) {
-	// TODO: when necessary, grab new songs (be sure to clear all necessary data
-	// structures: map, DOM scopes, tables, etc.)
-};
 
 /* playlist */
 HANDLERS.playlist.genClick = function() {

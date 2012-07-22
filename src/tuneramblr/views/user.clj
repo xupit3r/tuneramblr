@@ -30,9 +30,8 @@
   (html5
     (common/build-head title
                        [:blueprint
-                        :songmap.css
-                        :forms.css
-                        :sonsie-font])
+                        :tuneramblr.css
+                        :forms.css])
     [:body
      [:div {:class "sm-form container"}
       [:div {:id "form_content", :class "span-24"}

@@ -19,7 +19,8 @@ APP.meta.freqs = {};
 
 // model storage for user selections
 APP.select = {};
-APP.select.meta = {};
+APP.select.phrases = {};
+APP.select.images = {};
 APP.select.songs = {};
 
 // default center location
