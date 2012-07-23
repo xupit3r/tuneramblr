@@ -28,7 +28,7 @@
 ;; the songs will be limited 
 ;; by latitutude and longitude
 (defn get-songs [username lat lng]
-  (mc/find "songs" 
+  (mc/find-maps "songs" 
            {:username username}))
 
 ;; "near by" will be defined as a 10 mile radius 
@@ -42,11 +42,11 @@
         clng (util/m2lng NEAR_BY_MILES lat)]
     ;; fetch all songs where the lat/lng +/- 
     ;; the degrees equivalent of NEAR_BY_MILES
-    (mc/find "songs"
-             {:lat {$gt (- lat clat)
-                    $lt (+ lat clat)}
-              :lng {$gt (- lng clng)
-                    $lt (+ lng clng)}})))
+    (mc/find-maps "songs"
+                  {:lat {$gt (- lat clat)
+                         $lt (+ lat clat)}
+                   :lng {$gt (- lng clng)
+                         $lt (+ lng clng)}})))
 
 
 
@@ -59,13 +59,13 @@
 
 ;; get songs before some date
 (defn get-songs-before-date [tstamp]
-  (mc/find "songs"
-           {:tstamp {$lt tstamp}}))
+  (mc/find-maps "songs"
+                {:tstamp {$lt tstamp}}))
 
 ;; get songs after some date
 (defn get-songs-after-date [tstamp]
-  (mc/find :songs
-           {:tstamp {$gt tstamp}}))
+  (mc/find-maps :songs
+                {:tstamp {$gt tstamp}}))
 
 ;; take a timestamp and convert it into
 ;; a discrete (enumerated) time value 

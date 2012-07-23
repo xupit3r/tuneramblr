@@ -25,8 +25,7 @@
 
 ;; grab a user from the database
 (defn pull-user [username]
-  (monc/from-db-object
-    (mc/find-one "users" {:username username}) true))
+  (mc/find-one-as-map "users" {:username username})) 
 
 
 ;; creates a user and automatically logs them in
@@ -40,8 +39,7 @@
 
 ;; retrieve the stored password
 (defn lookup-password [username]
-  (monc/from-db-object
-    (mc/find-one "users" {:username username}) true))
+  (mc/find-one-as-map "users" {:username username}))
 
 ;; checks that the provided username/password combo is
 ;; valid

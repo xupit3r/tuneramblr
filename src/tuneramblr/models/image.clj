@@ -15,7 +15,7 @@
   (when (:img song)
     (let [iname (util/get-iname song)]
       (if (store-file
-            (make-input-file (.getBytes (:img song)))
+            (make-input-file (:img song))
             (filename iname)
             (metadata {:format "jpeg"})
             (content-type "image/jpeg"))

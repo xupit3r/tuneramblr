@@ -9,12 +9,9 @@
 ;; the delimiter for userdefined metadata
 (def USER_DEF_DELIM ",")
 
-;; converts a DB object returned from
-;; the database into a Clojure map. removes
-;; the unnecessary _id from the record
-(defn db-to-map [dbo]
-  (dissoc (monc/from-db-object dbo true) 
-          :_id))
+;; removes the internal DB id from the map
+(defn no-id [dbo]
+  (dissoc dbo :_id))
 
 ;; creates a list (vector) of all monitored 
 ;; metadata for a given song
@@ -31,8 +28,8 @@
 ;; songs and metadata frequencies.
 (defn get-songs [user lat lng]
   (let [result (if user
-                 (map db-to-map (song/get-songs user lat lng))
-                 (map db-to-map (song/get-songs-near-by lat lng)))]
+                 (map no-id (song/get-songs user lat lng))
+                 (map no-id (song/get-songs-near-by lat lng)))]
     {:songs (map (fn [sng] 
                    (assoc sng :metadata 
                           (apply 
