@@ -1,14 +1,15 @@
 (ns tuneramblr.models.playlist
-  (:require [tuneramblr.models.util :as util])
-  (:use somnium.congomongo
-        clojure.contrib.prxml))
+  (:use monger.operators
+        clojure.contrib.prxml)
+  (:require [tuneramblr.models.util :as util]
+            [monger.collection :as mc]))
 
 ;;;; functions for working with playlist
 ;;;; data in the DB
 
 ;; add playlist to the playlists collection
 (defn add [data]
-  (if (insert! :playlists data)
+  (if (mc/insert "playlists" data)
     {:added true,
      :pname (:pname data),
      :title (:title data),
@@ -20,9 +21,7 @@
 ;; retrieve a playlist given a pname (id)
 ;; note this only returns the play list content
 (defn get-playlist [pname]
-  (fetch-one 
-    :playlists 
-    :where {:pname pname}))
+  (mc/find-one "playlists" {:pname pname}))
 
 ;; playlist ids for all playlists
 ;; associated with this user
@@ -31,9 +30,7 @@
     (fn [res]
       {:pname (:pname res),
        :title (:title res)})
-    (fetch
-      :playlists
-      :where {:user username})))
+    (mc/find "playlists" {:user username})))
   
 ;; generate and save a playlist from 
 ;; the provided songs

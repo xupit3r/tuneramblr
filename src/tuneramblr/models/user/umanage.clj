@@ -3,8 +3,8 @@
             [noir.util.crypt :as crypt] 
             [noir.session :as session]
             [noir.cookies :as cookie]
-            [noir.validation :as vali])
-  (:use somnium.congomongo))
+            [noir.validation :as vali]
+            [monger.collection :as mc]))
 
 ;;;; user management methods
 
@@ -24,21 +24,21 @@
 
 ;; grab a user from the database
 (defn pull-user [username]
-  (fetch-one :users :where {:username username}))
+  (mc/find-one "users" {:username username}))
 
 
 ;; creates a user and automatically logs them in
 (defn create-user [{:keys [email username password] :as user}]
-  (if (insert! :users {:email email
-                       :username username 
-                       :password (crypt/encrypt password)})
+  (if (mc/insert "users" {:email email
+                          :username username 
+                          :password (crypt/encrypt password)})
     (session/put! :username username)
     (vali/set-error :username "Could not create user.")))
 
 
 ;; retrieve the stored password
 (defn lookup-password [username]
-  (fetch-one :users :where {:username username}))
+  (mc/find-one "users" {:username username}))
 
 ;; checks that the provided username/password combo is
 ;; valid

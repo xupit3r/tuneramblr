@@ -1,6 +1,5 @@
 (ns tuneramblr.dbdef
-  (:require [somnium.congomongo :as cm]
-            [tuneramblr.trprops :as props]
+  (:require [tuneramblr.trprops :as props]
             [monger.core :as mg]))
 
 ;; db properties keys
@@ -23,19 +22,8 @@
                     (props/read-int-prop MONGO_PORT_PROP) "/"
                     (props/read-str-prop MONGO_DBNAME_PROP)))
 
-
-;; define our database connection
-(def db-conn (cm/make-connection (props/read-str-prop MONGO_DBNAME_PROP)
-                              :host (props/read-str-prop MONGO_HOST_PROP)
-                              :port (props/read-int-prop MONGO_PORT_PROP)))
-
 ;; initialize database stuff
 (defn init-db []
-  (println "Initializing CongoMongo...")
-  (cm/set-connection! db-conn)
-  (cm/authenticate db-conn 
-                   (props/read-str-prop MONGO_USERNAME_PROP)
-                   (props/read-str-prop MONGO_PASSWORD_PROP))
   (println "Initializing Monger...")
   (mg/connect-via-uri! MONGO_DB_URI))
 

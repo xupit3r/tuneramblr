@@ -1,6 +1,7 @@
 (ns tuneramblr.models.image
-  (:require [tuneramblr.models.util :as util])
-  (:use somnium.congomongo))
+  (:require [tuneramblr.models.util :as util]
+            [monger.gridfs :as gfs])
+  (:use [monger.gridfs :only [store-file make-input-file filename content-type metadata]]))
 
 
 ;;;; crazy stuff can happen to images 
@@ -13,11 +14,11 @@
 (defn add-img [song]
   (when (:img song)
     (let [iname (util/get-iname song)]
-      (if (insert-file!
-            :imgFs
-            (:img song)
-            :filename iname
-            :contentType "image/jpeg")
+      (if (store-file
+            (make-input-file (.getBytes (:img song)))
+            (filename iname)
+            (metadata {:format "jpeg"})
+            (content-type "image/jpeg"))
         (assoc song :img iname)
         (assoc song :img nil)))))
 
@@ -25,10 +26,9 @@
 ;; this retrieves an image from the 
 ;; gridFs datastore.
 (defn get-img [iname]
-  (stream-from 
-    :imgFs 
-    (fetch-one-file :imgFs
-                    :where {:filename iname})))
+  (->
+    (gfs/find-one {:filename iname})
+    (.getInputStream)))
                   
                      
 
