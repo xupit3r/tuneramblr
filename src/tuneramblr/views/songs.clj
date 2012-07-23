@@ -39,7 +39,7 @@
 ;; mobile song addition (POST)
 ;; TODO: add the timezone here
 (defpage [:post "/mobile/songs/add"] {:keys [lat lng artist title album genre weather userdef username password img tstamp]}
-  (if (umanage/login! {:username username :password password})
+  (if (umanage/mobile-login! {:username username :password password})
     (response/json (modelhandler/add-song {:username username
                                            :lat (Double/valueOf lat)
                                            :lng (Double/valueOf lng)

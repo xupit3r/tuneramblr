@@ -4,7 +4,8 @@
             [noir.session :as session]
             [noir.cookies :as cookie]
             [noir.validation :as vali]
-            [monger.collection :as mc]))
+            [monger.collection :as mc]
+            [monger.conversion :as monc]))
 
 ;;;; user management methods
 
@@ -24,7 +25,8 @@
 
 ;; grab a user from the database
 (defn pull-user [username]
-  (mc/find-one "users" {:username username}))
+  (monc/from-db-object
+    (mc/find-one "users" {:username username}) true))
 
 
 ;; creates a user and automatically logs them in
@@ -38,7 +40,8 @@
 
 ;; retrieve the stored password
 (defn lookup-password [username]
-  (mc/find-one "users" {:username username}))
+  (monc/from-db-object
+    (mc/find-one "users" {:username username}) true))
 
 ;; checks that the provided username/password combo is
 ;; valid
