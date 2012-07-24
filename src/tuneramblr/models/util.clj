@@ -3,21 +3,13 @@
 
 ;;;; general utility functions
 
-;; get user home
-(defn user-home []
-  (System/getProperty "user.home"))
-
-;; get the file seperator for this OS
-(defn file-sep []
-  (System/getProperty "file.separator"))
-
-;; get the line separator for this OS
-(defn line-sep []
-  (System/getProperty "line.separator"))
-
 ;; get the current system time
 (defn current-time []
   (System/currentTimeMillis))
+
+;; removes the internal DB id from the map
+(defn no-id [dbo]
+  (dissoc dbo :_id))
 
 ;; image content type map
 (def content-types {:jpeg "image/jpeg"})

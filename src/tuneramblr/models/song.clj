@@ -8,6 +8,16 @@
 ;;;; functions for working with song
 ;;;; data
 
+;; the delimiter for userdefined metadata
+(def USER_DEF_DELIM ",")
+
+;; creates a list (vector) of all monitored 
+;; metadata for a given song
+(defn join-meta [{userdef :userdef 
+                  weather :weather}]
+  (concat (.split userdef USER_DEF_DELIM)
+          (.split weather USER_DEF_DELIM)))
+
 ;; add data to the songs collection
 (defn add [data]
   (if (mc/insert "songs"
@@ -24,10 +34,17 @@
                    (:title data) 
                    " was not added to the database")}))
 
+;; add a new song to the model
+(defn add-song [songdata]
+  ;we will want to pull any weather or user defined data
+  ;from the songdata and add it to the model, probably 
+  ;after we attempt to add the song.
+  (add songdata))
+
 ;; get songs for a user
 ;; the songs will be limited 
 ;; by latitutude and longitude
-(defn get-songs [username lat lng]
+(defn get-songs-by-username [username]
   (mc/find-maps "songs" 
            {:username username}))
 
@@ -76,3 +93,52 @@
       (< hours-in 12) "morning"
       (< hours-in 17) "afternoon"
       true "evening")))
+
+;; if we have a user, pull songs 
+;; for that user, otherwise just 
+;; get the songs near by.  the return 
+;; value of this function is a map of 
+;; songs and metadata frequencies.
+(defn get-songs [user lat lng]
+  (let [result (if user
+                 (map util/no-id 
+                      (get-songs-by-username user))
+                 (map util/no-id 
+                      (get-songs-near-by lat lng)))]
+    {:songs (map (fn [sng] 
+                   (assoc sng :metadata 
+                          (apply 
+                            array-map 
+                            (flatten 
+                              (map 
+                                #(vector (keyword %) %)
+                                (join-meta sng)))))) 
+                 result)
+     :freqs (util/word-freq
+              (mapcat (fn [sng]
+                        (join-meta sng)) result))}))
+
+;;;; Map/Reduce song info ;;;;
+
+(defn mashem [song]
+  (clojure.string/join "_"
+                      [(:artist song)
+                       (:album song)
+                       (:title song)]))
+
+(defn tuplize [songs]
+  (map #(vector (mashem %)
+                (concat (.split (:userdef %) USER_DEF_DELIM)
+                        (.split (:weather %) USER_DEF_DELIM))) songs))
+
+(defn groupem [tuplized]
+  (->>
+    (group-by first tuplized)
+    (map (fn [[k v]]
+           {k (map second v)}))
+    (apply merge-with conj)))
+
+(defn track-meta [songs]
+  (->>
+    (tuplize songs)
+    (groupem)))

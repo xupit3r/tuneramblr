@@ -52,3 +52,18 @@
            (get-discrete-time atime)))
     (is (= "evening"
            (get-discrete-time etime)))))
+
+(def test_songs [
+                 {:album "Album1" 
+                  :title "Title1" 
+                  :artist "Artist1"
+                  :userdef "def1,def2"
+                  :weather "hot,sunny"},
+                 {:album "Album1" 
+                  :title "Title1" 
+                  :artist "Artist1"
+                  :userdef "def3"
+                  :weather "hot,cloudy"}])
+
+(deftest test-track-meta []
+  (println (track-meta test_songs)))
