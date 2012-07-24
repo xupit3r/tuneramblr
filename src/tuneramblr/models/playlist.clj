@@ -13,15 +13,15 @@
     {:added true,
      :pname (:pname data),
      :title (:title data),
-     :message (str (:title data) " was added to the database")}
+     :message (str "Added playlist: " (:title data))}
     {:added false,
      :title (:title data),
-     :message (str (:title data) " was not added to the database")}))
+     :message (str "Whoops!  Could not add playlist: " (:title data))}))
 
 ;; retrieve a playlist given a pname (id)
 ;; note this only returns the play list content
 (defn get-playlist [pname]
-  (mc/find-one "playlists" {:pname pname}))
+  (mc/find-one-as-map "playlists" {:pname pname}))
 
 ;; playlist ids for all playlists
 ;; associated with this user
@@ -30,7 +30,7 @@
     (fn [res]
       {:pname (:pname res),
        :title (:title res)})
-    (mc/find "playlists" {:user username})))
+    (mc/find-maps "playlists" {:user username})))
   
 ;; generate and save a playlist from 
 ;; the provided songs
