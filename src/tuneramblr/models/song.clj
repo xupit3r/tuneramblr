@@ -120,25 +120,43 @@
 
 ;;;; Map/Reduce song info ;;;;
 
+;; mash the track properties together
+;; to form a unique way of identify the
+;; track
 (defn mashem [song]
   (clojure.string/join "_"
                       [(:artist song)
                        (:album song)
                        (:title song)]))
 
+;; create tuples of the track and its 
+;; associated properties
 (defn tuplize [songs]
   (map #(vector (mashem %)
                 (concat (.split (:userdef %) USER_DEF_DELIM)
                         (.split (:weather %) USER_DEF_DELIM))) songs))
 
+;; group together each instance of 
+;; a track and all assocaited properties
 (defn groupem [tuplized]
   (->>
     (group-by first tuplized)
     (map (fn [[k v]]
-           {k (map second v)}))
+           (list k (map second v))))
+    (map (fn [[k v]]
+           (list k (flatten v))))))
+
+;; build up a map of phrase
+;; frequency counts
+(defn bfmap [flatem]
+  (->>
+    (map (fn [[k v]]
+           {k (util/word-freq v)}) flatem)
     (apply merge-with conj)))
+         
 
 (defn track-meta [songs]
   (->>
     (tuplize songs)
-    (groupem)))
+    (groupem)
+    (bfmap)))

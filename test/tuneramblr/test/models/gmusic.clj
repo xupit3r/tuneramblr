@@ -4,7 +4,7 @@
 
 ;; test some stuff that has to do with the
 ;; auth token retrieval
-(deftest test-tokens []
+(defn test-tokens []
   (let [response (makeAuthRequest 
                    "jdoe@gmail.com"
                    "password")]
