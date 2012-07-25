@@ -4,6 +4,6 @@
                            [noir "1.3.0-beta1"]
                            [com.novemberain/monger "1.1.1"]
                            [prxml "1.3.0"]
-                           [clj-http "0.4.4"]]
+                           [clj-http "0.5.0"]]
             :main tuneramblr.server)
 

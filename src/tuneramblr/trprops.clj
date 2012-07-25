@@ -11,7 +11,7 @@
 ;; read the properties file
 (def TUNERAMBLR_PROPERTIES
   ;; replace this with your properties file
-  (load-props "props/tuneramblr.properties"))
+    (load-props "props/tuneramblr.properties"))
 
 (defn read-str-prop [property]
   (get TUNERAMBLR_PROPERTIES
