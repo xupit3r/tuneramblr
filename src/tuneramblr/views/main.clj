@@ -49,8 +49,6 @@
         [:div {:class "span-24 last"}
          [:div {:id "tuneramblr_copy"}
           "&copy; 2012 Joe D'Alessandro"]
-         [:div {:id "map_copy"}
-          "Map &copy; OpenStreetMap contributors, CC-BY-SA"]
          [:a {:id "back_labs",
               :href "http://www.backgroundlabs.com",
               :title="Background Labs"}
