@@ -61,7 +61,10 @@
 
 ;; retrieves the formatted address
 ;; from a map of address data
-(defn formatted-address? [adata]
-  (FORMATTED_ADDRESS adata))
+(defn formatted-address? 
+  ([lat lng] (formatted-address? 
+               (address? lat lng)))
+  ([adata]
+    (FORMATTED_ADDRESS adata)))
     
 

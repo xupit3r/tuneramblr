@@ -29,6 +29,12 @@ APP.defaults.center = {lat: 40.37858996679397, lng: -80.04364013671875};
 
 // executes when the DOM is ready
 $(document).ready(function() {
+	
+	// setup tabs
+	var bodyTabs = $("#body_tabs");
+	if(bodyTabs) {
+		bodyTabs.tabs();
+	}
 
 	// gets the user's location and sets up the map
 	// retrieve the user location and setup the map
@@ -55,13 +61,13 @@ $(document).ready(function() {
 		};
 		
 		// now, request the songs 
-		APP.getSongs(loccenter);
+		APP.setupUserSession(loccenter);
 		
 	}, function() {
 		// if we have no location API, 
 		// just use the default location (it 
 		// is in Pittsburgh :)
-		APP.getSongs(APP.defaults.center);
+		APP.setupUserSession(APP.defaults.center);
 	}, function(error) {
 		console.log("Oh NOES! No location!");
 	});
@@ -74,14 +80,27 @@ $(document).ready(function() {
 	HANDLERS.functions.setup();
 });
 
-// store the user location for later use
-APP.userLocation = {};
+APP.setupUserSession = function(locinfo) {
+	var data = {};
+	if ((typeof locinfo != "undefined") && (locinfo != null)) {
+		data = {
+			lat : locinfo.lat,
+			lng : locinfo.lng,
+		}
+	}
 
-// sets up the map (this also includes attempting to retrieve the user's
-// location, for centering purposes)
-APP.setupMap = function() {
+	// make the call
+	$.ajax({
+		type : "POST",
+		url : "/user/base",
+		dataType : "json",
+		data : data,
+		success : APP.handleUserSession
+	});
 };
 
+// store the user location for later use
+APP.userLocation = {};
 APP.getUserLocation = function(hLocation, hNoApi, hError) {
 	// does this browser expose a
 	// geolocation API?
@@ -116,15 +135,36 @@ APP.getSongs = function(centerinfo) {
 
 };
 
-APP.handleUserSongs = function(resp) {
-	// process the songs (build the table and add the locations to the map)
-	APP.processSongs(resp.songs);
+APP.handleUserSession = function(resp) {
+	
+	// build autogen section
+	APP.buildAutogenSection(resp.auto);
 
 	// build the word cloud
 	APP.fillMetadata(resp.freqs);
 	
 	// build image grid
-	IMG.buildImgGrid(resp.songs);
+	IMG.buildImgGrid(resp.imgs);
+};
+
+APP.buildAutogenSection = function(auto) {
+	// build the new elements
+	var weatherEl = document.createElement("p");
+	var addressEl = document.createElement("p");
+	var weatherTxt = document.createTextNode(auto.weather);
+	var addressTxt = document.createTextNode(auto.address);
+	
+	// append the text to the elements
+	weatherEl.appendChild(weatherTxt);
+	addressEl.appendChild(addressTxt);
+	
+	// shove those elements into the DOM
+	$("#tab-autogen").append([weatherEl, addressEl]);
+};
+
+APP.handleUserSongs = function(resp) {
+	// process the songs
+	APP.processSongs(resp.songs);
 };
 
 // returns a key that will be used to store
@@ -138,14 +178,22 @@ APP.getSongKey = function(song) {
 };
 
 APP.processSongs = function(songs) {
+	// if we are getting songs, we 
+	// will likely just be building a 
+	// table
+	APP.buildTrackTable(songs);
+};
+
+APP.buildTrackTable = function(songs) {
 
 	// only carry out these actions if we have songs to display
 	if (!APP.util.isEmpty(songs)) {
 		// add the songs to the map and the table
 		var tableData = {};
 		tableData.aaData = [];
+
 		var row = 0;
-		for (var idx in songs) {
+		for ( var idx in songs) {
 			var song = songs[idx];
 			var key = APP.getSongKey(song);
 			APP.songs.placed[key] = song;

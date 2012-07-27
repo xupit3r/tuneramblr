@@ -75,3 +75,9 @@
 ;; from the current conditions
 (defn temperature? [cc]
   (CURRENT_TEMPERATURE cc))
+
+;; returns a pretty weather
+;; display
+(defn prettyweather [wdata]
+  (let [cc  (current-conditions? wdata)]
+    (str (qualitative? cc) ", " (temperature? cc))))

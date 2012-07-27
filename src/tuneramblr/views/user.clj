@@ -4,7 +4,10 @@
             [noir.validation :as vali]
             [noir.session :as session]
             [noir.cookies :as cookie]
-            [tuneramblr.views.common :as common])
+            [tuneramblr.views.common :as common]
+            [tuneramblr.models.song :as song]
+            [tuneramblr.models.weather :as weather]
+            [tuneramblr.models.location :as location])
   (:use [noir.core :only [defpage defpartial render]]
         [hiccup.form]
         [hiccup.core :only [html]]
@@ -143,6 +146,22 @@
 (defpage "/user/logout" {}
   (umanage/logout!)
   (response/redirect "/"))
+
+;;;; web session setup ;;;;
+
+;; setup a base user session
+(defpage [:post "/user/base"] {:as latlng}
+  (let [username (umanage/me)
+        songs (song/get-songs-by-username username)]
+    (let [resp {:freqs (song/build-freqs songs)
+                :imgs (song/build-imgs songs)
+                :auto {:weather (->> 
+                                  (weather/weather? (:lat latlng)
+                                                   (:lng latlng))
+                                  (weather/prettyweather))
+                       :address (location/formatted-address?  (:lat latlng)
+                                                              (:lng latlng))}}]
+      (response/json resp))))
 
 
 ;;;; mobile login/logout logic ;;;;

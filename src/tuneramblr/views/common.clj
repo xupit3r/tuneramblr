@@ -9,6 +9,7 @@
    :forms.css (include-css "/css/forms.css")
    :jquery (include-js "/js/jquery.js")
    :jquery.ui (include-js "/js/jquery-ui.js")
+   :jquery.ui-css (include-css "/css/jquery-ui.css")
    :jqcloud (include-js "/js/jqcloud.js")
    :jqcloud-css (include-css "/css/jqcloud.css")
    :jquery.masonry.js (include-js "/js/jquery.masonry.js")
@@ -36,6 +37,8 @@
                 :titan-font
                 :sonsie-font
                 :jquery
+                :jquery.ui
+                :jquery.ui-css
                 :jqcloud
                 :jqcloud-css
                 :jquery.masonry.js

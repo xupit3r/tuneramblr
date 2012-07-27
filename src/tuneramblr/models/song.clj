@@ -42,11 +42,13 @@
   (add songdata))
 
 ;; get songs for a user
-;; the songs will be limited 
-;; by latitutude and longitude
+;; this will return a map of
+;; songs recorded by this user
+;; (note the _id property
+;;  will be removed)
 (defn get-songs-by-username [username]
-  (mc/find-maps "songs" 
-           {:username username}))
+  (map util/no-id (mc/find-maps "songs" 
+                                {:username username})))
 
 ;; "near by" will be defined as a 10 mile radius 
 ;; (for right now)
@@ -117,6 +119,18 @@
      :freqs (util/word-freq
               (mapcat (fn [sng]
                         (join-meta sng)) result))}))
+
+;; builds a frequency map of 
+;; the meta-data associated with the track
+(defn build-freqs [songs]
+  (util/word-freq
+    (mapcat (fn [sng]
+              (join-meta sng)) songs)))
+
+;; builds a sequence of images
+(defn build-imgs [songs]
+  (map (fn [sng]
+         (:img sng)) songs))
 
 ;;;; Map/Reduce song info ;;;;
 
