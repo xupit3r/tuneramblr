@@ -107,10 +107,6 @@ HANDLERS.meta.phrases.click = function(metaProp) {
 			APP.select.phrases[metaProp] = metaProp;
 			$(this).addClass("mselect");
 		}
-
-		// re-draw the table as the selection/deselection of meta data will
-		// affect the contents of the table
-		APP.songs.table.fnDraw();
 	};
 
 	return metaClick;
@@ -130,10 +126,6 @@ HANDLERS.meta.images.click = function(metaProp) {
 			APP.select.images[metaProp] = metaProp;
 			$(this).addClass("mselect");
 		}
-
-		// re-draw the table as the selection/deselection of meta data will
-		// affect the contents of the table
-		APP.songs.table.fnDraw();
 	};
 
 	return metaClick;

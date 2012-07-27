@@ -25,61 +25,78 @@ APP.select.songs = {};
 
 // default center location
 APP.defaults = {};
-APP.defaults.center = {lat: 40.37858996679397, lng: -80.04364013671875};
+APP.defaults.center = {
+	lat : 40.37858996679397,
+	lng : -80.04364013671875
+};
 
 // executes when the DOM is ready
 $(document).ready(function() {
-	
-	// setup tabs
-	var bodyTabs = $("#body_tabs");
-	if(bodyTabs) {
-		bodyTabs.tabs();
-	}
-
-	// gets the user's location and sets up the map
-	// retrieve the user location and setup the map
-	APP.getUserLocation(function(position) {
-
-		// I read that FF sometimes
-		// calls this multiple times
-		// let's avoid that, if we
-		// have already set a location,
-		// just return
-		if (APP.userLocation.isSet) {
-			return;
+	// setup the loading div to come up
+	// whenever we make an Ajax call
+	$("body").on({
+		ajaxStart : function() {
+			APP.showLoading();
+		},
+		ajaxStop : function() {
+			APP.hideLoading();
 		}
-
-		// record the user's location
-		APP.userLocation.lat = position.coords.latitude;
-		APP.userLocation.lng = position.coords.longitude;
-		APP.userLocation.isSet = true;
+	});
+	
+	// if we have tabs to setup
+	// the user must be logged in
+	// so, go ahead and setup a user
+	// session
+	var bodyTabs = $("#body_tabs");
+	if (bodyTabs.length > 0) {
 		
-		// setup the centering info
-		loccenter = {
+		// setup the tabs
+		bodyTabs.tabs();
+
+		// retrieve playlists (only returns something if
+		// this is for a logged in user)
+		APP.getPlaylists();
+
+		// setup the function handlers
+		HANDLERS.functions.setup();
+
+		// get the user's location
+		APP.getUserLocation(function(position) {
+			// I read that FF sometimes
+			// calls this multiple times
+			// let's avoid that, if we
+			// have already set a location,
+			// just return
+			if (APP.userLocation.isSet) {
+				return;
+			}
+
+			// record the user's location
+			APP.userLocation.lat = position.coords.latitude;
+			APP.userLocation.lng = position.coords.longitude;
+			APP.userLocation.isSet = true;
+
+			// setup the centering info
+			loccenter = {
 				lat : position.coords.latitude,
 				lng : position.coords.longitude
-		};
-		
-		// now, request the songs 
-		APP.setupUserSession(loccenter);
-		
-	}, function() {
-		// if we have no location API, 
-		// just use the default location (it 
-		// is in Pittsburgh :)
-		APP.setupUserSession(APP.defaults.center);
-	}, function(error) {
-		console.log("Oh NOES! No location!");
-	});
+			};
 
-	// retrieve playlists (only returns something if
-	// this is for a logged in user)
-	APP.getPlaylists();
+			// now, request the songs
+			APP.setupUserSession(loccenter);
 
-	// setup the function handlers
-	HANDLERS.functions.setup();
+		}, function() {
+			// if we have no location API,
+			// just use the default location (it
+			// is in Pittsburgh :)
+			APP.setupUserSession(APP.defaults.center);
+		}, function(error) {
+			console.log("Oh NOES! No location!");
+		});
+	}
 });
 
+// setup all of the pertinent session information
 APP.setupUserSession = function(locinfo) {
 	var data = {};
 	if ((typeof locinfo != "undefined") && (locinfo != null)) {
@@ -97,6 +114,33 @@ APP.setupUserSession = function(locinfo) {
 		data : data,
 		success : APP.handleUserSession
 	});
+};
+
+APP.handleUserSession = function(resp) {
+
+	// build autogen section
+	APP.buildAutogenSection(resp.auto);
+
+	// build the word cloud
+	APP.fillMetadata(resp.freqs);
+
+	// build image grid
+	IMG.buildImgGrid(resp.imgs);
+};
+
+APP.buildAutogenSection = function(auto) {
+	// build the new elements
+	var weatherEl = document.createElement("p");
+	var addressEl = document.createElement("p");
+	var weatherTxt = document.createTextNode(auto.weather);
+	var addressTxt = document.createTextNode(auto.address);
+
+	// append the text to the elements
+	weatherEl.appendChild(weatherTxt);
+	addressEl.appendChild(addressTxt);
+
+	// shove those elements into the DOM
+	$("#tab-autogen").append([ weatherEl, addressEl ]);
 };
 
 // store the user location for later use
@@ -135,33 +179,6 @@ APP.getSongs = function(centerinfo) {
 
 };
 
-APP.handleUserSession = function(resp) {
-	
-	// build autogen section
-	APP.buildAutogenSection(resp.auto);
-
-	// build the word cloud
-	APP.fillMetadata(resp.freqs);
-	
-	// build image grid
-	IMG.buildImgGrid(resp.imgs);
-};
-
-APP.buildAutogenSection = function(auto) {
-	// build the new elements
-	var weatherEl = document.createElement("p");
-	var addressEl = document.createElement("p");
-	var weatherTxt = document.createTextNode(auto.weather);
-	var addressTxt = document.createTextNode(auto.address);
-	
-	// append the text to the elements
-	weatherEl.appendChild(weatherTxt);
-	addressEl.appendChild(addressTxt);
-	
-	// shove those elements into the DOM
-	$("#tab-autogen").append([weatherEl, addressEl]);
-};
-
 APP.handleUserSongs = function(resp) {
 	// process the songs
 	APP.processSongs(resp.songs);
@@ -178,14 +195,6 @@ APP.getSongKey = function(song) {
 };
 
 APP.processSongs = function(songs) {
-	// if we are getting songs, we 
-	// will likely just be building a 
-	// table
-	APP.buildTrackTable(songs);
-};
-
-APP.buildTrackTable = function(songs) {
-
 	// only carry out these actions if we have songs to display
 	if (!APP.util.isEmpty(songs)) {
 		// add the songs to the map and the table
@@ -250,14 +259,6 @@ APP.buildTrackRow = function(song) {
 
 /* metadata */
 
-// calculates the font size of the
-// meta property text
-APP.calcMetaWeight = function(freq) {
-	// just return the frequency count, for now...
-	// may want to change this in future...
-	return freq;
-};
-
 APP.fillMetadata = function(freqs) {
 
 	// if there are no songs, freqs comes back
@@ -267,7 +268,7 @@ APP.fillMetadata = function(freqs) {
 		var idx = 0;
 		for ( var phrase in freqs) {
 			phrases[idx] = {};
-			phrases[idx].weight = APP.calcMetaWeight(freqs[phrase]);
+			phrases[idx].weight = freqs[phrase];
 			phrases[idx].text = phrase;
 			phrases[idx].handlers = HANDLERS.meta.getMetaHandlers(phrase);
 			phrases[idx].customClass = "metaword";
@@ -278,7 +279,7 @@ APP.fillMetadata = function(freqs) {
 		APP.meta.freqs = freqs;
 
 		// empty out the container (this is done to avoid overlap)
-		$("#cloud_holder").empty();
+		//$("#cloud_holder").empty();
 
 		// build a word cloud using JQCloud
 		$("#cloud_holder").jQCloud(phrases, {
@@ -346,6 +347,16 @@ APP.buildPlaylistLink = function(pObj) {
 	return listLink;
 };
 
+//show the loading div
+APP.showLoading = function() {
+	$("body").addClass("loading");
+};
+
+// hide the loading div
+APP.hideLoading = function() {
+	$("body").removeClass("loading");
+}
+
 /* utility methods */
 APP.util = {};
 
@@ -380,5 +391,3 @@ APP.about = function() {
 APP.displayAbout = function(response) {
 	$.prompt(response.about);
 };
-
-

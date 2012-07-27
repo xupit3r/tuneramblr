@@ -54,5 +54,5 @@
                 :handlers.js
                 :ui.js])
     [:body
-     [:div#wrapper
-      content]]))
+     [:div#wrapper content]
+     [:div {:class "modal"} ]]))

@@ -35,10 +35,10 @@
           [:div {:id "btn_playlist", :class "fn_btn"}
            [:a {:id "fn_playlist"} "Generate a Playlist"]]]
          [:div
-          [:div {:id "metacloud", :style "width:100%;height: 150px"}
-           [:div {:id "cloud_holder", :style "width:100%;height: 200px"}]]]
+          [:div {:id "metacloud"}
+           [:div {:id "cloud_holder", :style "width:300px;height: 200px"}]]]
          [:div
-          [:div {:id "img_grid", :style "width: 100%;height: 300px"}]]]]]
+          [:div {:id "img_grid", :style "200px;height: 300px"}]]]]]
       [:div {:id "ui_foot"}
        [:div {:class "span-24 last"}
         [:div {:id "tuneramblr_copy"}
