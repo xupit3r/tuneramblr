@@ -8,7 +8,7 @@ html {
 }
 
 body {
-	background: url(/img/square_back.png);
+	background: url(/img/cloud_back.png);
 	background-repeat: repeat;
 	font-family: 'Helvetica Neue', Helvetica, Verdana;
 }
@@ -178,24 +178,35 @@ table.display tbody tr:hover td {
 	cursor: pointer;
 }
 
-/*
- * none user styling
- */
+/* autgen stuff */
+#autogen {
+	color: #00CCFF;
+	text-align: center;
+	height: 750px;
+}
+
+/* none user styling */
 #join_message {
 	color: #00CCFF;
-	margin-left: auto;
-	margin-right: auto;
 }
 
 #join_message .jmessage {
 	margin: 5px 5px 5px 7px;
 	font-size: 30px;
 	text-align: center;
+	width: 900px;
 }
 
-/*
- * footer stuff
- */
+#mobile-screen img {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+	border: 2px solid #616363;
+	border-radius: 8px 8px 8px 8px;
+	height: 500px;
+}
+
+/* footer stuff */
 #ui_foot {
 	padding-top: 15px;
 }

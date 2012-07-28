@@ -6,6 +6,7 @@
             [noir.cookies :as cookie]
             [tuneramblr.views.common :as common]
             [tuneramblr.models.song :as song]
+            [tuneramblr.models.util :as util]
             [tuneramblr.models.weather :as weather]
             [tuneramblr.models.location :as location])
   (:use [noir.core :only [defpage defpartial render]]
@@ -160,7 +161,8 @@
                                                    (:lng latlng))
                                   (weather/prettyweather))
                        :address (location/formatted-address?  (:lat latlng)
-                                                              (:lng latlng))}}]
+                                                              (:lng latlng))
+                       :time (song/get-discrete-time (util/current-time))}}]
       (response/json resp))))
 
 

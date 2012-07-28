@@ -43,19 +43,8 @@ $(document).ready(function() {
 		}
 	});
 	
-	// if we have tabs to setup
-	// the user must be logged in
-	// so, go ahead and setup a user
-	// session
-	var bodyTabs = $("#body_tabs");
-	if (bodyTabs.length > 0) {
-		
-		// setup the tabs
-		bodyTabs.tabs();
-
-		// retrieve playlists (only returns something if
-		// this is for a logged in user)
-		APP.getPlaylists();
+	// is this a logged in user?
+	if ($("#autogen").length > 0) {
 
 		// setup the function handlers
 		HANDLERS.functions.setup();
@@ -117,30 +106,28 @@ APP.setupUserSession = function(locinfo) {
 };
 
 APP.handleUserSession = function(resp) {
-
 	// build autogen section
 	APP.buildAutogenSection(resp.auto);
-
-	// build the word cloud
-	APP.fillMetadata(resp.freqs);
-
-	// build image grid
-	IMG.buildImgGrid(resp.imgs);
 };
 
 APP.buildAutogenSection = function(auto) {
 	// build the new elements
+	var timeEl = document.createElement("p");
 	var weatherEl = document.createElement("p");
 	var addressEl = document.createElement("p");
+	
+	// build the text nodes
+	var timeTxt = document.createTextNode(auto.time);
 	var weatherTxt = document.createTextNode(auto.weather);
 	var addressTxt = document.createTextNode(auto.address);
 
-	// append the text to the elements
+	// append the text nodes to the elements
 	weatherEl.appendChild(weatherTxt);
 	addressEl.appendChild(addressTxt);
+	timeEl.appendChild(timeTxt)
 
 	// shove those elements into the DOM
-	$("#tab-autogen").append([ weatherEl, addressEl ]);
+	$("#autogen").append([ timeEl, weatherEl, addressEl ]);
 };
 
 // store the user location for later use

@@ -34,23 +34,13 @@
     (build-head "tuneramblr"
                 [:blueprint
                 :tuneramblr.css
-                :titan-font
-                :sonsie-font
                 :jquery
-                :jquery.ui
-                :jquery.ui-css
-                :jqcloud
-                :jqcloud-css
-                :jquery.masonry.js
                 :impromptu
                 :impromptu-css
                 :datatables
                 :table-css
                 :app.js
                 :images.js
-                :map.js
-                :leaflet
-                :leaflet-css
                 :handlers.js
                 :ui.js])
     [:body

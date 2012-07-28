@@ -92,9 +92,9 @@
 (defn get-discrete-time [tstamp]
   (let [hours-in (hours-into-day tstamp)]
     (cond
-      (< hours-in 12) "morning"
-      (< hours-in 17) "afternoon"
-      true "evening")))
+      (< hours-in 12) "Morning"
+      (< hours-in 17) "Afternoon"
+      true "Evening")))
 
 ;; if we have a user, pull songs 
 ;; for that user, otherwise just 
