@@ -14,10 +14,6 @@
         [hiccup.core :only [html]]
         [hiccup.page :only [html5 include-css]]))
 
-
-;;;; handling user login/logout and creation activities
-
-
 ;;;; user creation ;;;;
 
 ;; some basic user rules
@@ -26,20 +22,19 @@
 (def MIN-PASSWORD-LENGTH 6)
 
 
-;; define a user specific layout
+;; define a user space specific layout
 ;; (this layout will be used in 
 ;;  conjunction with all of the user 
 ;;  forms)
-(defpartial layout [title & content]
+(defpartial layout [title location & content]
   (html5
-    (common/build-head title
-                       [:blueprint
-                        :tuneramblr.css
-                        :forms.css])
+    (common/build-common-head title)
     [:body
-     [:div {:class "sm-form container"}
-      [:div {:id "form_content", :class "span-24"}
-        [:h3 title]
+     [:div {:class "container"}
+      (common/build-nav-bar nil location)
+      [:div {:id "form_content"
+             :class "well"}
+       [:h3 title]
        content]]]))
 
 ;; validate user form
@@ -74,35 +69,48 @@
   
 ;; our error partial
 (defpartial error-disp [[first-error]]
-  [:p.error first-error])
+  [:p.help-inline first-error])
+
+;; build the control-group-form class
+(defn get-control-group-class [field]
+  (if 
+    (vali/errors? field)
+                  {:class "control-group error"}
+                  {:class "control-group"}))
 
 (defpartial user-fields [{:keys [email username password re-password]}]
-  [:table
-   [:tr
-    [:td (label "email" "Email address: ")]
-    [:td (text-field "email" email)]
-    [:td (vali/on-error :email error-disp)]]
-   [:tr
-    [:td (label "username" "Desired username: ")]
-    [:td (text-field "username" username)]
-    [:td (vali/on-error :username error-disp)]]
-  [:tr
-   [:td (label "password" "Enter desired password: ")]
-   [:td (password-field "password" nil)]
-   [:td (vali/on-error :password error-disp)]]
-  [:tr
-   [:td (label "password" "Re-enter password: ")]
-   [:td (password-field "password" nil)]
-   [:td (vali/on-error :re-password error-disp)]]])
+  [:div (get-control-group-class :email)
+   (label {:class "control-label"} "email" "Email address: ")
+   [:div {:class "controls"}
+    (text-field "email" email)
+    (vali/on-error :email error-disp)]]
+  [:div (get-control-group-class :username)
+   (label {:class "control-label"} "username" "Desired username: ")
+   [:div {:class "controls"}
+    (text-field "username" username)
+    (vali/on-error :username error-disp)]]
+  [:div (get-control-group-class :password)
+   (label {:class "control-label"} "password" "Desired password: ")
+   [:div {:class "controls"}
+    (password-field "password" nil)
+    (vali/on-error :password  error-disp)]]
+  [:div (get-control-group-class :re-password)
+   (label {:class "control-label"} "password" "Re-enter password: ")
+   [:div {:class "controls"}
+    (password-field "password" nil)
+    (vali/on-error :re-password error-disp)]])
 
 
 ;; user creation page (GET)
 (defpage  "/user/add" {:as user}
   (layout
     "Create a tuneramblr Account"
-    (form-to [:post "/user/add"]
+    :user-add
+    (form-to {:class "form-horizontal"}
+             [:post "/user/add"]
              (user-fields user)
-             (submit-button "Create user"))))
+             (submit-button {:class "btn"}
+                            "Create user"))))
   
 
 ;; handle the user creation (POST)
@@ -117,25 +125,39 @@
 
 ;;;; login/logout ;;;;
 
+;; login specific error display
+(defpartial login-error-display [[first-error]]
+  [:p
+   [:span.label.label-important "Error: "]
+   (str "&nbsp;" first-error)])
+
 ;; setup user login form content
 (defpartial user-login-fields [{:keys [username]}]
-  (vali/on-error :username error-disp)
-  [:table
-   [:tr
-    [:td (label "username" "Username: ")]
-    [:td (text-field "username" username)]]
-   [:tr
-    [:td (label "password" "Password: ")]
-    [:td (password-field "password" nil)]]])
+  (vali/on-error :username login-error-display)
+  [:div {:class "control-group"}
+   (label {:class "control-label"} "username" "Username: ")
+   [:div {:class "controls"}
+    (text-field {:class "input-small"}
+                "username" 
+                nil)]]
+  [:div {:class "control-group"}
+   (label {:class "control-label"} "password" "Password: ")
+   [:div {:class "controls"}
+    (password-field {:class "input-small"}
+                    "password" 
+                    nil)]])
   
  
 ;; user login page (GET)
 (defpage "/user/login" {:as user}
   (layout
     "tuneramblr Login"
-    (form-to [:post "/user/login"]
+    :login
+    (form-to {:class "form-horizontal"}
+             [:post "/user/login"]
              (user-login-fields user)
-             (submit-button "Login"))))
+             (submit-button {:class "btn"}
+                            "Login"))))
 
 ;; handle authentication (POST)
 (defpage [:post "/user/login"] {:as user}

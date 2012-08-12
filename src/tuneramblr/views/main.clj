@@ -9,68 +9,70 @@
 ;; layout for logged in users
 (defn layout-logged-in [username]
   (common/layout
-    [:div#ui_body_wrapper {:class "container"}
-     [:div#ui_body_main {:class "span-24 last"}
-      [:div#ui_head
-       [:div {:class "span-24 last"}
-        [:h1#banner [:img {:src "/img/tuneramblr_logo.png"}]]
-        [:div#functions
-         [:div {:class "fn_btn"}
-          [:a#fn_logout {:href "/user/logout"}
-           (str "Logout as " username)]]
-         [:div {:class "fn_btn"} 
-          [:a#fn_about {:href "javascript:APP.about()"} 
-           "About tuneramblr"]]]]]
-      [:div#ui_body
-        [:div#autogen 
-         [:h5 "Current Conditions"]
-         [:div#current_conditions ]]]
-      [:div#ui_foot
-       [:div {:class "span-24 last"}
-        [:div#tuneramblr_copy
-         "&copy; 2012 Joe D'Alessandro"]
-        [:a#back_labs
-         {:href "http://www.backgroundlabs.com",
-          :title="Background Labs"}
-         [:img {:src "http://www.backgroundlabs.com/images/backgroundlabs88x15.gif", 
-                :border="0",
-                :alt="Background Labs"}]]]]]]))
+    (common/build-nav-bar username :home)
+    [:div {:class "carousel slid"}
+     [:div {:class "active item"}
+      [:div {:class "hero-unit center-text"}
+       [:h1 "tuneramblr"]
+       [:p "Music is a journey, find the right stuff for where you are."]]]
+     [:div {:class "item"}
+      [:div {:class "row well"}
+       [:div {:class "span3"} "&nbsp;"]
+       [:div {:class "span3"}
+        [:img {:src "/img/mobile-screenshot.png"}]]
+       [:div {:class "span4"}
+        [:h2 (str "Monitor what you are listening to, where you "
+                  "are listening to it, and a multitude of other "
+                  "factors (weather, imagery, time of day, etc.) "
+                  "using our mobile application.")]]
+       [:div {:class "span1"} "&nbsp;"]
+       [:div {:class "span1"} "&nbsp;"]]]
+     [:div {:class "item"}
+      [:div {:class "row well"}
+       [:div {:class "span4"} "&nbsp;"]
+       [:div {:class "span4"} 
+        [:h2 (str "Listen to music that will fit the current state "
+                  "of your world, build smart playlists, and view "
+                  "trends about your listening habits.  Learn why "
+                  "you enjoy a particular song in a particular situation.")]]
+       [:div {:class "span4"} "&nbsp;"]]]]
+    [:div {:class "footer"}
+      [:p#tuneramblr_copy
+       "&copy; 2012 Joe D'Alessandro"]]))
 
 ;; layout for non-logged in users
 (defn layout-not-logged-in [username]
   (common/layout
-    [:div#ui_body_wrapper {:class "container"}
-     [:div#ui_body_main {:class "span-24 last"}
-      [:div#ui_head
-       [:div {:class "span-24 last"}
-        [:h1#banner [:img {:src "/img/tuneramblr_logo.png"}]]
-        [:div#functions
-         [:div {:class "fn_btn"}
-          [:a#fn_acct_create {:href "/user/add"} 
-           "Create Account"]]
-         [:div {:class "fn_btn"}
-          [:a#fn_login {:href "/user/login"} 
-           "Login"]]
-         [:div {:class "fn_btn"} 
-          [:a#fn_about {:href "javascript:APP.about()"} 
-           "About tuneramblr"]]]]]
-      [:div#ui_body
-       [:div {:class "span-24 last"}
-        [:div#join_message {:style "width:300px"}
-         [:p {:class "jmessage"}
-          NOT_LOGGED_IN_MESSAGE]]
-        [:div#mobile-screen 
-         [:img {:src "/img/mobile-screenshot.png"}]]]]
-      [:div#ui_foot
-       [:div {:class "span-24 last"}
-        [:div#tuneramblr_copy
-         "&copy; 2012 Joe D'Alessandro"]
-        [:a#back_labs
-         {:href "http://www.backgroundlabs.com",
-          :title="Background Labs"}
-         [:img {:src "http://www.backgroundlabs.com/images/backgroundlabs88x15.gif", 
-                :border="0",
-                :alt="Background Labs"}]]]]]]))
+    (common/build-nav-bar username :home)
+    [:div {:class "carousel slid"}
+     [:div {:class "active item"}
+      [:div {:class "hero-unit center-text"}
+       [:h1 "tuneramblr"]
+       [:p "Music is a journey, find the right stuff for where you are."]]]
+     [:div {:class "item"}
+      [:div {:class "row well"}
+       [:div {:class "span3"} "&nbsp;"]
+       [:div {:class "span3"}
+        [:img {:src "/img/mobile-screenshot.png"}]]
+       [:div {:class "span4"}
+        [:h2 (str "Monitor what you are listening to, where you "
+                  "are listening to it, and a multitude of other "
+                  "factors (weather, imagery, time of day, etc.) "
+                  "using our mobile application.")]]
+       [:div {:class "span1"} "&nbsp;"]
+       [:div {:class "span1"} "&nbsp;"]]]
+     [:div {:class "item"}
+      [:div {:class "row well"}
+       [:div {:class "span4"} "&nbsp;"]
+       [:div {:class "span4"} 
+        [:h2 (str "Listen to music that will fit the current state "
+                  "of your world, build smart playlists, and view "
+                  "trends about your listening habits.  Learn why "
+                  "you enjoy a particular song in a particular situation.")]]
+       [:div {:class "span4"} "&nbsp;"]]]]
+    [:div {:class "footer"}
+      [:p#tuneramblr_copy
+       "&copy; 2012 Joe D'Alessandro"]]))
 
 
 ;; the main page for the app.
