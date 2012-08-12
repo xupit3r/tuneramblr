@@ -43,6 +43,8 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('.carousel').carousel();
+	
 	// is this a logged in user?
 	if ($("#autogen").length > 0) {
 
