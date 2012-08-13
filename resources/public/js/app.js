@@ -46,7 +46,7 @@ $(document).ready(function() {
 	$('.carousel').carousel();
 	
 	// is this a logged in user?
-	if ($("#autogen").length > 0) {
+	if ($("#stats").length > 0) {
 
 		// setup the function handlers
 		HANDLERS.functions.setup();
@@ -107,9 +107,13 @@ APP.setupUserSession = function(locinfo) {
 	});
 };
 
-APP.handleUserSession = function(resp) {
-	// build autogen section
-	APP.buildAutogenSection(resp.auto);
+APP.handleUserSession = function(resp) {	
+	// setup the table
+	APP.initTable(resp.songs);
+	
+	
+	// build frequency map
+	APP.fillMetadata(resp.freqs);
 };
 
 APP.buildAutogenSection = function(auto) {
@@ -170,7 +174,7 @@ APP.getSongs = function(centerinfo) {
 
 APP.handleUserSongs = function(resp) {
 	// process the songs
-	APP.processSongs(resp.songs);
+	APP.initTable(resp.songs);
 };
 
 // returns a key that will be used to store
@@ -183,7 +187,7 @@ APP.getSongKey = function(song) {
 	return key;
 };
 
-APP.processSongs = function(songs) {
+APP.initTable = function(songs) {
 	// only carry out these actions if we have songs to display
 	if (!APP.util.isEmpty(songs)) {
 		// add the songs to the map and the table
