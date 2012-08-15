@@ -191,9 +191,7 @@
 
 ;;;; mobile login/logout logic ;;;;
 
-;; this will either return:
-;; 1. a cookie if user was authenticated
-;; 2. no cookie if the user was not authenticated
+;; logs a user in
 (defpage [:post "/mobile/login"] {:as user}
   (response/json 
     (umanage/mobile-login! user)))

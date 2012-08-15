@@ -20,25 +20,9 @@
                                    (Double/valueOf lat) 
                                    (Double/valueOf lng)))))
 
-;; handle the addition of a song (POST)
-;; TODO: add the timezone here
-(defpage [:post "/songs/add"] {:keys [lat lng artist title album genre weather userdef img tstamp]}
-  (let [user (umanage/me)]
-    (response/json (song/add-song {:username user
-                                   :lat (Double/valueOf lat)
-                                   :lng (Double/valueOf lng)
-                                   :artist artist
-                                   :title title 
-                                   :album album 
-                                   :genre genre
-                                   :weather weather
-                                   :userdef userdef
-                                   :img img
-                                   :tstamp (Long/valueOf tstamp)}))))
-
 ;; mobile song addition (POST)
 ;; TODO: add the timezone here
-(defpage [:post "/mobile/songs/add"] {:keys [lat lng artist title album genre weather userdef username password img tstamp]}
+(defpage [:post "/mobile/songs/add"] {:keys [lat lng artist title album weather userdef username password img tstamp ctype]}
   (if (umanage/mobile-login! {:username username :password password})
     (response/json (song/add-song {:username username
                                    :lat (Double/valueOf lat)
@@ -46,9 +30,9 @@
                                    :artist artist
                                    :title title 
                                    :album album 
-                                   :genre genre
                                    :weather weather
                                    :userdef userdef
                                    :img img
-                                   :tstamp (Long/valueOf tstamp)}))
+                                   :tstamp (Long/valueOf tstamp)
+                                   :ctype ctype}))
     (response/json {:added false :message (str "failed to authenticate user: " username)})))
