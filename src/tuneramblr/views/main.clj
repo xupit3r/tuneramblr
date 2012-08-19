@@ -15,7 +15,7 @@
     (common/build-modal-dialog 
       "ti-dialog" 
       "Stats on your track"
-      [:p "Stats go here!"])
+      [:div#ti_chart_div {:style "height:267;width:480"} ])
     (common/build-common-footer)))
 
 ;; layout for non-logged in users

@@ -28,12 +28,28 @@ HANDLERS.songs.table.rowClick = function(el) {
 	// build the dialog content
 	var trackInfo = APP.tracks[el.id];
 	var trackInfoDialogBody = $("#ti-dialog_body");
-	trackInfoDialogBody.append("<p>Weather: " + trackInfo.weather + "</p>");
-	trackInfoDialogBody.append("<p>Lat: " + trackInfo.lat + "</p>");
-	trackInfoDialogBody.append("<p>Lng: "+trackInfo.lng+"</p>");
+	
+	// build a pie chart of the meta data associated
+	// with this track
+	var tiMeta = trackInfo.metadata;
+	var chartData = [];
+	var idx = 0;
+	for(var item in tiMeta) {
+		chartData[idx] = [item, tiMeta[item]];
+		idx++;
+	}
 
 	// launch a modal dialog with the tracks info in it
 	$("#ti-dialog").modal();
+	
+	// display the char
+	$.jqplot ("ti_chart_div", [chartData],{
+		seriesDefaults: {	
+			renderer: $.jqplot.PieRenderer,
+			rendererOptions: {showDataLabels: true}
+		},
+		legend: { show:true, location: 'e' }
+	});
 };
 
 /* metadata */

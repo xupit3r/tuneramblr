@@ -15,6 +15,7 @@
    :jquery.js (include-js "/js/jquery.js")
    :jqcloud.js (include-js "/js/jqcloud.js")
    :jqplot.js (include-js "/js/jqplot.js")
+   :jqplot-pie.js (include-js "/js/jqplot-pie.js")
    :app.js (include-js "/js/app.js")
    :images.js (include-js "/js/images.js") 
    :handlers.js (include-js "/js/handlers.js")
@@ -34,7 +35,10 @@
               [:bootstrap.css
                :boostrap-responsive.css
                :tuneramblr.css
+               :jqplot.css
                :jquery.js
+               :jqplot.js
+               :jqplot-pie.js
                :bootstrap.js
                :bootstrap-carousel.js
                :app.js

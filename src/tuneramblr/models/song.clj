@@ -194,11 +194,24 @@
 
 ;; merge all of the track 
 ;; records
-(defn mergem [flatem]
+(defn mergem [groupem]
   (map (fn [[k v]]
          (reduce 
            #(merge-with set-union %1 %2) {} v)) 
-       flatem))
+       groupem))
+
+(defn fix-meta [mergem]
+  (map 
+    (fn [v]
+      (assoc v 
+             :metadata 
+             (util/word-freq
+               (concat (.split 
+                         (clojure.string/join USER_DEF_DELIM (:userdef v)) USER_DEF_DELIM)
+                       (.split 
+                         (clojure.string/join USER_DEF_DELIM (:weather v)) USER_DEF_DELIM)))))
+    mergem))
+        
 
 ;; merges all unique track 
 ;; records into a single 
@@ -207,4 +220,5 @@
   (->>
     (tuplize songs)
     (groupem)
-    (mergem)))
+    (mergem)
+    (fix-meta)))
