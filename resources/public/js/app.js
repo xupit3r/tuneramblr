@@ -10,8 +10,8 @@ APP.songs = {};
 // reference to the tracks table
 APP.songs.table;
 
-// storage for songs placed on the map
-APP.songs.placed = {}
+// storage for tracks
+APP.tracks = {}
 
 // model storage for metadata
 APP.meta = {};
@@ -167,7 +167,9 @@ APP.initTable = function(tracks) {
 		APP.songs.table = $("#tracks_table");
 		APP.songs.table.append(APP.buildTracksHead());
 		APP.songs.table.append(APP.buildTracksBody(tracks));
-		APP.songs.table.find("tbody tr").click(HANDLERS.songs.table.rowClick);
+		APP.songs.table.find("tbody tr").click(function (e) {
+			HANDLERS.songs.table.rowClick(this);
+		});
 
 	}
 };
@@ -177,44 +179,51 @@ APP.buildTracksHead = function() {
 	var thead = document.createElement("thead");
 	// the row to return
 	var row = thead.appendChild(document.createElement("tr"));
-	
+
 	// build the cells
 	var titleCell = row.appendChild(document.createElement("th"));
 	var artistCell = row.appendChild(document.createElement("th"));
 	var albumCell = row.appendChild(document.createElement("th"));
-	
+
 	// build the cell text
 	titleCell.appendChild(document.createTextNode("Title"));
 	artistCell.appendChild(document.createTextNode("Artist"));
 	albumCell.appendChild(document.createTextNode("Album"));
-	
+
 	return thead;
 };
 
 // build a representation of the track's row in the table
 APP.buildTracksBody = function(tracks) {
 	var tbody = document.createElement("tbody");
-	for (var i = 0; i < tracks.length; i++) {
-		tbody.appendChild(APP.buildTrackRow(tracks[i]));
+	for ( var i = 0; i < tracks.length; i++) {
+		var id = "row_" + i;
+		var track = tracks[i];
+		tbody.appendChild(APP.buildTrackRow(track, id));
+		APP.tracks[id] = track;
 	}
 	return tbody;
 };
 
-APP.buildTrackRow = function(track) {
-	
+APP.buildTrackRow = function(track, id) {
+
 	// the row to return
 	var row = document.createElement("tr");
-	
+
 	// build the cells
 	var titleCell = row.appendChild(document.createElement("td"));
 	var artistCell = row.appendChild(document.createElement("td"));
 	var albumCell = row.appendChild(document.createElement("td"));
-	
+
 	// build the cell text
 	titleCell.appendChild(document.createTextNode(track.title));
 	artistCell.appendChild(document.createTextNode(track.artist));
 	albumCell.appendChild(document.createTextNode(track.album));
-	
+
+	if (id) {
+		row.setAttribute("id", id);
+	}
+
 	return row;
 };
 

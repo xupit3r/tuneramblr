@@ -23,47 +23,18 @@ HANDLERS.functions.reload = function() {
 HANDLERS.songs.table = {};
 
 // song row click
-HANDLERS.songs.table.rowClick = function(ev) {
+HANDLERS.songs.table.rowClick = function(el) {
+	
+	// build the dialog content
+	var trackInfo = APP.tracks[el.id];
+	var trackInfoDialogBody = $("#ti-dialog_body");
+	trackInfoDialogBody.append("<p>Weather: " + trackInfo.weather + "</p>");
+	trackInfoDialogBody.append("<p>Lat: " + trackInfo.lat + "</p>");
+	trackInfoDialogBody.append("<p>Lng: "+trackInfo.lng+"</p>");
+
 	// launch a modal dialog with the tracks info in it
 	$("#ti-dialog").modal();
 };
-
-// space for the table filter handlers
-HANDLERS.songs.table.filters = {};
-
-// table filtering (extends datatables). follows the data tables API. RETURNS:
-// true if row should be kept, false otherwise
-HANDLERS.songs.table.filters.meta = function(oSettings, oData, iDataIndex) {
-
-	// pull the song and the global meta data
-	var key = oData[0] + oData[1] + oData[2];
-	var song = APP.songs.placed[key];
-	var selectedPhrases = APP.select.phrases;
-	var selectedImages = APP.select.images;
-
-	// only keep songs that possess one of the selected images
-	var hasImg = APP.util.isEmpty(selectedImages) ? true : false;
-	for ( var img in selectedImages) {
-		if (song.img === img) {
-			hasImg = true;
-		}
-	}
-
-	// only keep songs that possess all the selected phrases
-	var hasPhrases = true;
-	for ( var phrase in selectedPhrases) {
-		if (!song.metadata.hasOwnProperty(phrase)) {
-			// it doesn't possess the current selected metadata, filter it out!
-			hasPhrases = false;
-		}
-	}
-
-	// this song possessed all the selected metadata, keep it!
-	return (hasImg && hasPhrases);
-};
-
-// add the filtering extension to the datatables plugin
-$.fn.dataTableExt.afnFiltering.push(HANDLERS.songs.table.filters.meta);
 
 /* metadata */
 

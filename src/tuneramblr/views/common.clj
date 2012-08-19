@@ -74,7 +74,8 @@
     [:button.close {:type "button"
                     :data-dismiss "modal"} "X"]
     [:h3 modal-header]]
-   [:div.modal-body modal-body]
+   [:div.modal-body {:id (str modal-id "_body")} 
+                     modal-body]
    [:div.modal-footer ]])
 
 
