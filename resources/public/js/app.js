@@ -167,6 +167,7 @@ APP.initTable = function(tracks) {
 		APP.songs.table = $("#tracks_table");
 		APP.songs.table.append(APP.buildTracksHead());
 		APP.songs.table.append(APP.buildTracksBody(tracks));
+		APP.songs.table.find("tbody tr").click(HANDLERS.songs.table.rowClick);
 
 	}
 };

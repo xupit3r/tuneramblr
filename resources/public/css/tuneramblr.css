@@ -3,3 +3,7 @@
 .center-text {
 	text-align: center;
 }
+
+#tracks_table tbody tr {
+	cursor: pointer;
+}

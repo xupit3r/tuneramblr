@@ -24,21 +24,8 @@ HANDLERS.songs.table = {};
 
 // song row click
 HANDLERS.songs.table.rowClick = function(ev) {
-	// pull the data cells in this row
-	var cells = $("td", this);
-
-	// build the key
-	var title = $(cells[0]).text();
-	var artist = $(cells[1]).text();
-	var album = $(cells[2]).text();
-	var key = title + artist + album;
-
-	// pull the song (NOTE: if a song is record multiple times, this is going
-	// to grab the last instance to be added to this map... going to fix this)
-	var song = APP.songs.placed[key];
-
-	// TODO: highlight related properties
-
+	// launch a modal dialog with the tracks info in it
+	$("#ti-dialog").modal();
 };
 
 // space for the table filter handlers

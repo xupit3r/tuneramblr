@@ -11,6 +11,7 @@
    :jqplot.css (include-css "/css/jqplot.css")
    :bootstrap.js (include-js "/js/bootstrap.js")
    :bootstrap-carousel.js (include-js "/js/bs-carousel.js")
+   :boostrap-modal.js (include-js "/js/bs-modal.js")
    :jquery.js (include-js "/js/jquery.js")
    :jqcloud.js (include-js "/js/jqcloud.js")
    :jqplot.js (include-js "/js/jqplot.js")
@@ -65,6 +66,16 @@
           (str "Login")])]
       [:li (when (= :user-add active) {:class "active"})
        [:a {:href "/user/add"} "Create an Account"]]]]]])
+
+;; modal dialog
+(defpartial build-modal-dialog [modal-id modal-header & modal-body]
+  [:div.modal.hide {:id  modal-id}
+   [:div.modal-header
+    [:button.close {:type "button"
+                    :data-dismiss "modal"} "X"]
+    [:h3 modal-header]]
+   [:div.modal-body modal-body]
+   [:div.modal-footer ]])
 
 
 ;; puts together an HTML layout

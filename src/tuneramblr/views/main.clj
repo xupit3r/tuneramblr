@@ -12,6 +12,10 @@
      [:div.span12
       [:h2 (str username"'s Track History")]
       [:table#tracks_table.table ]]]
+    (common/build-modal-dialog 
+      "ti-dialog" 
+      "Stats on your track"
+      [:p "Stats go here!"])
     (common/build-common-footer)))
 
 ;; layout for non-logged in users
