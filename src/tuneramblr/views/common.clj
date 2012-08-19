@@ -7,13 +7,13 @@
   {:bootstrap.css (include-css "/css/bootstrap.css")
    :bootstrap-responsive.css (include-css "/css/bootstrap-responsive.css")
    :tuneramblr.css (include-css "/css/tuneramblr.css")
-   :datatables.css (include-css "/css/table.css")
    :jqcloud.css (include-css "/css/jqcloud.css")
+   :jqplot.css (include-css "/css/jqplot.css")
    :bootstrap.js (include-js "/js/bootstrap.js")
    :bootstrap-carousel.js (include-js "/js/bs-carousel.js")
    :jquery.js (include-js "/js/jquery.js")
    :jqcloud.js (include-js "/js/jqcloud.js")
-   :datatables.js (include-js "/js/dataTables.js")
+   :jqplot.js (include-js "/js/jqplot.js")
    :app.js (include-js "/js/app.js")
    :images.js (include-js "/js/images.js") 
    :handlers.js (include-js "/js/handlers.js")
@@ -33,13 +33,9 @@
               [:bootstrap.css
                :boostrap-responsive.css
                :tuneramblr.css
-               :datatables.css
-               :jqcloud.css
                :jquery.js
                :bootstrap.js
                :bootstrap-carousel.js
-               :jqcloud.js
-               :datatables.js
                :app.js
                :images.js
                :handlers.js

@@ -32,7 +32,7 @@
     {:added false, 
      :message (str "Whoops!  We dropped the ball.  " 
                    (:title data) 
-                   " was not added to the database")}))
+                   " was not added.")}))
 
 ;; add a new song to the model
 (defn add-song [songdata]
@@ -129,8 +129,9 @@
 
 ;; builds a sequence of images
 (defn build-imgs [songs]
-  (map (fn [sng]
-         (:img sng)) songs))
+  (filter #(not (nil? %))
+          (map (fn [sng]
+                 (:img sng)) songs)))
 
 ;;;; Map/Reduce song info ;;;;
 

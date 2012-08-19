@@ -10,9 +10,8 @@
     (common/build-nav-bar username :home)
     [:div#stats.row
      [:div.span12
-      [:table#tracks_table ]]
-     [:div.span12
-      [:div#cloud_holder {:style "height: 200px"} ]]]
+      [:h2 (str username"'s Track History")]
+      [:table#tracks_table.table ]]]
     (common/build-common-footer)))
 
 ;; layout for non-logged in users

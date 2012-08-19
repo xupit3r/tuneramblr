@@ -32,9 +32,9 @@ APP.defaults.center = {
 
 // executes when the DOM is ready
 $(document).ready(function() {
-	
+
 	$('.carousel').carousel();
-	
+
 	// is this a logged in user?
 	if ($("#stats").length > 0) {
 
@@ -94,13 +94,9 @@ APP.setupUserSession = function(locinfo) {
 	});
 };
 
-APP.handleUserSession = function(resp) {	
+APP.handleUserSession = function(resp) {
 	// setup the table
 	APP.initTable(resp.songs);
-	
-	
-	// build frequency map
-	APP.fillMetadata(resp.freqs);
 };
 
 APP.buildAutogenSection = function(auto) {
@@ -108,7 +104,7 @@ APP.buildAutogenSection = function(auto) {
 	var timeEl = document.createElement("p");
 	var weatherEl = document.createElement("p");
 	var addressEl = document.createElement("p");
-	
+
 	// build the text nodes
 	var timeTxt = document.createTextNode(auto.time);
 	var weatherTxt = document.createTextNode(auto.weather);
@@ -164,76 +160,60 @@ APP.handleUserSongs = function(resp) {
 	APP.initTable(resp.songs);
 };
 
-// returns a key that will be used to store
-// and later lookup the song within the model
-APP.getSongKey = function(song) {
-	// i am going to need to get to these songs later. to facilitate
-	// that, I am going to use the combination of title, artist, and
-	// album as the key
-	var key = song.title + song.artist + song.album;
-	return key;
-};
-
-APP.initTable = function(songs) {
+APP.initTable = function(tracks) {
 	// only carry out these actions if we have songs to display
-	if (!APP.util.isEmpty(songs)) {
-		// add the songs to the map and the table
-		var tableData = {};
-		tableData.aaData = [];
+	if (!APP.util.isEmpty(tracks)) {
+		// get a handle on the tracks table
+		APP.songs.table = $("#tracks_table");
+		APP.songs.table.append(APP.buildTracksHead());
+		APP.songs.table.append(APP.buildTracksBody(tracks));
 
-		var row = 0;
-		for ( var idx in songs) {
-			var song = songs[idx];
-			var key = APP.getSongKey(song);
-			APP.songs.placed[key] = song;
-			tableData.aaData[row] = APP.buildTrackRow(song);
-			row++;
-		}
-
-		/* initialize the table */
-
-		// set the table's headers
-		tableData.aoColumns = APP.buildTrackCols();
-
-		// set the height of the table to 300px
-		tableData.sScrollY = "200px";
-
-		// only include the table! (p.s. get to know sDom, it is pretty useful)
-		tableData.sDom = "t";
-
-		// don't paginate the table
-		tableData.bPaginate = false;
-
-		// don't display any info at the bottom of the table
-		tableData.bInfo = false;
-
-		// initialize the dataTable
-		APP.songs.table = $("#tracks_table").dataTable(tableData);
-
-		// setup the row click handler
-		$("#tracks_table tbody tr")
-				.live('click', HANDLERS.songs.table.rowClick);
 	}
 };
 
 // build a definition of the table's column headers
-APP.buildTrackCols = function() {
-	var cols = [];
-	cols[0] = {};
-	cols[0].sTitle = "Title";
-	cols[1] = {};
-	cols[1].sTitle = "Artist";
-	cols[2] = {};
-	cols[2].sTitle = "Album";
-	return cols;
+APP.buildTracksHead = function() {
+	var thead = document.createElement("thead");
+	// the row to return
+	var row = thead.appendChild(document.createElement("tr"));
+	
+	// build the cells
+	var titleCell = row.appendChild(document.createElement("th"));
+	var artistCell = row.appendChild(document.createElement("th"));
+	var albumCell = row.appendChild(document.createElement("th"));
+	
+	// build the cell text
+	titleCell.appendChild(document.createTextNode("Title"));
+	artistCell.appendChild(document.createTextNode("Artist"));
+	albumCell.appendChild(document.createTextNode("Album"));
+	
+	return thead;
 };
 
 // build a representation of the track's row in the table
-APP.buildTrackRow = function(song) {
-	var row = [];
-	row[0] = song.title;
-	row[1] = song.artist;
-	row[2] = song.album;
+APP.buildTracksBody = function(tracks) {
+	var tbody = document.createElement("tbody");
+	for (var i = 0; i < tracks.length; i++) {
+		tbody.appendChild(APP.buildTrackRow(tracks[i]));
+	}
+	return tbody;
+};
+
+APP.buildTrackRow = function(track) {
+	
+	// the row to return
+	var row = document.createElement("tr");
+	
+	// build the cells
+	var titleCell = row.appendChild(document.createElement("td"));
+	var artistCell = row.appendChild(document.createElement("td"));
+	var albumCell = row.appendChild(document.createElement("td"));
+	
+	// build the cell text
+	titleCell.appendChild(document.createTextNode(track.title));
+	artistCell.appendChild(document.createTextNode(track.artist));
+	albumCell.appendChild(document.createTextNode(track.album));
+	
 	return row;
 };
 
@@ -259,7 +239,7 @@ APP.fillMetadata = function(freqs) {
 		APP.meta.freqs = freqs;
 
 		// empty out the container (this is done to avoid overlap)
-		//$("#cloud_holder").empty();
+		// $("#cloud_holder").empty();
 
 		// build a word cloud using JQCloud
 		$("#cloud_holder").jQCloud(phrases, {
