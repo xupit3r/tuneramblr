@@ -15,7 +15,7 @@ UI.functions.reload = function() {
 };
 
 UI.meta.setup = function() {
-	// setup the side pane for 
+	// setup the side pane for
 	// all of the yummy meta-data
 };
 

@@ -14,6 +14,12 @@
 ;; image content type map
 (def content-types {:jpeg "image/jpeg"})
 
+;; create a set out of an argument
+(defn to-set [s]
+  (if (set? s) 
+    s 
+    #{s}))
+
 
 ;;;; maths ;;;;;
 

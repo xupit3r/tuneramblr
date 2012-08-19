@@ -145,7 +145,7 @@
 
 ;; create tuples of the track and its 
 ;; associated properties
-(defn tuplize [songs]
+(defn tuplize-meta [songs]
   (map #(vector (mashem %)
                 (concat (.split (:userdef %) USER_DEF_DELIM)
                         (.split (:weather %) USER_DEF_DELIM))) songs))
@@ -167,10 +167,43 @@
     (map (fn [[k v]]
            {k (util/word-freq v)}) flatem)
     (apply merge-with conj)))
-         
-
+       
+;; builds a mapping of
+;; of track meta data 
+;; and frequency counts
 (defn track-meta [songs]
+  (->>
+    (tuplize-meta songs)
+    (groupem)
+    (bfmap)))
+
+;; creates a set of tuples of track data
+(defn tuplize [songs]
+  (map #(vector 
+          (mashem %) %) 
+       songs))
+
+;; perform a set union 
+;; on two potentionally
+;; non-set collections
+(defn set-union [s1 s2]
+  (clojure.set/union
+    (util/to-set s1)
+    (util/to-set s2)))
+
+;; merge all of the track 
+;; records
+(defn mergem [flatem]
+  (map (fn [[k v]]
+         (reduce 
+           #(merge-with set-union %1 %2) {} v)) 
+       flatem))
+
+;; merges all unique track 
+;; records into a single 
+;; record
+(defn merge-tracks [songs]
   (->>
     (tuplize songs)
     (groupem)
-    (bfmap)))
+    (mergem)))

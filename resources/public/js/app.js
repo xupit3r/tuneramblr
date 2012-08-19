@@ -32,24 +32,11 @@ APP.defaults.center = {
 
 // executes when the DOM is ready
 $(document).ready(function() {
-	// setup the loading div to come up
-	// whenever we make an Ajax call
-	$("body").on({
-		ajaxStart : function() {
-			APP.showLoading();
-		},
-		ajaxStop : function() {
-			APP.hideLoading();
-		}
-	});
 	
 	$('.carousel').carousel();
 	
 	// is this a logged in user?
 	if ($("#stats").length > 0) {
-
-		// setup the function handlers
-		HANDLERS.functions.setup();
 
 		// get the user's location
 		APP.getUserLocation(function(position) {
@@ -339,16 +326,6 @@ APP.buildPlaylistLink = function(pObj) {
 	$(listLink).append(document.createTextNode(pObj.title));
 	return listLink;
 };
-
-//show the loading div
-APP.showLoading = function() {
-	$("body").addClass("loading");
-};
-
-// hide the loading div
-APP.hideLoading = function() {
-	$("body").removeClass("loading");
-}
 
 /* utility methods */
 APP.util = {};

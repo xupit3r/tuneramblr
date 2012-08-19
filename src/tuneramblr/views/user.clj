@@ -178,7 +178,7 @@
         songs (song/get-songs-by-username username)]
     (let [resp {:freqs (song/build-freqs songs)
                 :imgs (song/build-imgs songs)
-                :songs songs
+                :songs (song/tracks songs)
                 :auto {:weather (->> 
                                   (weather/weather? (:lat latlng)
                                                    (:lng latlng))

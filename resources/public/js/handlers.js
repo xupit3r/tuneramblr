@@ -10,8 +10,7 @@ HANDLERS.playlist = {};
 
 /* function buttons (top) */
 HANDLERS.functions.setup = function() {
-	// add the click handler for the generate playlist button
-	$("#btn_playlist").click(HANDLERS.playlist.genClick);
+	// nadda
 };
 
 HANDLERS.functions.reload = function() {
