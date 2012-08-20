@@ -20,6 +20,12 @@
     s 
     #{s}))
 
+;; create a list out of an argument
+(defn to-list [s]
+  (if (list? s) 
+    s 
+    [s]))
+
 
 ;;;; maths ;;;;;
 

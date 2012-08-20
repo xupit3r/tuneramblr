@@ -206,12 +206,20 @@
       (assoc v 
              :metadata 
              (util/word-freq
-               (concat (.split 
-                         (clojure.string/join USER_DEF_DELIM (:userdef v)) USER_DEF_DELIM)
-                       (.split 
-                         (clojure.string/join USER_DEF_DELIM (:weather v)) USER_DEF_DELIM)))))
+               (concat
+                 (clojure.string/split
+                   (clojure.string/join 
+                     USER_DEF_DELIM 
+                     (util/to-set 
+                       (:weather v))) #",")
+                 (filter #(not 
+                            (clojure.string/blank? %))
+                         (clojure.string/split
+                           (clojure.string/join
+                             USER_DEF_DELIM 
+                             (util/to-set (:userdef v))) #","))))))
     mergem))
-        
+
 
 ;; merges all unique track 
 ;; records into a single 
