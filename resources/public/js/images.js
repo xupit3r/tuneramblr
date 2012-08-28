@@ -3,18 +3,13 @@
  * This includes: requesting images, organizing images, and sending responses
  */
 
-
-/* I am going to be using jquery.masonry and the imagesLoaded plugin 
- * to handle layout of the images.
- */
-
-// image namespace
+/* image namespace */
 var IMG = {};
 
-// image URL
-IMG.url = APP.img.url;
+/* image URL */
+IMG.url = "/image/ugen/";
 
-// build the image grid
+/* build the image grid */
 IMG.buildImgGrid = function(imgs) {
 
 	var content = "";
@@ -31,10 +26,7 @@ IMG.buildImgGrid = function(imgs) {
 		}
 	}
 
-	// insert the images into the DOM
+	/* insert the images into the DOM */
 	var grid_container = $("#img_grid");
 	grid_container.append(imgEls);
-	grid_container.masonry({
-		itemSelector : '.img_grid_item',
-	});
 };

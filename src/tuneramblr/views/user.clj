@@ -173,20 +173,26 @@
 ;;;; web session setup ;;;;
 
 ;; setup a base user session
-(defpage [:post "/user/base"] {:as latlng}
+(defpage [:post "/user/base/tracks"] {:as latlng}
   (let [username (umanage/me)
         songs (song/get-songs-by-username username)]
-    (let [resp {:freqs (song/build-freqs songs)
-                :imgs (song/build-imgs songs)
-                :songs (song/merge-tracks songs)
-                :auto {:weather (->> 
-                                  (weather/weather? (:lat latlng)
-                                                   (:lng latlng))
-                                  (weather/prettyweather))
-                       :address (location/formatted-address?  (:lat latlng)
-                                                              (:lng latlng))
-                       :time (song/get-discrete-time (util/current-time))}}]
-      (response/json resp))))
+      (response/json 
+        {:freqs (song/build-freqs songs)
+         :imgs (song/build-imgs songs)
+         :songs (song/merge-tracks songs)})))
+
+;; return metadata about user session
+(defpage [:post "/user/base/meta"] {:as latlng}
+  (let [username (umanage/me)
+        songs (song/get-songs-by-username username)]
+      (response/json 
+        {:weather (->> 
+                    (weather/weather? (:lat latlng)
+                                      (:lng latlng))
+                    (weather/prettyweather))
+         :address (location/formatted-address?  (:lat latlng)
+                                                (:lng latlng))
+         :time (song/get-discrete-time (util/current-time))})))
 
 
 ;;;; mobile login/logout logic ;;;;

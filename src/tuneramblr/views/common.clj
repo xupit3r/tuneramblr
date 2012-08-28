@@ -17,9 +17,7 @@
    :jqplot.js (include-js "/js/jqplot.js")
    :jqplot-pie.js (include-js "/js/jqplot-pie.js")
    :app.js (include-js "/js/app.js")
-   :images.js (include-js "/js/images.js") 
-   :handlers.js (include-js "/js/handlers.js")
-   :ui.js (include-js "/js/ui.js")})
+   :images.js (include-js "/js/images.js")})
 
 ;; builds a representation of the page's head
 (defpartial build-head [title to-include]
@@ -42,9 +40,7 @@
                :bootstrap.js
                :bootstrap-carousel.js
                :app.js
-               :images.js
-               :handlers.js
-               :ui.js]))
+               :images.js]))
 
 ;; builds a common representation of the page's head
 ;; which includes the common necessary libraries
