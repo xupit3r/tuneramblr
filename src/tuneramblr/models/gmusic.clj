@@ -15,11 +15,15 @@
 ;; Google Play URLs
 (def GOOGLE_LOGIN_URL "https://www.google.com/accounts/ClientLogin")
 (def GOOGLE_PLAY_LOGIN "https://play.google.com/music/listen")
-(def GOOGLE_MUSIC_ADD_PLAYLIST_URL "https://play.google.com/music/services/addplaylist?u=0&xt=")
+(def GOOGLE_MUSIC_ADD_PLAYLIST_URL "https://play.google.com/music/services/search?u=0&xt=")
 
 ;; the auth cookies to pull from play login
 (def PLAY_COOKIE_XT "xt")
 (def PLAY_COOKIE_SJSAID "sjsaid")
+
+;; builds the authorization header
+(defn authHeader [{auth :Auth}]
+  (str "GoogleLogin auth=" auth))
 
 
 ;; makes a request to the auth service
@@ -51,7 +55,7 @@
    :resp
    (client/post 
      GOOGLE_PLAY_LOGIN
-     {:headers {"Authorization" (str "GoogleLogin auth=" (:Auth tokens))}
+     {:headers {"Authorization" (authHeader tokens)}
       :form-params {:u "0" :hl "en"}
       :force-redirects true
       :throw-exceptions false})})
@@ -77,15 +81,14 @@
 
 ;; adds a playlist to the account tied to the 
 ;; auth token
-(defn addPlaylist [listname auth]
+(defn songSearch [search authSession]
   (client/post 
-    (str GOOGLE_MUSIC_ADD_PLAYLIST_URL auth)
-    {:headers 
-     {"User-Agent" GOOGLE_MUSIC_USER_AGENT
-      "Authorization" auth}}
-    {:form-params
-     {:title listname}}
-     {:as :json}))
+    (str GOOGLE_MUSIC_ADD_PLAYLIST_URL (:xt authSession))
+    {:headers {"Authorization" (authHeader authSession)}
+     :form-params {:json search}
+     :throw-exceptions false
+     :debug true}
+    {:as :json}))
 
 
 ;;;; helpful util stuff ;;;;

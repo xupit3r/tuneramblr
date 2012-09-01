@@ -6,5 +6,6 @@
 ;; auth token retrieval
 (deftest test-tokens []
   (let [playCookies (loginToPlay "jdoe@gmail.com" "password")]
-    (clojure.pprint/pprint playCookies)))
+    (clojure.pprint/pprint playCookies)
+    (clojure.pprint/pprint (songSearch "Brick" playCookies))))
 
