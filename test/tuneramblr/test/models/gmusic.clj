@@ -4,17 +4,7 @@
 
 ;; test some stuff that has to do with the
 ;; auth token retrieval
-(defn test-tokens []
-  (let [response (makeAuthRequest 
-                   "jdoe@gmail.com"
-                   "password")]
-    (let [tokens (getAuthTokens response)]
-      (println (str "Returned Keys: " (keys tokens)))
-      (is (:LSID tokens))
-      (is (:Auth tokens))
-      (is (:SID tokens)))))
-
-(deftest test-oauth-url []
-  ; TODO: actually write this test
-  (is (= true true)))
+(deftest test-tokens []
+  (let [playCookies (loginToPlay "jdoe@gmail.com" "password")]
+    (clojure.pprint/pprint playCookies)))
 

@@ -2,7 +2,7 @@
   (:use [tuneramblr.models.weather]
         [clojure.test]))
 
-(deftest test-weather? []
+(defn test-weather? []
   (let [lat 40.37858996679397
         lng -80.04364013671875]
     (let [cc (-> 
