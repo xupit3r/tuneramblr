@@ -16,45 +16,23 @@ APP.defaults.location = {
 	lng : -80.04364013671875
 };
 
-/* executes when the DOM is ready */
-$(document).ready(function() {
+/**
+ * Determines if the user is currently logged in or not.
+ * 
+ * @returns true if the user is logged in, false otherwise
+ */
+APP.isUserLoggedIn = function() {
+	return $("#stats").length > 0;
+};
 
-	/* is this a logged in user? */
-	if (APP.isUserLoggedIn()) {
-		/* get the user's tracks */
-		APP.setupUserSessionTracks();
-		
-		/* get the user's location and metadata about that location */
-		APP.util.getUserLocation(function(position) {
-			/*
-			 * I read that FF sometimes calls this multiple times let's avoid
-			 * that, if we have already set a location, just return
-			 */
-			if (APP.userLocation.isSet) {
-				return;
-			}
-
-			/* record the user's location */
-			APP.userLocation.lat = position.coords.latitude;
-			APP.userLocation.lng = position.coords.longitude;
-			APP.userLocation.isSet = true;
-
-			/* now, request the songs */
-			APP.setupUserSessionMeta({
-				lat : position.coords.latitude,
-				lng : position.coords.longitude
-			});
-
-		}, function() {
-			APP.setupUserSession(APP.defaults.location);
-		}, function(error) {
-			/* do something */
-		});
-	} else {
-		$('.carousel').carousel();
-	}
-});
-
+/**
+ * Requests the user session metadata. This includes the qualitative user
+ * location, weather, and qualitative time.
+ * 
+ * @param locinfo
+ *            an object containing the lat and lng information for the user
+ *            location
+ */
 APP.setupUserSessionMeta = function(locinfo) {
 	var data = {};
 	if (locinfo) {
@@ -73,12 +51,21 @@ APP.setupUserSessionMeta = function(locinfo) {
 	});
 };
 
+/**
+ * Handles the server response for the user meta data request
+ * 
+ * @param resp
+ *            the response object from the request
+ */
 APP.handleUserSessionMeta = function(resp) {
 	APP.session.weather = resp.weather;
 	APP.session.address = resp.address;
 	APP.session.time = resp.time;
 };
 
+/**
+ * Requests the user's track information.
+ */
 APP.setupUserSessionTracks = function() {
 	$.ajax({
 		type : "POST",
@@ -88,6 +75,12 @@ APP.setupUserSessionTracks = function() {
 	});
 };
 
+/**
+ * Handles the response for the user tracks
+ * 
+ * @param resp
+ *            the response object from the tracks request
+ */
 APP.handleUserSessionTracks = function(resp) {
 	/* setup the table */
 	APP.initTable(resp.songs);
@@ -97,16 +90,23 @@ APP.handleUserSessionTracks = function(resp) {
 	APP.session.imgs = resp.imgs;
 };
 
-APP.buildAutogenSection = function(auto) {
+/**
+ * builds the user meta data section (location, time, weather).
+ * 
+ * @param meta
+ *            an object containing the expected metadata (location, time, and
+ *            weather)
+ */
+APP.buildMetaSection = function(meta) {
 	/* build the new elements */
 	var timeEl = document.createElement("p");
 	var weatherEl = document.createElement("p");
 	var addressEl = document.createElement("p");
 
 	/* build the text nodes */
-	var timeTxt = document.createTextNode(auto.time);
-	var weatherTxt = document.createTextNode(auto.weather);
-	var addressTxt = document.createTextNode(auto.address);
+	var timeTxt = document.createTextNode(meta.time);
+	var weatherTxt = document.createTextNode(meta.weather);
+	var addressTxt = document.createTextNode(meta.address);
 
 	/* append the text nodes to the elements */
 	weatherEl.appendChild(weatherTxt);
@@ -117,6 +117,12 @@ APP.buildAutogenSection = function(auto) {
 	$("#autogen").append([ timeEl, weatherEl, addressEl ]);
 };
 
+/**
+ * Initializes and builds the track table display
+ * 
+ * @param tracks
+ *            an object containing the track data to be displayed in the table
+ */
 APP.initTable = function(tracks) {
 	/* only carry out these actions if we have songs to display */
 	if (!APP.util.isEmpty(tracks)) {
@@ -131,6 +137,9 @@ APP.initTable = function(tracks) {
 	}
 };
 
+/**
+ * Builds the tracks table header.
+ */
 APP.buildTracksHead = function() {
 	var thead = document.createElement("thead");
 	var row = thead.appendChild(document.createElement("tr"));
@@ -146,6 +155,13 @@ APP.buildTracksHead = function() {
 	return thead;
 };
 
+/**
+ * Builds the body of the tracks table.
+ * 
+ * @param tracks
+ *            an object containing the track data to be displayed in the body of
+ *            the track table
+ */
 APP.buildTracksBody = function(tracks) {
 	var tbody = document.createElement("tbody");
 	for ( var i = 0; i < tracks.length; i++) {
@@ -157,6 +173,15 @@ APP.buildTracksBody = function(tracks) {
 	return tbody;
 };
 
+/**
+ * Builds a row in the track table.
+ * 
+ * @param track
+ *            an object containing the track properties to be displayed in the
+ *            table row
+ * @param id
+ *            a unique identifier for the row
+ */
 APP.buildTrackRow = function(track, id) {
 
 	var row = document.createElement("tr");
@@ -176,6 +201,12 @@ APP.buildTrackRow = function(track, id) {
 	return row;
 };
 
+/**
+ * Event handler for the row click event.
+ * 
+ * @param el
+ *            the row element that was clicked
+ */
 APP.tableRowClick = function(el) {
 	var trackInfo = APP.tracks[el.id];
 	var trackInfoDialogBody = $("#ti-dialog_body");
@@ -206,6 +237,13 @@ APP.tableRowClick = function(el) {
 /* utility methods */
 APP.util = {};
 
+/**
+ * Helper function to determine if a maps is empty or not.
+ * 
+ * @param map
+ *            the map to check
+ * @returns true if the map is empty, false otherwise
+ */
 APP.util.isEmpty = function(map) {
 	for ( var key in map) {
 		if (map.hasOwnProperty(key)) {
@@ -215,6 +253,13 @@ APP.util.isEmpty = function(map) {
 	return true;
 };
 
+/**
+ * Converts an array to a hashmap.
+ * 
+ * @param arr
+ *            the array to translate
+ * @returns an hashmap representation of the array
+ */
 APP.util.arrToMap = function(arr) {
 	var map = {};
 	for ( var i = 0; i < arr.length; i++) {
@@ -223,6 +268,16 @@ APP.util.arrToMap = function(arr) {
 	return map;
 };
 
+/**
+ * Requests the user's location from the browser.
+ * 
+ * @param hLocation
+ *            the callback function for a successful request to the location API
+ * @param hNoApi
+ *            the callback function for browsers that have no location API
+ * @param hError
+ *            the callback function when an error occurs
+ */
 APP.util.getUserLocation = function(hLocation, hNoApi, hError) {
 	/* does this browser expose a geolocation API? */
 	if (navigator.geolocation) {
@@ -234,11 +289,11 @@ APP.util.getUserLocation = function(hLocation, hNoApi, hError) {
 	}
 };
 
-APP.isUserLoggedIn = function() {
-	return $("#stats").length > 0;
-};
-
 /* About */
+
+/**
+ * Requests the about information for the page.
+ */
 APP.about = function() {
 	$.ajax({
 		type : "GET",
@@ -248,6 +303,48 @@ APP.about = function() {
 	});
 };
 
+/**
+ * Handles and displays the about response information
+ */
 APP.displayAbout = function(response) {
 	$.prompt(response.about);
 };
+
+/* executes when the DOM is ready */
+$(document).ready(function() {
+
+	/* is this a logged in user? */
+	if (APP.isUserLoggedIn()) {
+		/* get the user's tracks */
+		APP.setupUserSessionTracks();
+
+		/* get the user's location and metadata about that location */
+		APP.util.getUserLocation(function(position) {
+			/*
+			 * I read that FF sometimes calls this multiple times let's avoid
+			 * that, if we have already set a location, just return
+			 */
+			if (APP.userLocation.isSet) {
+				return;
+			}
+
+			/* record the user's location */
+			APP.userLocation.lat = position.coords.latitude;
+			APP.userLocation.lng = position.coords.longitude;
+			APP.userLocation.isSet = true;
+
+			/* now, request the songs */
+			APP.setupUserSessionMeta({
+				lat : position.coords.latitude,
+				lng : position.coords.longitude
+			});
+
+		}, function() {
+			APP.setupUserSession(APP.defaults.location);
+		}, function(error) {
+			/* do something */
+		});
+	} else {
+		$('.carousel').carousel();
+	}
+});

@@ -1,5 +1,9 @@
 /** This file will contain any necessary customizations for the tuneramblr site **/
 
+.center {
+	margin: auto;
+}
+
 .center-text {
 	text-align: center;
 }

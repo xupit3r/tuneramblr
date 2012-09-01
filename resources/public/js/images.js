@@ -9,7 +9,12 @@ var IMG = {};
 /* image URL */
 IMG.url = "/image/ugen/";
 
-/* build the image grid */
+/**
+ * Builds an image gride on the page given a set of images.
+ * 
+ * @param imgs
+ *            the set of images to display in the grid
+ */
 IMG.buildImgGrid = function(imgs) {
 
 	var content = "";
@@ -19,9 +24,9 @@ IMG.buildImgGrid = function(imgs) {
 		var img = imgs[el];
 		if (img) {
 			imgEls[idx] = document.createElement("img");
-			$(imgEls[idx]).addClass("img_grid_item")
-			              .attr("src", (IMG.url + img))
-			              .attr("id", img).click(HANDLERS.meta.images.click(img));
+			$(imgEls[idx]).addClass("img_grid_item").attr("src",
+					(IMG.url + img)).attr("id", img).click(
+					HANDLERS.meta.images.click(img));
 			idx++;
 		}
 	}

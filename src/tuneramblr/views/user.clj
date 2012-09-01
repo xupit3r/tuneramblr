@@ -146,7 +146,7 @@
     (password-field {:class "input-small"}
                     "password" 
                     nil)]])
-  
+
  
 ;; user login page (GET)
 (defpage "/user/login" {:as user}

@@ -2,6 +2,15 @@
   (:use [noir.core :only [defpartial]]
         [hiccup.page :only [include-css include-js html5]]))
 
+;; async JS load snippet
+(defpartial build-async-js [jsfile]
+  [:script
+   (str "(function(d) {"
+        "var js = d.createElement('script');"
+        "js.src = '" jsfile "';"
+        "(d.head || d.getElementsByTagName('head')[0]).appendChild(js);"
+        "}(document));")])
+
 ;; possible files to include (css, js, etc.)
 (def includes 
   {:bootstrap.css (include-css "/css/bootstrap.css")
@@ -10,14 +19,14 @@
    :jqcloud.css (include-css "/css/jqcloud.css")
    :jqplot.css (include-css "/css/jqplot.css")
    :bootstrap.js (include-js "/js/bootstrap.js")
-   :bootstrap-carousel.js (include-js "/js/bs-carousel.js")
-   :boostrap-modal.js (include-js "/js/bs-modal.js")
    :jquery.js (include-js "/js/jquery.js")
-   :jqcloud.js (include-js "/js/jqcloud.js")
-   :jqplot.js (include-js "/js/jqplot.js")
-   :jqplot-pie.js (include-js "/js/jqplot-pie.js")
-   :app.js (include-js "/js/app.js")
-   :images.js (include-js "/js/images.js")})
+   :bootstrap-carousel.js (build-async-js "/js/bs-carousel.js")
+   :boostrap-modal.js (build-async-js "/js/bs-modal.js")
+   :jqcloud.js (build-async-js "/js/jqcloud.js")
+   :jqplot.js (build-async-js "/js/jqplot.js")
+   :jqplot-pie.js (build-async-js "/js/jqplot-pie.js")
+   :app.js (build-async-js "/js/app.js")
+   :images.js (build-async-js "/js/images.js")})
 
 ;; builds a representation of the page's head
 (defpartial build-head [title to-include]
