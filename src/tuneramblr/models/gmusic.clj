@@ -1,7 +1,8 @@
 (ns tuneramblr.models.gmusic
   (import [java.net URLEncoder])
   (:require [clj-http.client :as client])
-  (:use tuneramblr.trprops))
+  (:use tuneramblr.trprops
+        [clojure.data.json :only (json-str)]))
 
 ;;;; we just want to be able to create 
 ;;;; a playlist, given a set of tracks
@@ -50,7 +51,9 @@
                      (second pair)]))
                 (.split body AUTH_TOKEN_SEP)))))
 
-(defn makePlayRequest [tokens]
+;; makes the actual request to login
+;; to Play
+(defn makePlayLoginRequest [tokens]
   {:Auth (:Auth tokens)
    :resp
    (client/post 
@@ -66,7 +69,7 @@
     {:Auth (:Auth result)
      :xt (:value
            (get cookies PLAY_COOKIE_XT))
-     :sjaid (:value 
+     :sjsaid (:value 
               (get cookies PLAY_COOKIE_SJSAID))}))
 
 ;; logs into Google Play and
@@ -76,18 +79,17 @@
   (->>
     (makeAuthRequest username password)
     (pullAuthTokens)
-    (makePlayRequest)
+    (makePlayLoginRequest)
     (pullAuthCookies)))
 
-;; adds a playlist to the account tied to the 
-;; auth token
+;; perform a song search on the user's
+;; library
 (defn songSearch [search authSession]
   (client/post 
     (str GOOGLE_MUSIC_ADD_PLAYLIST_URL (:xt authSession))
     {:headers {"Authorization" (authHeader authSession)}
-     :form-params {:json search}
-     :throw-exceptions false
-     :debug true}
+     :form-params {:json (json-str {:q search})}
+     :throw-exceptions false}
     {:as :json}))
 
 
