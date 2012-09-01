@@ -2,9 +2,12 @@
     (:use [tuneramblr.models.gmusic]
           [clojure.test]))
 
-;; test some stuff that has to do with the
-;; auth token retrieval
-(deftest test-tokens []
-  (let [playCookies (loginToPlay "jdoe@gmail.com" "password")]
-    (clojure.pprint/pprint playCookies)
-    (clojure.pprint/pprint (songSearch "Brick" playCookies))))
+;; testing for google play functionality
+(defn test-google-play-functionality []
+  (let [authSession (loginToPlay "jdoe@gmail.com" "password")]
+    (clojure.pprint/pprint 
+      (songSearch "search string" 
+                  authSession))
+    (clojure.pprint/pprint 
+      (songPlayUrl "songId" 
+                   authSession))))

@@ -2,12 +2,9 @@
   (import [java.net URLEncoder])
   (:require [clj-http.client :as client])
   (:use tuneramblr.trprops
-        [clojure.data.json :only (json-str)]))
+        [clojure.data.json :only (read-json json-str)]))
 
-;;;; we just want to be able to create 
-;;;; a playlist, given a set of tracks
-
-;; makes stuff more readable
+;; the token that separates the auth tokens
 (def AUTH_TOKEN_SEP "\n")
 
 ;; defines the User-Agent to use for the requests
@@ -16,7 +13,8 @@
 ;; Google Play URLs
 (def GOOGLE_LOGIN_URL "https://www.google.com/accounts/ClientLogin")
 (def GOOGLE_PLAY_LOGIN "https://play.google.com/music/listen")
-(def GOOGLE_MUSIC_ADD_PLAYLIST_URL "https://play.google.com/music/services/search?u=0&xt=")
+(def GOOGLE_PLAY_SEARCH_URL "https://play.google.com/music/services/search?u=0&xt=")
+(def GOOGLE_PLAY_PLAY_URL "https://play.google.com/music/play?u=0&pt=e&songid=")
 
 ;; the auth cookies to pull from play login
 (def PLAY_COOKIE_XT "xt")
@@ -25,7 +23,6 @@
 ;; builds the authorization header
 (defn authHeader [{auth :Auth}]
   (str "GoogleLogin auth=" auth))
-
 
 ;; makes a request to the auth service
 ;; returns the full response, which includes
@@ -83,15 +80,28 @@
     (pullAuthCookies)))
 
 ;; perform a song search on the user's
-;; library
+;; library and return the results
 (defn songSearch [search authSession]
-  (client/post 
-    (str GOOGLE_MUSIC_ADD_PLAYLIST_URL (:xt authSession))
-    {:headers {"Authorization" (authHeader authSession)}
-     :form-params {:json (json-str {:q search})}
-     :throw-exceptions false}
-    {:as :json}))
+  (read-json
+    (:body
+      (client/post 
+        (str GOOGLE_PLAY_SEARCH_URL (:xt authSession))
+        {:headers {"Authorization" (authHeader authSession)}
+         :form-params {:json (json-str {:q search})}
+         :throw-exceptions false}
+        {:as :json}))))
 
+;; retrieves a URL from which the song can
+;; be streamed
+(defn songPlayUrl [songId authSession]
+  (read-json
+    (:body
+      (client/get
+        (str GOOGLE_PLAY_PLAY_URL songId)
+        {:headers {"Authorization" (authHeader authSession)}
+         :cookies {"xt" {:value (:xt authSession)}
+                   "sjsaid" {:value (:sjsaid authSession)}}}
+        {:as :json}))))
 
 ;;;; helpful util stuff ;;;;
 
