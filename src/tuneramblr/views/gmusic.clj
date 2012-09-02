@@ -39,7 +39,7 @@
     (:sjsaid authSession)))
 
 ;; validate user form
-(defn account-valid? [{:keys [g-username g-password]}]
+(defn gmusic-valid? [{:keys [g-username g-password]}]
   (do
     (vali/rule
       (vali/has-value? g-username)
@@ -49,17 +49,14 @@
       [:g-username "Enter a valid email address."])
     (vali/rule
       (vali/has-value? g-password)
-      [:g-password "Enter a password."])
-    (vali/rule 
-      (validGoogleLogin (gmusic/loginToPlay g-username g-password))
-      [:g-username "There was a problem validating your Google Account."]))
+      [:g-password "Enter a password."]))
   (not (vali/errors? :g-username)))
 
-(defpartial gmusic-fields [{:keys [email username password re-password g-username g-password]}]
+(defpartial gmusic-fields [{:keys [g-username g-password]}]
   [:div (get-control-group-class :g-username)
    (label {:class "control-label"} "g-username" "Google Email: ")
    [:div {:class "controls"}
-    (text-field "g-username" nil)
+    (text-field "g-username" g-username)
     (vali/on-error :g-username error-disp)]]
   [:div (get-control-group-class :g-password)
    (label {:class "control-label"} "g-password" "Google Password: ")
@@ -78,12 +75,26 @@
              (submit-button {:class "btn"}
                             "Update"))))
 
-(defpage [:post "/user/gmusic"] {:keys [g-username g-password]}
-  (do
-    (umanage/add-gmusic-info
-      g-username
-      (gmusic/loginToPlay g-username g-password))
-    (response/redirect "/")))
+(defpage [:post "/user/gmusic"] {:as gmi}
+  (if (gmusic-valid? gmi)
+    (try
+      (let [authSession (gmusic/loginToPlay 
+                          (:g-username gmi) 
+                          (:g-password gmi))]
+        (if (validGoogleLogin authSession)
+          (do
+            (umanage/add-gmusic-info
+              (umanage/me) 
+              authSession)
+            (response/redirect "/"))
+          (do
+            (vali/set-error :g-username "Bad account info.")
+            (render "/user/gmusic" gmi))))
+      (catch Exception e
+        (do
+          (vali/set-error :g-username "Bad account info.")
+          (render "/user/gmusic" gmi))))
+    (render "/user/gmusic" gmi)))
   
 
 

@@ -5,7 +5,8 @@
             [noir.cookies :as cookie]
             [noir.validation :as vali]
             [monger.collection :as mc]
-            [monger.conversion :as monc]))
+            [monger.conversion :as monc])
+  (:use [monger.operators :only [$set]]))
 
 ;;;; user management methods
 
@@ -58,9 +59,10 @@
 (defn add-gmusic-info [username 
                        {xt :xt sjsaid :sjsaid auth :Auth}]
   (mc/update "users" {:username username}
-             {:xt xt
-              :sjsaid sjsaid
-              :Auth auth}))
+             {$set
+              {:xt xt
+               :sjsaid sjsaid
+               :Auth auth}}))
 
 ;; retrieve google music info (tokens) 
 (defn get-gmusic-info [username]

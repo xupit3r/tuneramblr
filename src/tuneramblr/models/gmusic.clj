@@ -57,8 +57,7 @@
      GOOGLE_PLAY_LOGIN
      {:headers {"Authorization" (authHeader tokens)}
       :form-params {:u "0" :hl "en"}
-      :force-redirects true
-      :throw-exceptions false})})
+      :force-redirects true})})
 
 ;; pull user session auth cookies
 (defn pullAuthCookies [result]
@@ -87,8 +86,7 @@
       (client/post 
         (str GOOGLE_PLAY_SEARCH_URL (:xt authSession))
         {:headers {"Authorization" (authHeader authSession)}
-         :form-params {:json (json-str {:q search})}
-         :throw-exceptions false}
+         :form-params {:json (json-str {:q search})}}
         {:as :json}))))
 
 ;; retrieves a URL from which the song can
