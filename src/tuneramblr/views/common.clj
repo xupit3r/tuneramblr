@@ -73,8 +73,9 @@
           (str "Logout " username)]
          [:a {:href "/user/login"} 
           (str "Login")])]
-      [:li (when (= :user-add active) {:class "active"})
-       [:a {:href "/user/add"} "Create an Account"]]]]]])
+      (when username
+        [:li (when (= :user-gmusic active) {:class "active"})
+         [:a {:href "/user/gmusic"} "Link to Google Music"]])]]]])
 
 ;; modal dialog
 (defpartial build-modal-dialog [modal-id modal-header & modal-body]

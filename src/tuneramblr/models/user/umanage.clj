@@ -54,6 +54,21 @@
     (session/put! :username username)
     (vali/set-error :username "Invalid username/password combo")))
 
+;; google music info (tokens) to the user info
+(defn add-gmusic-info [username 
+                       {xt :xt sjsaid :sjsaid auth :Auth}]
+  (mc/update "users" {:username username}
+             {:xt xt
+              :sjsaid sjsaid
+              :Auth auth}))
+
+;; retrieve google music info (tokens) 
+(defn get-gmusic-info [username]
+  (let [userinfo (pull-user username)]
+    {:xt (:xt userinfo)
+     :sjsaid (:sjsaid userinfo)
+     :Auth (:Auth userinfo)}))
+  
 
 ;; logs a user out:
 ;; 1. clears session

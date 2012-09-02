@@ -3,7 +3,6 @@
             [noir.response :as response]
             [noir.validation :as vali]
             [noir.session :as session]
-            [noir.cookies :as cookie]
             [tuneramblr.views.common :as common]
             [tuneramblr.models.song :as song]
             [tuneramblr.models.util :as util]
@@ -20,6 +19,13 @@
 (def MIN-USERNAME-LENGTH 3)
 (def MAX-USERNAME-LENGTH 20)
 (def MIN-PASSWORD-LENGTH 6)
+
+;; build the control-group-form class
+(defn get-control-group-class [field]
+  (if 
+    (vali/errors? field)
+                  {:class "control-group error"}
+                  {:class "control-group"}))
 
 
 ;; define a user space specific layout
@@ -66,17 +72,10 @@
                  [:re-password "The entered passwords must match!"]))
     (vali/set-error :username "This username already exists, :-( "))
   (not (vali/errors? :email :username :password :re-password)))
-  
+
 ;; our error partial
 (defpartial error-disp [[first-error]]
   [:p.help-inline first-error])
-
-;; build the control-group-form class
-(defn get-control-group-class [field]
-  (if 
-    (vali/errors? field)
-                  {:class "control-group error"}
-                  {:class "control-group"}))
 
 (defpartial user-fields [{:keys [email username password re-password]}]
   [:div (get-control-group-class :email)

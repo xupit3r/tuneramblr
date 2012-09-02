@@ -119,4 +119,3 @@
        (.hashCode lat)
        (.hashCode lng)
        (current-time)))
-
