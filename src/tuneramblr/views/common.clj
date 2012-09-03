@@ -21,6 +21,7 @@
    :jqplot.css (include-css "/css/jqplot.css")
    :bootstrap.js (include-js "/js/bootstrap.js")
    :jquery.js (include-js "/js/jquery.js")
+   :jplayer.js (include-js "/js/jplayer.js")
    :bootstrap-carousel.js (include-js "/js/bs-carousel.js")
    :boostrap-modal.js (include-js "/js/bs-modal.js")
    :jqcloud.js (include-js "/js/jqcloud.js")

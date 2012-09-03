@@ -81,25 +81,27 @@
 ;; perform a song search on the user's
 ;; library and return the results
 (defn songSearch [search authSession]
-  (read-json
-    (:body
-      (client/post 
-        (str GOOGLE_PLAY_SEARCH_URL (:xt authSession))
-        {:headers {"Authorization" (authHeader authSession)}
-         :form-params {:json (json-str {:q search})}}
-        {:as :json}))))
+  (:results
+    (read-json
+      (:body
+        (client/post 
+          (str GOOGLE_PLAY_SEARCH_URL (:xt authSession))
+          {:headers {"Authorization" (authHeader authSession)}
+           :form-params {:json (json-str {:q search})}}
+          {:as :json})))))
 
 ;; retrieves a URL from which the song can
 ;; be streamed
 (defn songPlayUrl [songId authSession]
-  (read-json
-    (:body
-      (client/get
-        (str GOOGLE_PLAY_PLAY_URL songId)
-        {:headers {"Authorization" (authHeader authSession)}
-         :cookies {"xt" {:value (:xt authSession)}
-                   "sjsaid" {:value (:sjsaid authSession)}}}
-        {:as :json}))))
+  (:url
+    (read-json
+      (:body
+        (client/get
+          (str GOOGLE_PLAY_PLAY_URL songId)
+          {:headers {"Authorization" (authHeader authSession)}
+           :cookies {"xt" {:value (:xt authSession)}
+                     "sjsaid" {:value (:sjsaid authSession)}}}
+          {:as :json})))))
 
 ;;;; helpful util stuff ;;;;
 

@@ -1,20 +1,10 @@
 var USERS = {};
 
-/* model storage for stuff about songs */
-USERS.session = {};
-
 /* the tracks table */
 USERS.tracks = {};
 
-/* store the user location for later use */
-USERS.userLocation = {};
-
-/* app defaults */
-USERS.defaults = {};
-USERS.defaults.location = {
-	lat : 40.37858996679397,
-	lng : -80.04364013671875
-};
+/* session info */
+USERS.session = {};
 
 /**
  * Requests the user's track information.

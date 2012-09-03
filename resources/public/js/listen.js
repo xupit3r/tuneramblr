@@ -1,14 +1,23 @@
 var LISTEN = {};
 
+LISTEN.session = {};
+LISTEN.userLocation = {};
+
+/* app defaults */
+LISTEN.defaults = {};
+LISTEN.defaults.location = {
+	lat : 40.37858996679397,
+	lng : -80.04364013671875
+};
+
 /**
- * Requests the user session metadata. This includes the qualitative user
- * location, weather, and qualitative time.
+ * Requests the user session audio information.
  * 
  * @param locinfo
  *            an object containing the lat and lng information for the user
  *            location
  */
-LISTEN.setupUserSessionMeta = function(locinfo) {
+LISTEN.setupUserSessionAudio = function(locinfo) {
 	var data = {};
 	if (locinfo) {
 		data = {
@@ -18,24 +27,31 @@ LISTEN.setupUserSessionMeta = function(locinfo) {
 	}
 
 	$.ajax({
-		type : "POST",
-		url : "/user/base/meta",
+		type : "GET",
+		url : "/user/listen/get/audio",
 		dataType : "json",
 		data : data,
-		success : APP.handleUserSessionMeta
+		success : LISTEN.handleUserSessionAudio
 	});
 };
 
 /**
- * Handles the server response for the user meta data request
+ * Handles the server response for the user session audio data
  * 
  * @param resp
  *            the response object from the request
  */
-LISTEN.handleUserSessionMeta = function(resp) {
-	APP.session.weather = resp.weather;
-	APP.session.address = resp.address;
-	APP.session.time = resp.time;
+LISTEN.handleUserSessionAudio = function(resp) {
+	
+	/* store the data */
+	LISTEN.session.weather = resp.weather;
+	LISTEN.session.location = resp.location;
+	LISTEN.session.time = resp.time;
+	LISTEN.session.track = resp.track;
+
+	/* build the UI */
+	LISTEN.buildAudioSectionMeta(resp);
+	LISTEN.setupAudioPlayer(resp);
 };
 
 /**
@@ -45,59 +61,83 @@ LISTEN.handleUserSessionMeta = function(resp) {
  *            an object containing the expected metadata (location, time, and
  *            weather)
  */
-LISTEN.buildMetaSection = function(meta) {
+LISTEN.buildAudioSectionMeta = function(meta) {
 	/* build the new elements */
-	var timeEl = document.createElement("p");
-	var weatherEl = document.createElement("p");
-	var addressEl = document.createElement("p");
-
-	/* build the text nodes */
-	var timeTxt = document.createTextNode(meta.time);
-	var weatherTxt = document.createTextNode(meta.weather);
-	var addressTxt = document.createTextNode(meta.address);
+	var timeEl = $("#metad_time_val span.metad_text");
+	var weatherEl = $("#metad_weather_val span.metad_text");
+	var locationEl = $("#metad_location_val span.metad_text");
+	var trackEl = $("#metad_track_val span.metad_text");
 
 	/* append the text nodes to the elements */
-	weatherEl.appendChild(weatherTxt);
-	addressEl.appendChild(addressTxt);
-	timeEl.appendChild(timeTxt)
+	timeEl.text(meta.time);
+	weatherEl.text(meta.weather)
+	locationEl.text(meta.location);
+	
+	var track = meta.track;
+	trackEl.text(track.name +", "+track.artist);
+};
 
-	/* shove those elements into the DOM */
-	$("#autogen").append([ timeEl, weatherEl, addressEl ]);
+/**
+ * Sets up the audio player.
+ * 
+ * @param audioInfo
+ *            the information necessary to build the audio player (needs more
+ *            description)
+ */
+LISTEN.setupAudioPlayer = function(audioInfo) {
+
+	$("#audio_player").jPlayer({
+		ready : function() {
+			/* load audio and play */
+			$(this).jPlayer("setMedia", {
+				mp3: audioInfo.url
+			}).jPlayer("play");
+		},
+		ended: function() {
+			/* do stuff when the track is done */
+		},
+		swfPath: "/script/Jplayer.swf",
+		supplied: "mp3",
+		cssSelectorAncestor: "",
+	    cssSelector: {
+	          play: "#play",
+	          pause: "#pause",
+	          stop: "#stop",
+	          mute: "#mute",
+	          unmute: "#unmute",
+	          currentTime: "#currentTime",
+	          duration: "#duration"
+	   }
+	});
+
 };
 
 /* executes when the DOM is ready */
 $(document).ready(function() {
 
-	/* is this a logged in user? */
-	if (TUNERAMBLR.isUserLoggedIn()) {
+	/* get the user's location and metadata about that location */
+	TUNERAMBLR.util.getUserLocation(function(position) {
+		/*
+		 * I read that FF sometimes calls this multiple times let's avoid that,
+		 * if we have already set a location, just return
+		 */
+		if (LISTEN.userLocation.lat && LISTEN.userLocation.lng) {
+			return;
+		}
 
-		/* get the user's location and metadata about that location */
-		TUNERAMBLR.util.getUserLocation(function(position) {
-			/*
-			 * I read that FF sometimes calls this multiple times let's avoid
-			 * that, if we have already set a location, just return
-			 */
-			if (USERS.userLocation.isSet) {
-				return;
-			}
+		/* record the user's location */
+		LISTEN.userLocation.lat = position.coords.latitude;
+		LISTEN.userLocation.lng = position.coords.longitude;
 
-			/* record the user's location */
-			USERS.userLocation.lat = position.coords.latitude;
-			USERS.userLocation.lng = position.coords.longitude;
-			USERS.userLocation.isSet = true;
-
-			/* now, request the songs */
-			USERS.setupUserSessionMeta({
-				lat : position.coords.latitude,
-				lng : position.coords.longitude
-			});
-
-		}, function() {
-			USERS.setupUserSession(USERS.defaults.location);
-		}, function(error) {
-			/* do something */
+		/* now, request the songs */
+		LISTEN.setupUserSessionAudio({
+			lat : position.coords.latitude,
+			lng : position.coords.longitude
 		});
-	} else {
-		$('.carousel').carousel();
-	}
+
+	}, function() {
+		LISTEN.setupUserSession(LISTEN.defaults.location);
+	}, function(error) {
+		/* do something */
+	});
 });

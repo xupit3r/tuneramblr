@@ -8,6 +8,10 @@
 	text-align: center;
 }
 
+.metad_text {
+	margin-left: 2px;
+}
+
 #tracks_table tbody tr {
 	cursor: pointer;
 }
