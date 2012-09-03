@@ -1,4 +1,5 @@
 (ns tuneramblr.views.common
+  (:require [tuneramblr.models.user.umanage :as umanage])
   (:use [noir.core :only [defpartial]]
         [hiccup.page :only [include-css include-js html5]]))
 
@@ -75,7 +76,11 @@
          [:a {:href "/user/listen"} "Listen!"]])
       (when username
         [:li (when (= :user-gmusic active) {:class "active"})
-         [:a {:href "/user/gmusic"} "Link to Google Music"]])
+         [:a {:href "/user/gmusic"} 
+          "Google Music: "
+          (if (umanage/gmusic-linked? username)
+            [:span.label.label-success "Linked"]
+            [:span.label.label-important "Not Linked"])]])
       [:li (when (= :login active) {:class "active"}) 
        (if username
          [:a {:href "/user/logout"} 

@@ -125,8 +125,7 @@
 
 ;; login specific error display
 (defpartial login-error-display [[first-error]]
-  [:p
-   [:span.label.label-important "Error: "]
+  [:div.alert.alert-error
    (str "&nbsp;" first-error)])
 
 ;; setup user login form content

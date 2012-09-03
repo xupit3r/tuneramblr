@@ -70,6 +70,14 @@
     {:xt (:xt userinfo)
      :sjsaid (:sjsaid userinfo)
      :Auth (:Auth userinfo)}))
+
+;; determine if a user is linked to Google Music
+(defn gmusic-linked? [username]
+  (let [userinfo (pull-user username)]
+    (and
+      (:xt userinfo)
+      (:sjsaid userinfo)
+      (:Auth userinfo))))
   
 
 ;; logs a user out:
