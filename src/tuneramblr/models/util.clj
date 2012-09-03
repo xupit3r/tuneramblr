@@ -26,6 +26,10 @@
     s 
     [s]))
 
+;; select a random element from the
+(defn rand-ele [lst]
+  (nth lst (rand-int (count lst)))) 
+
 
 ;;;; maths ;;;;;
 

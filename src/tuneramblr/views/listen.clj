@@ -50,19 +50,19 @@
      [:div#metad_location 
       [:div#metad_location_val 
        [:span.metad_lbl.label "Location"]
-       [:span.metad_text "Location Value!"]]]
+       [:span.metad_text ]]]
      [:div#metad_weather
       [:div#metad_weather_val 
        [:span.metad_lbl.label "Weather"]
-       [:span.metad_text "Weather Value!"]]]
+       [:span.metad_text ]]]
      [:div#metad_time
       [:div#metad_time_val 
        [:span.metad_lbl.label "Time of Day"]
-       [:span.metad_text "Time Value!"]]]
+       [:span.metad_text ]]]
      [:div#metad_track
       [:div#metad_track_val 
        [:span.metad_lbl.label "Track Info"]
-       [:span.metad_text "Track Info"]]]]
+       [:span.metad_text ]]]]
     [:p#player_controls
       [:a#play {:href "javascript:;"} "Play"] 
       [:a#pause {:href "javascript:;"} "Pause"] " | "
@@ -75,18 +75,22 @@
 ;; get the audio for the current
 ;; situation
 (defpage "/user/listen/get/audio" {:as latlng}
-  (let [authSession (umanage/get-gmusic-info (umanage/me))]
-    (let [tracks (:songs (gmusic/songSearch "brick" authSession))]
-      (let [track (first tracks)]
-        (response/json
-          {:url (gmusic/songPlayUrl (:id track) authSession)
-           :track track
-           :weather (->> 
-                      (weather/weather? 
-                        (:lat latlng)
-                        (:lng latlng))
-                      (weather/prettyweather))
-           :location (location/formatted-address?  
+  (let [authSession (umanage/get-gmusic-info (umanage/me))
+         winfo  (->> 
+                     (weather/weather? 
                        (:lat latlng)
                        (:lng latlng))
-           :time (song/get-discrete-time (util/current-time))})))))
+                     (weather/prettyweather))
+            linfo (location/formatted-address?  
+                       (:lat latlng)
+                       (:lng latlng))
+            tinfo (song/get-discrete-time (util/current-time))]
+    (let [atrack (song/applic-track winfo latlng tinfo)]
+      (let [sresults (gmusic/songSearch (:title atrack) authSession)]
+        (let [track (first (:songs sresults))]
+          (response/json
+            {:url (gmusic/songPlayUrl (:id track) authSession)
+             :track track
+             :weather winfo
+             :location linfo
+             :time tinfo}))))))

@@ -16,8 +16,10 @@ LISTEN.defaults.location = {
  * @param locinfo
  *            an object containing the lat and lng information for the user
  *            location
+ * @param sHandler
+ *            a callback function to handle a successful Ajax request.
  */
-LISTEN.setupUserSessionAudio = function(locinfo) {
+LISTEN.getUserSessionAudio = function(locinfo, sHandler) {
 	var data = {};
 	if (locinfo) {
 		data = {
@@ -31,8 +33,22 @@ LISTEN.setupUserSessionAudio = function(locinfo) {
 		url : "/user/listen/get/audio",
 		dataType : "json",
 		data : data,
-		success : LISTEN.handleUserSessionAudio
+		success : sHandler
 	});
+};
+
+/**
+ * Store the metadata for the currently playing track
+ * 
+ * @param meta
+ *            an object containing the meta data to be stored
+ */
+LISTEN.storeAudioMeta = function(meta) {
+	/* store the data */
+	LISTEN.session.weather = meta.weather;
+	LISTEN.session.location = meta.location;
+	LISTEN.session.time = meta.time;
+	LISTEN.session.track = meta.track;
 };
 
 /**
@@ -41,17 +57,22 @@ LISTEN.setupUserSessionAudio = function(locinfo) {
  * @param resp
  *            the response object from the request
  */
-LISTEN.handleUserSessionAudio = function(resp) {
-	
-	/* store the data */
-	LISTEN.session.weather = resp.weather;
-	LISTEN.session.location = resp.location;
-	LISTEN.session.time = resp.time;
-	LISTEN.session.track = resp.track;
-
-	/* build the UI */
+LISTEN.initUserSessionAudio = function(resp) {
+	LISTEN.storeAudioMeta(resp);
 	LISTEN.buildAudioSectionMeta(resp);
 	LISTEN.setupAudioPlayer(resp);
+};
+
+/**
+ * Handles the server response for the audio update request
+ * 
+ * @param resp
+ *            the response object from the request
+ */
+LISTEN.updateUserSessionAudio = function(resp) {
+	LISTEN.storeAudioMeta(resp);
+	LISTEN.buildAudioSectionMeta(resp);
+	LISTEN.updateAudioPlayer(resp);
 };
 
 /**
@@ -72,9 +93,9 @@ LISTEN.buildAudioSectionMeta = function(meta) {
 	timeEl.text(meta.time);
 	weatherEl.text(meta.weather)
 	locationEl.text(meta.location);
-	
+
 	var track = meta.track;
-	trackEl.text(track.name +", "+track.artist);
+	trackEl.text(track.name + ", " + track.artist);
 };
 
 /**
@@ -86,30 +107,57 @@ LISTEN.buildAudioSectionMeta = function(meta) {
  */
 LISTEN.setupAudioPlayer = function(audioInfo) {
 
-	$("#audio_player").jPlayer({
+	var ap = $("#audio_player");
+
+	ap.jPlayer({
 		ready : function() {
 			/* load audio and play */
 			$(this).jPlayer("setMedia", {
-				mp3: audioInfo.url
+				mp3 : audioInfo.url
 			}).jPlayer("play");
 		},
-		ended: function() {
-			/* do stuff when the track is done */
+		ended : function() {
+			/* request next song when track is done */
+			LISTEN.getNextTrack();
 		},
-		swfPath: "/script/Jplayer.swf",
-		supplied: "mp3",
-		cssSelectorAncestor: "",
-	    cssSelector: {
-	          play: "#play",
-	          pause: "#pause",
-	          stop: "#stop",
-	          mute: "#mute",
-	          unmute: "#unmute",
-	          currentTime: "#currentTime",
-	          duration: "#duration"
-	   }
-	});
+		swfPath : "/script/Jplayer.swf",
+		supplied : "mp3",
+		cssSelectorAncestor : "",
+		cssSelector : {
+			play : "#play",
+			pause : "#pause",
+			stop : "#stop",
+			mute : "#mute",
+			unmute : "#unmute",
+			currentTime : "#currentTime",
+			duration : "#duration"
+		}});
 
+};
+
+/**
+ * Loads and starts playing the next track
+ * 
+ * @param audioInfo
+ *            the audio information (containing the stream url) for the next
+ *            track
+ */
+LISTEN.updateAudioPlayer = function(audioInfo) {
+	var ap = $("#audio_player");
+	ap.jPlayer("clearMedia");
+	ap.jPlayer("setMedia", {
+		mp3 : audioInfo.url
+	}).jPlayer("play");
+};
+
+/**
+ * Handles the retrieval of the next audio track
+ */
+LISTEN.getNextTrack = function() {
+	LISTEN.getUserSessionAudio({
+		lat : LISTEN.userLocation.lat,
+		lng : LISTEN.userLocation.lng
+	}, LISTEN.updateUserSessionAudio);
 };
 
 /* executes when the DOM is ready */
@@ -129,11 +177,11 @@ $(document).ready(function() {
 		LISTEN.userLocation.lat = position.coords.latitude;
 		LISTEN.userLocation.lng = position.coords.longitude;
 
-		/* now, request the songs */
-		LISTEN.setupUserSessionAudio({
+		/* now, setup audio playback */
+		LISTEN.getUserSessionAudio({
 			lat : position.coords.latitude,
 			lng : position.coords.longitude
-		});
+		}, LISTEN.initUserSessionAudio);
 
 	}, function() {
 		LISTEN.setupUserSession(LISTEN.defaults.location);
