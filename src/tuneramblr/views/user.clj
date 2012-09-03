@@ -27,7 +27,6 @@
                   {:class "control-group error"}
                   {:class "control-group"}))
 
-
 ;; define a user space specific layout
 ;; (this layout will be used in 
 ;;  conjunction with all of the user 

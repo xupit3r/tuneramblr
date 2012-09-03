@@ -20,13 +20,15 @@
    :jqplot.css (include-css "/css/jqplot.css")
    :bootstrap.js (include-js "/js/bootstrap.js")
    :jquery.js (include-js "/js/jquery.js")
-   :bootstrap-carousel.js (build-async-js "/js/bs-carousel.js")
-   :boostrap-modal.js (build-async-js "/js/bs-modal.js")
-   :jqcloud.js (build-async-js "/js/jqcloud.js")
-   :jqplot.js (build-async-js "/js/jqplot.js")
-   :jqplot-pie.js (build-async-js "/js/jqplot-pie.js")
-   :app.js (build-async-js "/js/app.js")
-   :images.js (build-async-js "/js/images.js")})
+   :bootstrap-carousel.js (include-js "/js/bs-carousel.js")
+   :boostrap-modal.js (include-js "/js/bs-modal.js")
+   :jqcloud.js (include-js "/js/jqcloud.js")
+   :jqplot.js (include-js "/js/jqplot.js")
+   :jqplot-pie.js (include-js "/js/jqplot-pie.js")
+   :app.js (include-js "/js/app.js")
+   :images.js (include-js "/js/images.js")
+   :listen.js (include-js "/js/listen.js")
+   :tuneramblr.js (include-js "/js/tuneramblr.js")})
 
 ;; builds a representation of the page's head
 (defpartial build-head [title to-include]
@@ -48,6 +50,7 @@
                :jqplot-pie.js
                :bootstrap.js
                :bootstrap-carousel.js
+               :tuneramblr.js
                :app.js
                :images.js]))
 
@@ -67,15 +70,18 @@
      [:ul.nav
       [:li (when (= :home active) {:class "active"}) 
        [:a {:href "/"} "Home"]]
+      (when username
+        [:li (when (= :user-listen active) {:class "active"}) 
+         [:a {:href "/user/listen"} "Listen!"]])
+      (when username
+        [:li (when (= :user-gmusic active) {:class "active"})
+         [:a {:href "/user/gmusic"} "Link to Google Music"]])
       [:li (when (= :login active) {:class "active"}) 
        (if username
          [:a {:href "/user/logout"} 
           (str "Logout " username)]
          [:a {:href "/user/login"} 
-          (str "Login")])]
-      (when username
-        [:li (when (= :user-gmusic active) {:class "active"})
-         [:a {:href "/user/gmusic"} "Link to Google Music"]])]]]])
+          (str "Login")])]]]]])
 
 ;; modal dialog
 (defpartial build-modal-dialog [modal-id modal-header & modal-body]
