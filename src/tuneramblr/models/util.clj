@@ -125,6 +125,7 @@
        (current-time)))
 
 ;; generate an MD5 hash
+;; code was pulled from: https://gist.github.com/1302024
 (defn md5 [token]
   (let [hash-bytes
         (doto 

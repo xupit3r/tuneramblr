@@ -11,7 +11,12 @@
     [:div#stats.row
      [:div.span2
       [:img#user_img.img-rounded
-       {:src (umanage/get-gravatar-url)}]] 
+       {:src (umanage/get-gravatar-url)}]
+      [:ul.nav.nav-pills.nav-stacked
+       [:li#user-tracks.active 
+        [:a {:href "#"} "Tracks"]]
+       [:li#user-map
+        [:a {:href "#"} "Map"]]]]
      [:div.span10
       [:h2 (str username"'s Track History")]
       [:div#tracks_table_container

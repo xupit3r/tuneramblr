@@ -15,3 +15,7 @@
 #tracks_table tbody tr {
 	cursor: pointer;
 }
+
+#tracks_table tbody tr:hover {
+	background-color: #D9EDF7;
+}
