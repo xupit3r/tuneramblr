@@ -9,9 +9,13 @@
   (common/layout
     (common/build-nav-bar username :home)
     [:div#stats.row
-     [:div.span12
+     [:div.span2
+      [:img#user_img.img-rounded
+       {:src (umanage/get-gravatar-url)}]] 
+     [:div.span10
       [:h2 (str username"'s Track History")]
-      [:table#tracks_table.table ]]]
+      [:div#tracks_table_container
+      [:table#tracks_table.table ]]]]
     (common/build-modal-dialog 
       "ti-dialog" 
       "Stats on your track"

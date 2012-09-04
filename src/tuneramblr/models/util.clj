@@ -123,3 +123,14 @@
        (.hashCode lat)
        (.hashCode lng)
        (current-time)))
+
+;; generate an MD5 hash
+(defn md5 [token]
+  (let [hash-bytes
+        (doto 
+          (java.security.MessageDigest/getInstance "MD5")
+          (.reset)
+          (.update (.getBytes token)))]
+    (.toString
+      (new java.math.BigInteger 1 (.digest hash-bytes))
+      16))) 

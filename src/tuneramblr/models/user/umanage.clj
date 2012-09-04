@@ -10,6 +10,9 @@
 
 ;;;; user management methods
 
+;; gravatar URL
+(def GRAVATAR_URL "http://www.gravatar.com/avatar/")
+
 ;; get the user associated with this
 ;; session
 (defn me []
@@ -78,7 +81,14 @@
       (:xt userinfo)
       (:sjsaid userinfo)
       (:Auth userinfo))))
-  
+
+;; generate a URL to grab an image from gravatar
+(defn get-gravatar-url []
+  (let [userinfo (pull-user (me))]
+    (str GRAVATAR_URL
+         (util/md5 (clojure.string/lower-case
+                     (clojure.string/trimr
+                       (:email userinfo)))))))
 
 ;; logs a user out:
 ;; 1. clears session
