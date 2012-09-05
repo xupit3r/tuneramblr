@@ -2,7 +2,27 @@
   (:require [tuneramblr.views.common :as common]
             [tuneramblr.models.user.umanage :as umanage])
   (:use [noir.core :only [defpage]]
-        [hiccup.core :only [html]]))
+        [hiccup.page :only [include-js html5]]))
+
+;; tracks table
+(defpage "/content/ttable" []
+  (html5
+    [:div
+     (get common/includes :ttable.js)
+     [:h2 (str (umanage/me) "'s Track History")]
+     [:div#tracks_table_container
+      [:table#tracks_table.table ]]]))
+
+;; tracks table
+(defpage "/content/tmap" []
+  (html5
+    [:div
+     (get common/includes :leaflet.js)
+     (get common/includes :tmap.js)
+     [:h2 (str (umanage/me) "'s Map")]
+     [:div#tracks_map_container
+      [:div#tracks_map {:style "height: 300px"}]]]))
+  
 
 ;; layout for logged in users
 (defn layout-logged-in [username]
@@ -12,15 +32,12 @@
      [:div.span2
       [:img#user_img.img-rounded
        {:src (umanage/get-gravatar-url)}]
-      [:ul.nav.nav-pills.nav-stacked
+      [:ul#nav-stack.nav.nav-pills.nav-stacked
        [:li#user-tracks.active 
         [:a {:href "#"} "Tracks"]]
        [:li#user-map
         [:a {:href "#"} "Map"]]]]
-     [:div.span10
-      [:h2 (str username"'s Track History")]
-      [:div#tracks_table_container
-      [:table#tracks_table.table ]]]]
+     [:div#home_content.span10 ]]
     (common/build-modal-dialog 
       "ti-dialog" 
       "Stats on your track"

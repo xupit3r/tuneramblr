@@ -19,6 +19,8 @@
    :tuneramblr.css (include-css "/css/tuneramblr.css")
    :jqcloud.css (include-css "/css/jqcloud.css")
    :jqplot.css (include-css "/css/jqplot.css")
+   :leaflet.css (include-css "/css/leaflet.css")
+   :leaflet.js (include-js "/js/leaflet.js")
    :bootstrap.js (include-js "/js/bootstrap.js")
    :jquery.js (include-js "/js/jquery.js")
    :jplayer.js (include-js "/js/jplayer.js")
@@ -28,6 +30,8 @@
    :jqplot.js (include-js "/js/jqplot.js")
    :jqplot-pie.js (include-js "/js/jqplot-pie.js")
    :app.js (include-js "/js/app.js")
+   :ttable.js (include-js "/js/ttable.js")
+   :tmap.js (include-js "/js/tmap.js")
    :images.js (include-js "/js/images.js")
    :listen.js (include-js "/js/listen.js")
    :tuneramblr.js (include-js "/js/tuneramblr.js")})
@@ -46,6 +50,7 @@
               [:bootstrap.css
                :boostrap-responsive.css
                :tuneramblr.css
+               :leaflet.css
                :jqplot.css
                :jquery.js
                :jqplot.js

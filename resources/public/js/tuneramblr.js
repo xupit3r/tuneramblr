@@ -6,7 +6,7 @@ var TUNERAMBLR = {};
  * @returns true if the user is logged in, false otherwise
  */
 TUNERAMBLR.isUserLoggedIn = function() {
-	return $("#stats").length > 0;
+	return $("#home_content").length > 0;
 };
 
 /* utility methods */
