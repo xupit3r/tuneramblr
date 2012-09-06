@@ -1,5 +1,8 @@
 var APP = {};
 
+APP.img = {};
+APP.img.url = "/image/ugen/";
+
 APP.loadHomeContent = function(contentUrl) {
 	$.ajax({
 		type : "GET",

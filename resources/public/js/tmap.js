@@ -12,6 +12,9 @@ TMAP.tiles = {};
 TMAP.tiles.url = {};
 TMAP.tiles.url.osm = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
+/* path for icon images */
+L.Icon.Default.imagePath = "/css/images"
+
 TMAP.map = null;
 TMAP.zoom = TMAP.defaults.zoom;
 
@@ -32,8 +35,7 @@ TMAP.initMap = function(elm, zm, center) {
 
 /* register all necessary map events */
 TMAP._registerMapListeners = function() {
-	TMAP.map.on('dragend', HANDLERS.map.dragend);
-	TMAP.map.on('zoomend', HANDLERS.map.zoomend);
+
 };
 
 /* center the map at some location */
@@ -57,11 +59,11 @@ TMAP.addSong = function(songData) {
 /* builds the marker popup UI content */
 TMAP.buildSongMarkerPopupContent = function(location, songData) {
 	var content = "<div class='song_mrkr'>";
-	
+
 	if (songData.img) {
 		content += "<img src='" + APP.img.url + songData.img + "'/>"
 	}
-	
+
 	content += "<p class='mrkr_title'>" + songData.title + "</p>";
 	content += "<p class='mrkr_artist'>" + songData.artist + "</p>";
 	content += "</div>";
@@ -90,8 +92,22 @@ TMAP.removeLocation = function(loc) {
 	TMAP.map.removeLayer(loc);
 };
 
+TMAP.loadSongs = function (resp) {
+	var songs = resp.songs;
+	for(var i = 0; i < songs.length; i++) {
+		TMAP.addSong(songs[i]);
+	}
+};
+
 TMAP.initMap("tracks_map", TMAP.defaults.zoom, TMAP.defaults.center);
 
-TMAP.loadTracks = function(resp) {
-	
-};
+$.ajax({
+	type : "POST",
+	url : "/songs/get",
+	dataType : "json",
+	data: {
+		lat: TMAP.defaults.center.lat,
+		lng: TMAP.defaults.center.lng
+	},
+	success : TMAP.loadSongs
+});
