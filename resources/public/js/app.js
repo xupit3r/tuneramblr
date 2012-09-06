@@ -30,6 +30,12 @@ APP.setupSideLinks = function() {
 		$(this).parent().addClass("active");
 		APP.loadHomeContent("/content/tmap");
 	});
+	
+	$("#user-settings a").click(function (){
+		APP.clearNavSelection();
+		$(this).parent().addClass("active");
+		APP.loadHomeContent("/content/usettings");
+	});
 };
 
 /* executes when the DOM is ready */

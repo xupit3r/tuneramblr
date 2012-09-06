@@ -1,7 +1,9 @@
 (ns tuneramblr.views.main
   (:require [tuneramblr.views.common :as common]
+            [noir.validation :as vali]
             [tuneramblr.models.user.umanage :as umanage])
-  (:use [noir.core :only [defpage]]
+  (:use [hiccup.form] 
+        [noir.core :only [defpage defpartial]]
         [hiccup.page :only [include-js html5]]))
 
 ;; tracks table
@@ -22,6 +24,40 @@
      [:h2 (str (umanage/me) "'s Map")]
      [:div#tracks_map_container
       [:div#tracks_map {:style "height: 300px"}]]]))
+
+;; build the control-group-form class
+(defn get-control-group-class [field]
+  (if 
+    (vali/errors? field)
+                  {:class "control-group error"}
+                  {:class "control-group"}))
+
+;; our error partial
+(defpartial error-disp [[first-error]]
+  [:p.help-inline first-error])
+
+;; 
+(defpartial user-setting-fields [userinfo]
+  [:div (get-control-group-class :email)
+   (label {:class "control-label"} "email" "Email: ")
+   [:div {:class "controls"}
+    (text-field "email" (:email userinfo))
+    (vali/on-error :email error-disp)]]
+  [:div (get-control-group-class :username)
+   (label {:class "control-label"} "username" "Username: ")
+   [:div {:class "controls"}
+    (text-field "username" (:username userinfo))
+    (vali/on-error :username error-disp)]])
+
+;; user creation page (GET)
+(defpage  "/content/usettings" []
+  (html5
+    (form-to {:class "form-horizontal"}
+             [:post "/user/update"]
+             (user-setting-fields 
+               (umanage/pull-user (umanage/me)))
+             (submit-button {:class "btn"}
+                            "Update"))))
   
 
 ;; layout for logged in users
@@ -36,7 +72,9 @@
        [:li#user-tracks.active 
         [:a {:href "#"} "Tracks"]]
        [:li#user-map
-        [:a {:href "#"} "Map"]]]]
+        [:a {:href "#"} "Map"]]
+       [:li#user-settings
+        [:a {:href "#"} "Settings"]]]]
      [:div#home_content.span10 ]]
     (common/build-modal-dialog 
       "ti-dialog" 
