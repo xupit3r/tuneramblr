@@ -74,18 +74,15 @@
 
 ;; get the audio for the current
 ;; situation
-(defpage "/user/listen/get/audio" {:as latlng}
+(defpage "/user/listen/get/audio" {:keys [lat lng curtime]}
   (let [authSession (umanage/get-gmusic-info (umanage/me))
          winfo  (->> 
-                     (weather/weather? 
-                       (:lat latlng)
-                       (:lng latlng))
+                     (weather/weather? lat lng)
                      (weather/prettyweather))
-            linfo (location/formatted-address?  
-                       (:lat latlng)
-                       (:lng latlng))
-            tinfo (song/get-discrete-time (util/current-time))]
-    (let [atrack (song/applic-track winfo latlng tinfo)]
+            linfo (location/formatted-address? lat lng)
+            tinfo (song/get-discrete-time (Long/valueOf curtime))]
+    (let [atrack (song/applic-track winfo {:lat lat
+                                           :lng lng} tinfo)]
       (let [sresults (gmusic/songSearch (:title atrack) authSession)]
         (let [track (first (:songs sresults))]
           (response/json

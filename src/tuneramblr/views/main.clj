@@ -23,7 +23,7 @@
      (get common/includes :tmap.js)
      [:h2 (str (umanage/me) "'s Map")]
      [:div#tracks_map_container
-      [:div#tracks_map {:style "height: 300px"}]]]))
+      [:div#tracks_map {:style "height: 500px"}]]]))
 
 ;; build the control-group-form class
 (defn get-control-group-class [field]
