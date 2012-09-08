@@ -25,7 +25,8 @@ LISTEN.getUserSessionAudio = function(locinfo, sHandler) {
 		data = {
 			lat : locinfo.lat,
 			lng : locinfo.lng,
-			curtime : new Date().getTime()
+			curtime : new Date().getTime(),
+			tz : jstz.determine().name()
 		}
 	}
 

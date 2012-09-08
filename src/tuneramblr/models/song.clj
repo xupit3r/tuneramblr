@@ -3,7 +3,7 @@
   (:require [tuneramblr.models.util :as util]
             [tuneramblr.models.image :as image]
             [monger.collection :as mc])
-  (:import (java.util Calendar)))
+  (:import (java.util Calendar TimeZone)))
 
 ;;;; functions for working with song
 ;;;; data
@@ -70,10 +70,10 @@
 
 
 ;; convert to hours into the day
-;; TODO: this should accept a timezone
-(defn hours-into-day [tstamp]
+(defn hours-into-day [tstamp tz]
   (let [cal (Calendar/getInstance)]
     (.setTimeInMillis cal tstamp)
+    (.setTimeZone cal (TimeZone/getTimeZone tz))
     (.get cal Calendar/HOUR_OF_DAY))) 
 
 ;; get songs before some date
@@ -89,8 +89,8 @@
 ;; take a timestamp and convert it into
 ;; a discrete (enumerated) time value 
 ;; (e.g. "morning")
-(defn get-discrete-time [tstamp]
-  (let [hours-in (hours-into-day tstamp)]
+(defn get-discrete-time [tstamp tz]
+  (let [hours-in (hours-into-day tstamp tz)]
     (cond
       (< hours-in 12) "Morning"
       (< hours-in 17) "Afternoon"

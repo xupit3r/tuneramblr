@@ -29,6 +29,7 @@
    :jqcloud.js (include-js "/js/jqcloud.js")
    :jqplot.js (include-js "/js/jqplot.js")
    :jqplot-pie.js (include-js "/js/jqplot-pie.js")
+   :jstz.js (include-js "/js/jstz.js")
    :app.js (include-js "/js/app.js")
    :ttable.js (include-js "/js/ttable.js")
    :tmap.js (include-js "/js/tmap.js")

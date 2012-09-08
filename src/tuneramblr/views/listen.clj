@@ -21,13 +21,10 @@
     [:bootstrap.css
      :boostrap-responsive.css
      :tuneramblr.css
-     :jqplot.css
      :jquery.js
      :jplayer.js
-     :jqplot.js
-     :jqplot-pie.js
+     :jstz.js
      :bootstrap.js
-     :bootstrap-carousel.js
      :tuneramblr.js
      :listen.js]))
 
@@ -74,13 +71,13 @@
 
 ;; get the audio for the current
 ;; situation
-(defpage "/user/listen/get/audio" {:keys [lat lng curtime]}
+(defpage "/user/listen/get/audio" {:keys [lat lng curtime tz]}
   (let [authSession (umanage/get-gmusic-info (umanage/me))
          winfo  (->> 
                      (weather/weather? lat lng)
                      (weather/prettyweather))
             linfo (location/formatted-address? lat lng)
-            tinfo (song/get-discrete-time (Long/valueOf curtime))]
+            tinfo (song/get-discrete-time (Long/valueOf curtime) tz)]
     (let [atrack (song/applic-track winfo {:lat lat
                                            :lng lng} tinfo)]
       (let [sresults (gmusic/songSearch (:title atrack) authSession)]
