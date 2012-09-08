@@ -1,5 +1,4 @@
 /** This file will contain any necessary customizations for the tuneramblr site **/
-
 .center {
 	margin: auto;
 }
@@ -18,4 +17,16 @@
 
 #tracks_table tbody tr:hover {
 	background-color: #D9EDF7;
+}
+
+#loading_div {
+    opacity:0.45;
+    -moz-opacity:0.45;
+    filter:alpha(opacity=45);
+    background-image: url(../img/loading.gif);
+    background-repeat: no-repeat;
+    z-index:100;
+    width: 100%;
+    height: 100%;
+    text-align: center;
 }

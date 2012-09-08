@@ -21,6 +21,7 @@
     [:bootstrap.css
      :boostrap-responsive.css
      :tuneramblr.css
+     :blue.monday.css
      :jquery.js
      :jplayer.js
      :jstz.js
@@ -35,8 +36,44 @@
     [:body
      [:div {:class "container"}
       (common/build-nav-bar (umanage/me) location)
-      [:div#audio_content
-       content]]]))
+      [:div.row-fluid
+       [:div#audio_content.offset3
+        content]]]]))
+
+;; defines the markup for a jPlayer
+(defpartial jplayer-layout []
+   [:div#jquery_jplayer_1.jp-jplayer ]
+   [:div#jp_container_1.jp-audio
+    [:div.jp-type-single
+     [:div.jp-gui.jp-interface
+      [:ul.jp-controls
+       [:li [:a.jp-play {:href "javascript:;" :tabindex 1} "Play"]]
+       [:li [:a.jp-pause {:href "javascript:;" :tabindex 1} "Pause"]]
+       [:li [:a.jp-stop {:href "javascript:;" :tabindex 1} "Stop"]]
+       [:li [:a.jp-mute {:href "javascript:;" :tabindex 1 :title "Mute"} "Mute"]]
+       [:li [:a.jp-unmute {:href "javascript:;" :tabindex 1 :title "Unmute"} "Unmute"]]
+       [:li [:a.jp-volume-max {:href "javascript:;" :tabindex 1 :title "Max Volume"} "Max Volume"]]]
+      [:div.jp-progress
+       [:div.jp-seek-bar
+        [:div.jp-play-bar ]]]
+      [:div.jp-volume-bar
+       [:div.jp-volume-bar-value ]]
+      [:div.jp-time-holder
+       [:div.jp-current-time ]
+       [:div.jp-duration ]
+       [:ul.jp-toggles
+        [:li.jp-repeat [:a {:href "javascript:;" :tabindex 1 :title="Repeat"} "Repeat"]]
+        [:li.jp-repeat [:a {:href-off "javascript:;" :tabindex 1 :title="Repeat Off"} "Repeat Off"]]]]]
+     [:div.jp-title
+      [:ul
+       [:li#jp-track-title ]
+       [:li#jp-track-artist ]
+       [:li#loading_div "&nbsp;"]]]
+     [:div.jp-no-solution
+      [:span "Update Required"]
+      "To play the media you will need to either update your browser to a recent version or update your"
+      [:a {:href "http://get.adobe.com/flashplayer"} "Flash plugin."]]]]) 
+      
 
 ;; user account management page
 (defpage  "/user/listen" {}
@@ -55,19 +92,8 @@
      [:div#metad_time
       [:div#metad_time_val 
        [:span.metad_lbl.label "Time of Day"]
-       [:span.metad_text ]]]
-     [:div#metad_track
-      [:div#metad_track_val 
-       [:span.metad_lbl.label "Track Info"]
        [:span.metad_text ]]]]
-    [:p#player_controls
-      [:a#play {:href "javascript:;"} "Play"] 
-      [:a#pause {:href "javascript:;"} "Pause"] " | "
-      [:a#stop {:href "javascript:;"} "Stop"] " | "
-      [:a#mute {:href "javascript:;"} "Mute"]
-      [:a#unmute {:href "javascript:;"} "Unmute"] " | "
-      [:span#currentTime ] "/" [:span#duration ]]
-    [:div#audio_player ]))
+    (jplayer-layout)))
 
 ;; get the audio for the current
 ;; situation

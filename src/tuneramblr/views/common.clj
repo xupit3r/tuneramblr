@@ -20,6 +20,7 @@
    :jqcloud.css (include-css "/css/jqcloud.css")
    :jqplot.css (include-css "/css/jqplot.css")
    :leaflet.css (include-css "/css/leaflet.css")
+   :blue.monday.css (include-css "/css/blue.monday.css")
    :leaflet.js (include-js "/js/leaflet.js")
    :bootstrap.js (include-js "/js/bootstrap.js")
    :jquery.js (include-js "/js/jquery.js")

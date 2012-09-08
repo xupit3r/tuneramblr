@@ -89,7 +89,8 @@ LISTEN.buildAudioSectionMeta = function(meta) {
 	var timeEl = $("#metad_time_val span.metad_text");
 	var weatherEl = $("#metad_weather_val span.metad_text");
 	var locationEl = $("#metad_location_val span.metad_text");
-	var trackEl = $("#metad_track_val span.metad_text");
+	var trackTitleEl = $("#jp-track-title");
+	var trackArtistEl = $("#jp-track-artist");
 
 	/* append the text nodes to the elements */
 	timeEl.text(meta.time);
@@ -97,7 +98,8 @@ LISTEN.buildAudioSectionMeta = function(meta) {
 	locationEl.text(meta.location);
 
 	var track = meta.track;
-	trackEl.text(track.name + ", " + track.artist);
+	trackTitleEl.text(track.title);
+	trackArtistEl.text(track.artist);
 };
 
 /**
@@ -109,7 +111,7 @@ LISTEN.buildAudioSectionMeta = function(meta) {
  */
 LISTEN.setupAudioPlayer = function(audioInfo) {
 
-	var ap = $("#audio_player");
+	var ap = $("#jquery_jplayer_1");
 
 	ap.jPlayer({
 		ready : function() {
@@ -123,17 +125,8 @@ LISTEN.setupAudioPlayer = function(audioInfo) {
 			LISTEN.getNextTrack();
 		},
 		swfPath : "/script/Jplayer.swf",
-		supplied : "mp3",
-		cssSelectorAncestor : "",
-		cssSelector : {
-			play : "#play",
-			pause : "#pause",
-			stop : "#stop",
-			mute : "#mute",
-			unmute : "#unmute",
-			currentTime : "#currentTime",
-			duration : "#duration"
-		}});
+		supplied : "mp3"
+	});
 
 };
 
@@ -145,7 +138,7 @@ LISTEN.setupAudioPlayer = function(audioInfo) {
  *            track
  */
 LISTEN.updateAudioPlayer = function(audioInfo) {
-	var ap = $("#audio_player");
+	var ap = $("#jquery_jplayer_1");
 	ap.jPlayer("clearMedia");
 	ap.jPlayer("setMedia", {
 		mp3 : audioInfo.url
@@ -162,8 +155,22 @@ LISTEN.getNextTrack = function() {
 	}, LISTEN.updateUserSessionAudio);
 };
 
+LISTEN.initLoading = function() {
+	/* loading div for ajax calls */
+	$("#loading_div")
+	.ajaxStart(function() {
+		$("#jp-track-title").text("");
+		$("#jp-track-artist").text("");
+		$(this).show();
+	}).ajaxStop(function() {
+		$(this).hide();
+	});
+};
+
 /* executes when the DOM is ready */
 $(document).ready(function() {
+	
+	LISTEN.initLoading();
 
 	/* get the user's location and metadata about that location */
 	TUNERAMBLR.util.getUserLocation(function(position) {
