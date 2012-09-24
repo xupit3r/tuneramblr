@@ -55,6 +55,15 @@ TUNERAMBLR.util.arrToMap = function(arr) {
  *            the callback function when an error occurs
  */
 TUNERAMBLR.util.getUserLocation = function(hLocation, hNoApi, hError) {
+
+	// TODO: I think this will be the most appropriate place to add the check
+	// for "freshness". Essentially, we need some metric (maybe time since last
+	// update, or some determination if the user is moving (i.e. if he isn't
+	// then we don't need to keep updating the location)). using this metric we
+	// should determine when the most appropriate time to update the user's
+	// location is (we want to avoid this because calling the location API is
+	// EXPENSIVE!!!!).
+
 	/* does this browser expose a geolocation API? */
 	if (navigator.geolocation) {
 		/* call the browser's location API */

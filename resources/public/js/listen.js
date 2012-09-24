@@ -4,6 +4,7 @@ LISTEN.session = {};
 LISTEN.userLocation = {};
 
 /* app defaults */
+// TODO: probably should store this under the TUNERAMBLR namespace
 LISTEN.defaults = {};
 LISTEN.defaults.location = {
 	lat : 40.37858996679397,
@@ -111,6 +112,9 @@ LISTEN.buildAudioSectionMeta = function(meta) {
  */
 LISTEN.setupAudioPlayer = function(audioInfo) {
 
+	// TODO: add check for valid URL and login information. if new login
+	// information is needed, then popup a dialog to request it from the user.
+
 	var ap = $("#jquery_jplayer_1");
 
 	ap.jPlayer({
@@ -138,6 +142,10 @@ LISTEN.setupAudioPlayer = function(audioInfo) {
  *            track
  */
 LISTEN.updateAudioPlayer = function(audioInfo) {
+
+	// TODO: add check for valid URL and login information. if new login
+	// information is needed, then popup a dialog to request it from the user.
+
 	var ap = $("#jquery_jplayer_1");
 	ap.jPlayer("clearMedia");
 	ap.jPlayer("setMedia", {
@@ -157,8 +165,7 @@ LISTEN.getNextTrack = function() {
 
 LISTEN.initLoading = function() {
 	/* loading div for ajax calls */
-	$("#loading_div")
-	.ajaxStart(function() {
+	$("#loading_div").ajaxStart(function() {
 		$("#jp-track-title").text("");
 		$("#jp-track-artist").text("");
 		$(this).show();
@@ -169,11 +176,15 @@ LISTEN.initLoading = function() {
 
 /* executes when the DOM is ready */
 $(document).ready(function() {
-	
+
 	LISTEN.initLoading();
 
 	/* get the user's location and metadata about that location */
 	TUNERAMBLR.util.getUserLocation(function(position) {
+
+		// TODO: update the location retrieval to check on the "freshness" of
+		// the user's location. see todo note in TUNERAMBLR.util.getUserLocation
+
 		/*
 		 * I read that FF sometimes calls this multiple times let's avoid that,
 		 * if we have already set a location, just return

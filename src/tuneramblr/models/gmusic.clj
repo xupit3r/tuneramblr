@@ -93,7 +93,10 @@
 ;; retrieves a URL from which the song can
 ;; be streamed
 (defn songPlayUrl [songId authSession]
-  (:url
+  ; TODO: :status is a sibling of :body
+  ; if we want to capture :status we need 
+  ; to pull it from the original response
+  (->>
     (read-json
       (:body
         (client/get
@@ -101,7 +104,10 @@
           {:headers {"Authorization" (authHeader authSession)}
            :cookies {"xt" {:value (:xt authSession)}
                      "sjsaid" {:value (:sjsaid authSession)}}}
-          {:as :json})))))
+          {:as :json})))
+    (fn [resp]
+      {:url (:url resp)
+       :status (:status resp)})))
 
 ;;;; helpful util stuff ;;;;
 

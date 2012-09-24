@@ -47,12 +47,24 @@
     [:div.jp-type-single
      [:div.jp-gui.jp-interface
       [:ul.jp-controls
-       [:li [:a.jp-play {:href "javascript:;" :tabindex 1} "Play"]]
-       [:li [:a.jp-pause {:href "javascript:;" :tabindex 1} "Pause"]]
-       [:li [:a.jp-stop {:href "javascript:;" :tabindex 1} "Stop"]]
-       [:li [:a.jp-mute {:href "javascript:;" :tabindex 1 :title "Mute"} "Mute"]]
-       [:li [:a.jp-unmute {:href "javascript:;" :tabindex 1 :title "Unmute"} "Unmute"]]
-       [:li [:a.jp-volume-max {:href "javascript:;" :tabindex 1 :title "Max Volume"} "Max Volume"]]]
+       [:li 
+        [:a.jp-play 
+         {:href "javascript:;" :tabindex 1} "Play"]]
+       [:li 
+        [:a.jp-pause 
+         {:href "javascript:;" :tabindex 1} "Pause"]]
+       [:li 
+        [:a.jp-stop 
+         {:href "javascript:;" :tabindex 1} "Stop"]]
+       [:li 
+        [:a.jp-mute 
+         {:href "javascript:;" :tabindex 1 :title "Mute"} "Mute"]]
+       [:li 
+        [:a.jp-unmute 
+         {:href "javascript:;" :tabindex 1 :title "Unmute"} "Unmute"]]
+       [:li 
+        [:a.jp-volume-max 
+         {:href "javascript:;" :tabindex 1 :title "Max Volume"} "Max Volume"]]]
       [:div.jp-progress
        [:div.jp-seek-bar
         [:div.jp-play-bar ]]]
@@ -62,8 +74,12 @@
        [:div.jp-current-time ]
        [:div.jp-duration ]
        [:ul.jp-toggles
-        [:li.jp-repeat [:a {:href "javascript:;" :tabindex 1 :title="Repeat"} "Repeat"]]
-        [:li.jp-repeat [:a {:href-off "javascript:;" :tabindex 1 :title="Repeat Off"} "Repeat Off"]]]]]
+        [:li.jp-repeat 
+         [:a 
+          {:href "javascript:;" :tabindex 1 :title="Repeat"} "Repeat"]]
+        [:li.jp-repeat 
+         [:a 
+          {:href-off "javascript:;" :tabindex 1 :title="Repeat Off"} "Repeat Off"]]]]]
      [:div.jp-title
       [:ul
        [:li#jp-track-title ]
@@ -108,9 +124,11 @@
                                            :lng lng} tinfo)]
       (let [sresults (gmusic/songSearch (:title atrack) authSession)]
         (let [track (first (:songs sresults))]
+          (let [playUrlResp (gmusic/songPlayUrl (:id track) authSession)]
           (response/json
-            {:url (gmusic/songPlayUrl (:id track) authSession)
+            {:url (:url playUrlResp)
+             :status (:status playUrlResp)
              :track track
              :weather winfo
              :location linfo
-             :time tinfo}))))))
+             :time tinfo})))))))
