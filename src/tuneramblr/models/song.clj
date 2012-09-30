@@ -2,6 +2,7 @@
   (:use monger.operators)
   (:require [tuneramblr.models.util :as util]
             [tuneramblr.models.image :as image]
+            [tuneramblr.models.location :as location]
             [monger.collection :as mc])
   (:import (java.util Calendar TimeZone)))
 
@@ -20,19 +21,25 @@
 
 ;; add data to the songs collection
 (defn add [data]
+  (let [mdata (assoc 
+                data 
+                :location 
+                (location/formatted-address? 
+                  (location/address? (:lat data) 
+                                     (:lng data))))]
   (if (mc/insert "songs"
-                 (if (:img data)
+                 (if (:img mdata)
                    (image/add-img
-                     (assoc data :img (util/dec-img data)))
-                   data))
+                     (assoc mdata :img (util/dec-img mdata)))
+                   mdata))
     {:added true, 
      :message (str "We got " 
-                   (:title data) 
+                   (:title mdata) 
                    ".  Ramble on!")}
     {:added false, 
      :message (str "Whoops!  We dropped the ball.  " 
-                   (:title data) 
-                   " was not added.")}))
+                   (:title mdata) 
+                   " was not added.")})))
 
 ;; add a new song to the model
 (defn add-song [songdata]
@@ -230,7 +237,7 @@
     (groupem)
     (mergem)
     (fix-meta)))
-
+  
 ;; track selection based on current meta data
 ;; winfo - the comma delimited set of adjectives describing
 ;; the current weather conditions
