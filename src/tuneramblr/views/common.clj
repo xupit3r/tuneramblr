@@ -33,6 +33,7 @@
    :jstz.js (include-js "/js/jstz.js")
    :app.js (include-js "/js/app.js")
    :ttable.js (include-js "/js/ttable.js")
+   :timeline.js (include-js "/js/timeline.js")
    :tmap.js (include-js "/js/tmap.js")
    :images.js (include-js "/js/images.js")
    :listen.js (include-js "/js/listen.js")

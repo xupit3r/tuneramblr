@@ -183,6 +183,13 @@
          :imgs (song/build-imgs songs)
          :songs (song/merge-tracks songs)})))
 
+;; send back the timeline data
+(defpage "/user/base/timeline" []
+  (response/json
+    {:tracks 
+     (song/get-timeline-data 
+       (umanage/me))}))
+
 
 ;;;; mobile login/logout logic ;;;;
 

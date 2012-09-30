@@ -19,6 +19,12 @@ APP.clearNavSelection = function () {
 };
 
 APP.setupSideLinks = function() {
+	$("#user-timeline a").click(function (){
+		APP.clearNavSelection();
+		$(this).parent().addClass("active");
+		APP.loadHomeContent("/content/timeline");
+	});
+	
 	$("#user-tracks a").click(function (){
 		APP.clearNavSelection();
 		$(this).parent().addClass("active");
@@ -42,7 +48,7 @@ APP.setupSideLinks = function() {
 $(document).ready(function() {
 	/* is this a logged in user? */
 	if (TUNERAMBLR.isUserLoggedIn()) {
-		APP.loadHomeContent("/content/ttable");
+		APP.loadHomeContent("/content/timeline");
 		APP.setupSideLinks();
 	} else {
 		$('.carousel').carousel();

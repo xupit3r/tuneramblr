@@ -3,7 +3,8 @@
   (:require [tuneramblr.models.util :as util]
             [tuneramblr.models.image :as image]
             [tuneramblr.models.location :as location]
-            [monger.collection :as mc])
+            [monger.collection :as mc]
+            [monger.query :as mq])
   (:import (java.util Calendar TimeZone)))
 
 ;;;; functions for working with song
@@ -237,6 +238,15 @@
     (groupem)
     (mergem)
     (fix-meta)))
+
+;; get data for the timeline
+(defn get-timeline-data [username]
+  (map util/no-id 
+       (mq/with-collection "songs"
+                           (mq/find {:username username})
+                           (mq/fields [])
+                           (mq/sort {:tstamp -1}))))
+  
   
 ;; track selection based on current meta data
 ;; winfo - the comma delimited set of adjectives describing

@@ -6,24 +6,10 @@
         [noir.core :only [defpage defpartial]]
         [hiccup.page :only [include-js html5]]))
 
-;; tracks table
-(defpage "/content/ttable" []
-  (html5
-    [:div
-     (get common/includes :ttable.js)
-     [:h2 (str (umanage/me) "'s Track History")]
-     [:div#tracks_table_container
-      [:table#tracks_table.table ]]]))
 
-;; tracks table
-(defpage "/content/tmap" []
-  (html5
-    [:div
-     (get common/includes :leaflet.js)
-     (get common/includes :tmap.js)
-     [:h2 (str (umanage/me) "'s Map")]
-     [:div#tracks_map_container
-      [:div#tracks_map {:style "height: 500px"}]]]))
+;; our error partial
+(defpartial error-disp [[first-error]]
+  [:p.help-inline first-error])
 
 ;; build the control-group-form class
 (defn get-control-group-class [field]
@@ -32,11 +18,7 @@
                   {:class "control-group error"}
                   {:class "control-group"}))
 
-;; our error partial
-(defpartial error-disp [[first-error]]
-  [:p.help-inline first-error])
-
-;; 
+;; sets up the user settings fields
 (defpartial user-setting-fields [userinfo]
   [:div (get-control-group-class :email)
    (label {:class "control-label"} "email" "Email: ")
@@ -52,6 +34,36 @@
    [:div {:class "controls"}
     (submit-button {:class "btn btn-primary"}
                    "Update")]])
+
+
+;; timeline display
+(defpage "/content/timeline" []
+  (html5
+    [:div
+     (get common/includes :timeline.js)
+     [:h2 (str (umanage/me) "'s Timeline")]
+     [:div#timeline_container ]]))
+
+;; tracks table
+(defpage "/content/ttable" []
+  (html5
+    [:div
+     (get common/includes :ttable.js)
+     [:h2 (str (umanage/me) "'s Tracks")]
+     [:div#tracks_table_container
+      [:table#tracks_table.table ]]]))
+
+;; tracks map
+(defpage "/content/tmap" []
+  (html5
+    [:div
+     (get common/includes :leaflet.js)
+     (get common/includes :tmap.js)
+     [:h2 (str (umanage/me) "'s Map")]
+     [:div#tracks_map_container
+      [:div#tracks_map {:style "height: 500px"}]]]))
+
+
 
 ;; user creation page (GET)
 (defpage  "/content/usettings" []
@@ -71,7 +83,9 @@
       [:img#user_img.img-rounded
        {:src (umanage/get-gravatar-url)}]
       [:ul#nav-stack.nav.nav-pills.nav-stacked
-       [:li#user-tracks.active 
+       [:li#user-timeline.active 
+        [:a {:href "#"} "Timeline"]]
+       [:li#user-tracks
         [:a {:href "#"} "Tracks"]]
        [:li#user-map
         [:a {:href "#"} "Map"]]
