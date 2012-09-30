@@ -48,8 +48,42 @@ TTABLE.initTable = function(tracks) {
 		tracksTab.append(TTABLE.buildTracksBody(tracks));
 		tracksTab.find("tbody tr").click(function(e) {
 			TTABLE.tableRowClick(this);
-		});
+		}).popover({
+			trigger: "hover",
+			placement: "top",
+			title: "Track Info",
+			content: function () {
+				
+				/* setup the table */
+				var table = document.createElement("table");
+				table.setAttribute("class", "table table-condensed table-bordered");
+				
+				/* setup the header row */
+				var thead = table.appendChild(document.createElement("thead"));
+				var headRow = thead.appendChild(document.createElement("tr"));
+				var itemHeader = headRow.appendChild(document.createElement("th"));
+				var cntHeader = headRow.appendChild(document.createElement("th"));
+				itemHeader.appendChild(document.createTextNode("Data"));
+				cntHeader.appendChild(document.createTextNode("Frequency"));
+				
+				
+				/* build the table body rows */
+				var trackInfo = TTABLE.tracks[this.id];
+				var tiMeta = trackInfo.metadata;
+				var tbody = table.appendChild(document.createElement("tbody"));
+				for ( var item in tiMeta) {
+					var row = tbody.appendChild(document.createElement("tr"));
+					
+					var itemCell = row.appendChild(document.createElement("td"));
+					var cntCell = row.appendChild(document.createElement("td"));
 
+					itemCell.appendChild(document.createTextNode(item));
+					cntCell.appendChild(document.createTextNode(tiMeta[item]));
+				}
+				
+				return table;
+			}
+		});
 	}
 };
 
@@ -150,4 +184,5 @@ TTABLE.tableRowClick = function(el) {
 	});
 };
 
+/* this should be immediately invoked */
 TTABLE.setupUserSessionTracks();

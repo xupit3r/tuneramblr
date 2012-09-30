@@ -91,7 +91,7 @@
       [:a {:href "http://get.adobe.com/flashplayer"} "Flash plugin."]]]]) 
       
 
-;; user account management page
+;; listen view (metadata + player)
 (defpage  "/user/listen" {}
   (layout
     "Listen!"
