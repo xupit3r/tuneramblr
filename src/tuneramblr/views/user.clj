@@ -96,7 +96,10 @@
    (label {:class "control-label"} "password" "Re-enter password: ")
    [:div {:class "controls"}
     (password-field "password" nil)
-    (vali/on-error :re-password error-disp)]])
+    (vali/on-error :re-password error-disp)]]
+  [:div
+   [:div {:class "controls"}
+    (submit-button {:class "btn"} "Create user")]])
 
 
 ;; user creation page (GET)
@@ -106,9 +109,7 @@
     :user-add
     (form-to {:class "form-horizontal"}
              [:post "/user/add"]
-             (user-fields user)
-             (submit-button {:class "btn"}
-                            "Create user"))))
+             (user-fields user))))
   
 
 ;; handle the user creation (POST)
@@ -142,19 +143,23 @@
    [:div {:class "controls"}
     (password-field {:class "input-small"}
                     "password" 
-                    nil)]])
+                    nil)]]
+  [:div {:class "control-group"}
+   [:div {:class "controls"}
+    (submit-button {:class "btn btn-primary"}
+                   "Login")]])
 
  
 ;; user login page (GET)
 (defpage "/user/login" {:as user}
   (layout
-    "tuneramblr Login"
+    ""
     :login
-    (form-to {:class "form-horizontal"}
-             [:post "/user/login"]
-             (user-login-fields user)
-             (submit-button {:class "btn"}
-                            "Login"))))
+    [:div.row-fluid
+     [:div#login_content.offset3
+      (form-to {:class "form-horizontal"}
+               [:post "/user/login"]
+               (user-login-fields user))]]))
 
 ;; handle authentication (POST)
 (defpage [:post "/user/login"] {:as user}

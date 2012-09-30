@@ -47,7 +47,11 @@
    (label {:class "control-label"} "username" "Username: ")
    [:div {:class "controls"}
     (text-field "username" (:username userinfo))
-    (vali/on-error :username error-disp)]])
+    (vali/on-error :username error-disp)]]
+  [:div
+   [:div {:class "controls"}
+    (submit-button {:class "btn btn-primary"}
+                   "Update")]])
 
 ;; user creation page (GET)
 (defpage  "/content/usettings" []
@@ -55,9 +59,7 @@
     (form-to {:class "form-horizontal"}
              [:post "/user/update"]
              (user-setting-fields 
-               (umanage/pull-user (umanage/me)))
-             (submit-button {:class "btn"}
-                            "Update"))))
+               (umanage/pull-user (umanage/me))))))
   
 
 ;; layout for logged in users

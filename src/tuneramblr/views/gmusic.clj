@@ -62,7 +62,10 @@
    (label {:class "control-label"} "g-password" "Google Password: ")
    [:div {:class "controls"}
     (password-field "g-password" nil)
-    (vali/on-error :g-password error-disp)]])
+    (vali/on-error :g-password error-disp)]]
+  [:div
+   [:div {:class "controls"}
+    (submit-button {:class "btn"} "Update")]])
 
 ;; user account management page
 (defpage  "/user/gmusic" {:as user}
@@ -71,9 +74,7 @@
     :user-gmusic
     (form-to {:class "form-horizontal"}
              [:post "/user/gmusic"]
-             (gmusic-fields user)
-             (submit-button {:class "btn"}
-                            "Update"))))
+             (gmusic-fields user))))
 
 (defpage [:post "/user/gmusic"] {:as gmi}
   (if (gmusic-valid? gmi)
