@@ -90,24 +90,35 @@
            :form-params {:json (json-str {:q search})}}
           {:as :json})))))
 
+;; returns response from the URL request
+(defn makeUrlRequest [songId authSession]
+  (client/get
+    (str GOOGLE_PLAY_PLAY_URL songId)
+    {:headers {"Authorization" (authHeader authSession)}
+     :cookies {"xt" {:value (:xt authSession)}
+               "sjsaid" {:value (:sjsaid authSession)}}}
+    {:as :json}))
+
 ;; retrieves a URL from which the song can
 ;; be streamed
 (defn songPlayUrl [songId authSession]
-  ; TODO: :status is a sibling of :body
-  ; if we want to capture :status we need 
-  ; to pull it from the original response
-  (->>
-    (read-json
-      (:body
-        (client/get
-          (str GOOGLE_PLAY_PLAY_URL songId)
-          {:headers {"Authorization" (authHeader authSession)}
-           :cookies {"xt" {:value (:xt authSession)}
-                     "sjsaid" {:value (:sjsaid authSession)}}}
-          {:as :json})))
-    (fn [resp]
-      {:url (:url resp)
-       :status (:status resp)})))
+  (try
+    {:url (:url 
+            (read-json 
+              (:body (makeUrlRequest songId authSession))))}
+  (catch Exception e
+    {:url "BAD URL"})))
+
+;; determines if we have a good 
+;; Google Play session (one that 
+;; is authorized to make requests)
+(defn goodSession? [authSession]
+  (:songs (songSearch "" authSession)))
+
+;; gets a new Google Play session
+(defn getNewAuthSession [oldAuthSession]
+  (pullAuthCookies 
+    (makePlayLoginRequest oldAuthSession)))
 
 ;;;; helpful util stuff ;;;;
 
