@@ -17,6 +17,7 @@ L.Icon.Default.imagePath = "/css/images"
 
 TMAP.map = null;
 TMAP.zoom = TMAP.defaults.zoom;
+TMAP.center = TMAP.defaults.center;
 
 /* initialize the map */
 TMAP.initMap = function(elm, zm, center) {
@@ -99,8 +100,23 @@ TMAP.loadSongs = function (resp) {
 	}
 };
 
-TMAP.initMap("tracks_map", TMAP.defaults.zoom, TMAP.defaults.center);
+/*
+ * if we can retrieve the user's location, initialize
+ * the map and center it on that location.  if we fail 
+ * to retrieve the user's location, just use the default.
+ */
+TUNERAMBLR.util.getUserLocation(function (position) {
+	var center = {
+			lat = position.coords.latitude;
+			lng = position.coords.longitude;
+	};
+	TMAP.initMap("tracks_map", TMAP.zoom, center);
+}, 
+null, function (error){
+	TMAP.initMap("tracks_map", TMAP.zoom, TMAP.center);
+});
 
+/* get the songs to display on the map */
 $.ajax({
 	type : "POST",
 	url : "/songs/get",

@@ -65,7 +65,7 @@
 
 
 
-;; user creation page (GET)
+;; user creation page
 (defpage  "/content/usettings" []
   (html5
     (form-to {:class "form-horizontal"}

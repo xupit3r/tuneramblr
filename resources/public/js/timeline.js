@@ -3,6 +3,8 @@
 /* namespace for timeline logic */
 var TIMELINE = {};
 
+TIMELINE.DEFAULT_TRACKS_TO_DISPLAY = 10;
+
 /**
  * Requests the user's timeline information.
  */
@@ -34,31 +36,32 @@ TIMELINE.handleTimelineData = function(resp) {
  *            the tracks (in sorted order) to be displayed within the timeline
  */
 TIMELINE.buildTimeline = function(tracks) {
-	var tlTable = document.createElement("table");
-	tlTable.setAttribute("class", "table");
-	var tlBody = tlTable.appendChild(document.createElement("tbody"));
+	var timelineDiv = document.createElement("div");
+	var entriesDiv = timelineDiv.appendChild(document.createElement("div"));
 	
-	for(var i = 0; i < tracks.length; i++) {
+	var maxTracks = TIMELINE.DEFAULT_TRACKS_TO_DISPLAY;
+	for(var i = 0; i < maxTracks; i++) {
 		var track = tracks[i];
-		var trackRow = tlBody.appendChild(document.createElement("tr"));
+		var trackEntryDiv = entriesDiv.appendChild(document.createElement("div"));
+		trackEntryDiv.setAttribute("class", "track_entry");
 		
-		var dateTd = trackRow.appendChild(document.createElement("td"));
-		var trackInfoTd = trackRow.appendChild(document.createElement("td"));
-		var locationTd = trackRow.appendChild(document.createElement("td"));
-		var weatherTd = trackRow.appendChild(document.createElement("td"));
-		var imageTd = trackRow.appendChild(document.createElement("td"));
+		var dateDiv = trackEntryDiv.appendChild(document.createElement("div"));
+		var trackInfoDiv = trackEntryDiv.appendChild(document.createElement("div"));
+		var locationDiv = trackEntryDiv.appendChild(document.createElement("div"));
+		var weatherDiv = trackEntryDiv.appendChild(document.createElement("div"));
+		var imageDiv = trackEntryDiv.appendChild(document.createElement("div"));
 		
 		var tDate = new Date(track.tstamp);
 		var dateDisp = tDate.toLocaleDateString() + ", " + tDate.toLocaleTimeString();
-		dateTd.appendChild(document.createTextNode(dateDisp));
-		trackInfoTd.appendChild(document.createTextNode(track.title + " by " + track.artist));
-		locationTd.appendChild(document.createTextNode(track.location));
-		weatherTd.appendChild(document.createTextNode(track.weather));
-		imageTd.appendChild(document.createTextNode(track.img));
+		dateDiv.appendChild(document.createTextNode(dateDisp));
+		trackInfoDiv.appendChild(document.createTextNode(track.title + " by " + track.artist));
+		locationDiv.appendChild(document.createTextNode(track.location));
+		weatherDiv.appendChild(document.createTextNode(track.weather));
+		imageDiv.appendChild(document.createTextNode(track.img));
 		
 	}
 	
-	$("#timeline_container").append(tlTable);
+	$("#timeline_container").append(timelineDiv);
 };
 
 /* we want to do this immediately */
