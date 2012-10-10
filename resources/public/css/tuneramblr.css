@@ -30,6 +30,7 @@
     height: 100%;
     text-align: center;
 }
+
 #timeline_container div.track_entry {
 	border-top: 1px solid #F1F1F1;
     overflow: hidden;

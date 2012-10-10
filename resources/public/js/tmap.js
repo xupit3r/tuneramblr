@@ -111,6 +111,7 @@ TUNERAMBLR.util.getUserLocation(function (position) {
 			lng = position.coords.longitude;
 	};
 	TMAP.initMap("tracks_map", TMAP.zoom, center);
+	$("#loading_div").detach();
 }, 
 null, function (error){
 	TMAP.initMap("tracks_map", TMAP.zoom, TMAP.center);

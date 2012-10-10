@@ -62,6 +62,7 @@ TIMELINE.buildTimeline = function(tracks) {
 	}
 	
 	$("#timeline_container").append(timelineDiv);
+	$("#loading_div").detach();
 };
 
 /* we want to do this immediately */

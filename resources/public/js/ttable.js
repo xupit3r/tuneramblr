@@ -85,6 +85,8 @@ TTABLE.initTable = function(tracks) {
 			}
 		});
 	}
+	
+	$("#loading_div").detach();
 };
 
 /**
