@@ -35,11 +35,6 @@
     (submit-button {:class "btn btn-primary"}
                    "Update")]])
 
-(defpartial loading-div []
-  [:div#loading_div.center 
-   {:style "width: 200px"} "&nbsp;"])
-
-
 ;; timeline display
 (defpage "/content/timeline" []
   (html5
@@ -47,7 +42,7 @@
      (get common/includes :timeline.js)
      [:h2 (str (umanage/me) "'s Timeline")]
      [:div#timeline_container 
-      (loading-div)]]))
+      (common/loading-div)]]))
 
 ;; tracks table
 (defpage "/content/ttable" []
@@ -55,7 +50,7 @@
     [:div
      (get common/includes :ttable.js)
      [:h2 (str (umanage/me) "'s Tracks")]
-     (loading-div)
+     (common/loading-div)
      [:div#tracks_table_container
       [:table#tracks_table.table ]]]))
 
@@ -68,7 +63,7 @@
      [:h2 (str (umanage/me) "'s Map")]
      [:div#tracks_map_container
       [:div#tracks_map {:style "height: 500px"}
-       (loading-div)]]]))
+       (common/loading-div)]]]))
 
 
 

@@ -112,3 +112,8 @@
     (build-common-head "tuneramblr")
     [:body
      [:div.container content]]))
+
+;; creates a loading div
+(defpartial loading-div []
+  [:div#loading_div.center 
+   {:style "width: 200px"} "&nbsp;"])
