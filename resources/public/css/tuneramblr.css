@@ -31,9 +31,22 @@
     text-align: center;
 }
 
-#timeline_container div.track_entry {
+#timeline_container .track_entry {
 	border-top: 1px solid #F1F1F1;
     overflow: hidden;
     padding: 0 0 1em 45px;
     position: relative;
-};
+}
+
+#timeline_container .track_date {
+	color: #BBBBBB;
+	font-size: 12px;
+}
+
+#timeline_container .track_name {
+	font-weight: bold;
+}
+
+#timeline_container .track_meta {
+	font-size: 10px;
+}

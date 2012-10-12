@@ -46,14 +46,18 @@ TIMELINE.buildTimeline = function(tracks) {
 		trackEntryDiv.setAttribute("class", "track_entry");
 		
 		var dateDiv = trackEntryDiv.appendChild(document.createElement("div"));
-		var trackInfoDiv = trackEntryDiv.appendChild(document.createElement("div"));
-		var locationDiv = trackEntryDiv.appendChild(document.createElement("div"));
-		var weatherDiv = trackEntryDiv.appendChild(document.createElement("div"));
-		var imageDiv = trackEntryDiv.appendChild(document.createElement("div"));
+		dateDiv.setAttribute("class", "track_date");
 		
-		var tDate = new Date(track.tstamp);
-		var dateDisp = tDate.toLocaleDateString() + ", " + tDate.toLocaleTimeString();
-		dateDiv.appendChild(document.createTextNode(dateDisp));
+		var trackInfoDiv = trackEntryDiv.appendChild(document.createElement("div"));
+		trackInfoDiv.setAttribute("class", "track_name");
+		
+		var trackMetaDiv = trackEntryDiv.appendChild(document.createElement("div"));
+		var locationDiv = trackMetaDiv.appendChild(document.createElement("div"));
+		var weatherDiv = trackMetaDiv.appendChild(document.createElement("div"));
+		var imageDiv = trackMetaDiv.appendChild(document.createElement("div"));
+		trackMetaDiv.setAttribute("class", "track_meta");
+		
+		dateDiv.appendChild(document.createTextNode(new Date(track.tstamp).toLocaleDateString()));
 		trackInfoDiv.appendChild(document.createTextNode(track.title + " by " + track.artist));
 		locationDiv.appendChild(document.createTextNode(track.location));
 		weatherDiv.appendChild(document.createTextNode(track.weather));
