@@ -31,6 +31,10 @@
     text-align: center;
 }
 
+#audio_content #metadata {
+	margin-bottom: 5px;
+}
+
 #timeline_container .track_entry {
 	border-top: 1px solid #F1F1F1;
     overflow: hidden;
@@ -43,10 +47,19 @@
 	font-size: 12px;
 }
 
-#timeline_container .track_name {
-	font-weight: bold;
-}
-
 #timeline_container .track_meta {
 	font-size: 10px;
+	float: left;
+}
+
+#timeline_container .track_name {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+#timeline_container .track_img {
+	float: right;
+	height: 50%;
+	width: 50%;
+	margin-top: 10px;
 }

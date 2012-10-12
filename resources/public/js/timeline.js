@@ -38,33 +38,46 @@ TIMELINE.handleTimelineData = function(resp) {
 TIMELINE.buildTimeline = function(tracks) {
 	var timelineDiv = document.createElement("div");
 	var entriesDiv = timelineDiv.appendChild(document.createElement("div"));
-	
+
 	var maxTracks = TIMELINE.DEFAULT_TRACKS_TO_DISPLAY;
-	for(var i = 0; i < maxTracks; i++) {
+	for ( var i = 0; i < maxTracks; i++) {
 		var track = tracks[i];
-		var trackEntryDiv = entriesDiv.appendChild(document.createElement("div"));
+		var trackEntryDiv = entriesDiv.appendChild(document
+				.createElement("div"));
 		trackEntryDiv.setAttribute("class", "track_entry");
-		
-		var dateDiv = trackEntryDiv.appendChild(document.createElement("div"));
-		dateDiv.setAttribute("class", "track_date");
-		
-		var trackInfoDiv = trackEntryDiv.appendChild(document.createElement("div"));
-		trackInfoDiv.setAttribute("class", "track_name");
-		
-		var trackMetaDiv = trackEntryDiv.appendChild(document.createElement("div"));
-		var locationDiv = trackMetaDiv.appendChild(document.createElement("div"));
-		var weatherDiv = trackMetaDiv.appendChild(document.createElement("div"));
-		var imageDiv = trackMetaDiv.appendChild(document.createElement("div"));
+
+		var trackMetaDiv = trackEntryDiv.appendChild(document
+				.createElement("div"));
 		trackMetaDiv.setAttribute("class", "track_meta");
+
+		var dateDiv = trackMetaDiv.appendChild(document.createElement("div"));
+		dateDiv.setAttribute("class", "track_date");
+
+		var trackInfoDiv = trackMetaDiv.appendChild(document
+				.createElement("div"));
+		trackInfoDiv.setAttribute("class", "track_name");
+
+		var locationDiv = trackMetaDiv.appendChild(document
+				.createElement("div"));
+		var weatherDiv = trackMetaDiv
+				.appendChild(document.createElement("div"));
+
+		if (track.img) {
+			var imageImg = trackEntryDiv.appendChild(document
+					.createElement("img"));
+			imageImg.setAttribute("src", APP.img.url + track.img);
+			imageImg.setAttribute("class", "track_img img-rounded");
+		}
 		
-		dateDiv.appendChild(document.createTextNode(new Date(track.tstamp).toLocaleDateString()));
-		trackInfoDiv.appendChild(document.createTextNode(track.title + " by " + track.artist));
+		dateDiv.appendChild(document.createTextNode(new Date(track.tstamp)
+				.toLocaleDateString()));
+		trackInfoDiv.appendChild(document.createTextNode(track.title + " by "
+				+ track.artist));
 		locationDiv.appendChild(document.createTextNode(track.location));
 		weatherDiv.appendChild(document.createTextNode(track.weather));
-		imageDiv.appendChild(document.createTextNode(track.img));
-		
+
 	}
-	
+
 	$("#timeline_container").append(timelineDiv);
 	$("#loading_div").detach();
 };
