@@ -17,7 +17,6 @@ L.Icon.Default.imagePath = "/css/images"
 
 TMAP.map = null;
 TMAP.zoom = TMAP.defaults.zoom;
-TMAP.center = TMAP.defaults.center;
 
 /* initialize the map */
 TMAP.initMap = function(elm, zm, center) {
@@ -93,38 +92,37 @@ TMAP.removeLocation = function(loc) {
 	TMAP.map.removeLayer(loc);
 };
 
-TMAP.loadSongs = function (resp) {
+TMAP.loadSongs = function(resp) {
 	var songs = resp.songs;
-	for(var i = 0; i < songs.length; i++) {
+	for ( var i = 0; i < songs.length; i++) {
 		TMAP.addSong(songs[i]);
 	}
 };
 
 /*
- * if we can retrieve the user's location, initialize
- * the map and center it on that location.  if we fail 
- * to retrieve the user's location, just use the default.
+ * If we can determine the user location, use that 
+ * as the center of the map.  Otherwise, use the defaults.
  */
-TUNERAMBLR.util.getUserLocation(function (position) {
-	var center = {
-			lat = position.coords.latitude;
-			lng = position.coords.longitude;
+TUNERAMBLR.util.getUserLocation(function (userLoc) {
+	var mapCenter = {
+			lat: userLoc.coords.latitude,
+			lng: userLoc.coords.longitude
 	};
-	TMAP.initMap("tracks_map", TMAP.zoom, center);
-	$("#loading_div").detach();
-}, 
-null, function (error){
-	TMAP.initMap("tracks_map", TMAP.zoom, TMAP.center);
-});
-
-/* get the songs to display on the map */
-$.ajax({
-	type : "POST",
-	url : "/songs/get",
-	dataType : "json",
-	data: {
-		lat: TMAP.defaults.center.lat,
-		lng: TMAP.defaults.center.lng
-	},
-	success : TMAP.loadSongs
+	
+	TMAP.center = mapCenter;
+	
+	TMAP.initMap("tracks_map", TMAP.defaults.zoom, mapCenter);	
+	$.ajax({
+		type : "POST",
+		url : "/songs/get",
+		dataType : "json",
+		data : {
+			lat : mapCenter.lat,
+			lng : mapCenter.lng
+		},
+		success : TMAP.loadSongs
+	});
+}, null,
+function (error) {
+	TMAP.initMap("tracks_map", TMAP.defaults.zoom, TMAP.defaults.center);
 });
