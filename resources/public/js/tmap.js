@@ -13,7 +13,7 @@ TMAP.tiles.url = {};
 TMAP.tiles.url.osm = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 /* path for icon images */
-L.Icon.Default.imagePath = "/css/images"
+L.Icon.Default.imagePath = "/vendor/css/images"
 
 TMAP.map = null;
 TMAP.zoom = TMAP.defaults.zoom;
