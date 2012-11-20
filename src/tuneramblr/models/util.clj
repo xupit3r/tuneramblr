@@ -1,11 +1,20 @@
 (ns tuneramblr.models.util
-  (import  org.apache.commons.codec.binary.Base64))
+  (import  org.apache.commons.codec.binary.Base64
+           java.text.DateFormat
+           java.util.Date))
 
 ;;;; general utility functions
 
 ;; get the current system time
 (defn current-time []
   (System/currentTimeMillis))
+
+
+;; given a timestamp, this will return
+;; a formatted date string
+(defn format-date [tstamp]
+  (let [df (DateFormat/getInstance)]
+    (.format df (new Date tstamp))))
 
 ;; removes the internal DB id from the map
 (defn no-id [dbo]

@@ -183,12 +183,22 @@
          :imgs (song/build-imgs songs)
          :songs (song/merge-tracks songs)})))
 
-;; send back the timeline data
+;; send back the timeline display data
 (defpage "/user/base/timeline" []
-  (response/json
-    {:tracks 
-     (song/get-timeline-data 
-       (umanage/me))}))
+  (html5
+    (map
+      #(vector :div.track_entry
+         [:div.track_meta
+          [:div.track_date (util/format-date (:tstamp %))]
+          [:div.track_name (str (:title %) 
+                                " by " (:artist %))]
+          [:div (:location %)]
+          [:div (:weather %)]]
+         (when (not (nil? (:img %)))
+           [:img.track_img.img-rounded 
+            {:src (str "/image/ugen/" (:img %))}])) 
+      (song/get-timeline-data 
+        (umanage/me)))))
 
 
 ;;;; mobile login/logout logic ;;;;
