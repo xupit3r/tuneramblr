@@ -87,7 +87,7 @@
             (umanage/add-gmusic-info
               (umanage/me) 
               authSession)
-            (response/redirect "/"))
+            (response/redirect "/user/listen"))
           (do
             (vali/set-error :g-username "Bad account info.")
             (render "/user/gmusic" gmi))))
@@ -96,6 +96,14 @@
           (vali/set-error :g-username "Bad account info.")
           (render "/user/gmusic" gmi))))
     (render "/user/gmusic" gmi)))
+
+;; display a modal dialog for the user
+;; login to Google Music
+(defpage "/user/gmusic/login/modal" {}
+  (html5
+    (form-to {:class "form-horizontal"}
+             [:post "/user/gmusic"]
+             (gmusic-fields {}))))
   
 
 

@@ -12,7 +12,47 @@ LISTEN.defaults.location = {
 };
 
 /**
- * Requests the user session audio information.
+ * Prepares the user audio session. If the user session is bad, it will take the
+ * steps necessary to mend it.
+ */
+LISTEN.prepareSession = function() {
+	$.ajax({
+		type : "GET",
+		url : "/user/listen/check/session",
+		dataType : "json",
+		data : {},
+		success : LISTEN.handlePrepareSession
+	});
+};
+
+/**
+ * Handle the prepare session request: either music will begin playing or the
+ * user will be asked to re-authenticate with gmusic
+ */
+LISTEN.handlePrepareSession = function(resp) {
+	if (resp.gsession) {
+		LISTEN.kickOffAudioSession();
+	} else {
+		$.ajax({
+			type : "GET",
+			url : "/user/gmusic/login/modal",
+			dataType : "html",
+			data : {},
+			success : LISTEN.showGmusicLogin
+		});
+	}
+};
+
+/**
+ * Show the modal dialog to login to gmusic
+ */
+LISTEN.showGmusicLogin = function(content) {
+	$("#gmusic-modal_body").append(content);
+	$("#gmusic-modal").modal("show");
+};
+
+/**
+ * Retrieves and begins the user audio session
  * 
  * @param locinfo
  *            an object containing the lat and lng information for the user
@@ -174,11 +214,7 @@ LISTEN.initLoading = function() {
 	});
 };
 
-/* executes when the DOM is ready */
-$(document).ready(function() {
-
-	LISTEN.initLoading();
-
+LISTEN.kickOffAudioSession = function() {
 	/* get the user's location and metadata about that location */
 	TUNERAMBLR.util.getUserLocation(function(position) {
 
@@ -204,8 +240,15 @@ $(document).ready(function() {
 		}, LISTEN.initUserSessionAudio);
 
 	}, function() {
-		LISTEN.setupUserSession(LISTEN.defaults.location);
+		LISTEN.getUserSessionAudio(LISTEN.defaults.location,
+				LISTEN.initUserSessionAudio);
 	}, function(error) {
 		/* do something */
 	});
+};
+
+/* executes when the DOM is ready */
+$(document).ready(function() {
+	LISTEN.initLoading();
+	LISTEN.prepareSession();
 });

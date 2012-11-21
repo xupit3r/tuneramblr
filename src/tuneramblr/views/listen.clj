@@ -38,7 +38,10 @@
       (common/build-nav-bar (umanage/me) location)
       [:div.row-fluid
        [:div#audio_content.offset3
-        content]]]]))
+        content]]
+      (common/build-modal-dialog
+        "gmusic-modal"
+        "Login to Google Music")]]))
 
 ;; defines the markup for a jPlayer
 (defpartial jplayer-layout []
@@ -111,6 +114,14 @@
        [:span.metad_text ]]]]
     (jplayer-layout)))
 
+;; check if we have a good google music
+;; session
+(defpage "/user/listen/check/session" {}
+  (response/json
+    {:gsession 
+     (gmusic/goodSession? 
+       (umanage/get-gmusic-info (umanage/me)))}))
+
 ;; get the audio for the current
 ;; situation
 (defpage "/user/listen/get/audio" {:keys [lat lng curtime tz]}
@@ -121,17 +132,16 @@
             linfo (location/formatted-address? lat lng)
             tinfo (song/get-discrete-time (Long/valueOf curtime) tz)]
     (let [atrack (song/applic-track winfo {:lat lat
-                                           :lng lng} tinfo)
-          authSession     (if (not (gmusic/goodSession? gmSession))
-                            (let [newAuth (gmusic/getNewAuthSession gmSession)]
-                              (umanage/add-gmusic-info (umanage/me) newAuth) newAuth)
-                            gmSession)]
-      (let [sresults (gmusic/songSearch (:title atrack) authSession)]
-        (let [track (first (:songs sresults))]
-          (let [playUrlResp (gmusic/songPlayUrl (:id track) authSession)]
-          (response/json
-            {:url (:url playUrlResp)
-             :track track
-             :weather winfo
-             :location linfo
-             :time tinfo})))))))
+                                           :lng lng} tinfo)]
+      (if (gmusic/goodSession? gmSession)
+        (let [sresults (gmusic/songSearch (:title atrack) gmSession)]
+          (let [track (first (:songs sresults))]
+            (let [playUrlResp (gmusic/songPlayUrl (:id track) gmSession)]
+              (response/json
+                {:url (:url playUrlResp)
+                 :track track
+                 :weather winfo
+                 :location linfo
+                 :time tinfo
+                 :gsession true}))))
+        (response/json {:gsession false})))))

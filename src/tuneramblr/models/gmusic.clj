@@ -113,7 +113,7 @@
 ;; Google Play session (one that 
 ;; is authorized to make requests)
 (defn goodSession? [authSession]
-  (:songs (songSearch "" authSession)))
+  (and (:songs (songSearch "" authSession)) true))
 
 ;; gets a new Google Play session
 (defn getNewAuthSession [oldAuthSession]
