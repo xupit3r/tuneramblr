@@ -31,6 +31,8 @@ LISTEN.prepareSession = function() {
  */
 LISTEN.handlePrepareSession = function(resp) {
 	if (resp.gsession) {
+		// TODO: maybe add some indication that we have successfully logged in to gmusic
+		LISTEN.hideGmusicLogin();
 		LISTEN.kickOffAudioSession();
 	} else {
 		$.ajax({
@@ -44,10 +46,18 @@ LISTEN.handlePrepareSession = function(resp) {
 };
 
 /**
+ * Hides the modal dialog to login to gmusic
+ */
+LISTEN.hideGmusicLogin = function(content) {
+	$("#gmusic-modal_body").empty();
+	$("#gmusic-modal").modal("hide");
+};
+
+/**
  * Show the modal dialog to login to gmusic
  */
 LISTEN.showGmusicLogin = function(content) {
-	$("#gmusic-modal_body").append(content);
+	$("#gmusic-modal_body").empty().append(content);
 	$("#gmusic-modal").modal("show");
 };
 
@@ -203,7 +213,10 @@ LISTEN.getNextTrack = function() {
 	}, LISTEN.updateUserSessionAudio);
 };
 
-LISTEN.initLoading = function() {
+/**
+ * Sets up the ajax loading state
+ */
+LISTEN.initAjaxLoading = function() {
 	/* loading div for ajax calls */
 	$("#loading_div").ajaxStart(function() {
 		$("#jp-track-title").text("");
@@ -213,6 +226,23 @@ LISTEN.initLoading = function() {
 		$(this).hide();
 	});
 };
+
+/**
+ * Used to explicitly show the the loading state
+ */
+LISTEN.showLoading = function() {
+	$("#jp-track-title").text("");
+	$("#jp-track-artist").text("");
+	$("#loading_div").show();
+};
+
+/**
+ * Used to explicitly clear the the loading state
+ */
+LISTEN.showLoading = function() {
+	$("#loading_div").hide();
+};
+
 
 LISTEN.kickOffAudioSession = function() {
 	/* get the user's location and metadata about that location */
@@ -249,6 +279,6 @@ LISTEN.kickOffAudioSession = function() {
 
 /* executes when the DOM is ready */
 $(document).ready(function() {
-	LISTEN.initLoading();
+	LISTEN.initAjaxLoading();
 	LISTEN.prepareSession();
 });

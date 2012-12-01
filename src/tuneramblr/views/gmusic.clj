@@ -7,7 +7,7 @@
   (:use [noir.core :only [defpage defpartial render]]
         [hiccup.form]
         [hiccup.core :only [html]]
-        [hiccup.page :only [html5 include-css]]))
+        [hiccup.page :only [html5 include-js]]))
 
 ;; build the control-group-form class
 (defn get-control-group-class [field]
@@ -65,7 +65,7 @@
     (vali/on-error :g-password error-disp)]]
   [:div
    [:div {:class "controls"}
-    (submit-button {:class "btn"} "Update")]])
+    (submit-button {:class "btn"} "Submit")]])
 
 ;; user account management page
 (defpage  "/user/gmusic" {:as user}
@@ -76,35 +76,53 @@
              [:post "/user/gmusic"]
              (gmusic-fields user))))
 
+;; perform the addition of the google credentials
+;; to the datastore
+(defn process-add [auths]
+  (if (validGoogleLogin auths)
+    (do
+      (umanage/add-gmusic-info
+        (umanage/me) 
+        auths) true)
+    (do 
+      (vali/set-error :g-username "Bad account info.") false)))
+    
+;; process a google credentials submission request
 (defpage [:post "/user/gmusic"] {:as gmi}
   (if (gmusic-valid? gmi)
     (try
-      (let [authSession (gmusic/loginToPlay 
-                          (:g-username gmi) 
-                          (:g-password gmi))]
-        (if (validGoogleLogin authSession)
-          (do
-            (umanage/add-gmusic-info
-              (umanage/me) 
-              authSession)
-            (response/redirect "/user/listen"))
-          (do
-            (vali/set-error :g-username "Bad account info.")
-            (render "/user/gmusic" gmi))))
-      (catch Exception e
-        (do
-          (vali/set-error :g-username "Bad account info.")
-          (render "/user/gmusic" gmi))))
+      (if (process-add 
+            (gmusic/loginToPlay 
+              (:g-username gmi) 
+              (:g-password gmi)))
+        (response/redirect "/user/listen")
+        (render "/user/gmusic" gmi))
+    (catch Exception e
+      (do
+        (vali/set-error :g-username "Bad account info.")
+        (render "/user/gmusic" gmi))))
     (render "/user/gmusic" gmi)))
+
+;; handle the submission of google music login
+;; credentials from the google music modal
+(defpage [:post "/user/gmusic/login/modal/submit"] {:as gmi}
+  (try
+    (if (process-add 
+          (gmusic/loginToPlay 
+            (:g-username gmi) 
+            (:g-password gmi)))
+      (response/json {:gsession true})
+      (response/json {:gsession false}))
+    (catch Exception e
+      (do
+        (vali/set-error :g-username "Bad account info.")
+        (response/json {:gsession false})))))
 
 ;; display a modal dialog for the user
 ;; login to Google Music
 (defpage "/user/gmusic/login/modal" {}
   (html5
-    (form-to {:class "form-horizontal"}
-             [:post "/user/gmusic"]
-             (gmusic-fields {}))))
-  
-
-
-
+    (form-to {:id "gmusic-modal-form" :class "form-horizontal"}
+             [:post ""]
+             (gmusic-fields {}))
+    (include-js "/js/gmusic-modal.js")))

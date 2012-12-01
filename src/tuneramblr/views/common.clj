@@ -80,7 +80,7 @@
      [:ul.nav
       [:li (when (= :home active) {:class "active"}) 
        [:a {:href "/"} "Home"]]
-      (when username
+      (when (and username (umanage/gmusic-linked? username))
         [:li (when (= :user-listen active) {:class "active"}) 
          [:a {:href "/user/listen"} "Listen!"]])
       (when (and username (not (umanage/gmusic-linked? username)))
