@@ -8,4 +8,5 @@
                            [http.async.client "0.4.5"]
                            [org.clojure/data.json "0.1.2"]
                            [org.imgscalr/imgscalr-lib "4.2"]]
-            :main tuneramblr.server)
+            :main tuneramblr.server
+            :min-lein-version "2.0.0")
