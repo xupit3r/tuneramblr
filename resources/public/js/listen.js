@@ -33,7 +33,13 @@ LISTEN.handlePrepareSession = function(resp) {
 	if (resp.gsession) {
 		// TODO: maybe add some indication that we have successfully logged in to gmusic
 		LISTEN.hideGmusicLogin();
-		LISTEN.kickOffAudioSession();
+		$.ajax({
+			type : "GET",
+			url : "/user/listen/watcha/modal",
+			dataType : "html",
+			data : {},
+			success : LISTEN.showWatchaDoing
+		});
 	} else {
 		$.ajax({
 			type : "GET",
@@ -48,7 +54,25 @@ LISTEN.handlePrepareSession = function(resp) {
 /**
  * Hides the modal dialog to login to gmusic
  */
-LISTEN.hideGmusicLogin = function(content) {
+LISTEN.hideWatchaDoing = function() {
+	$("#watcha-modal_body").empty();
+	$("#watcha-modal").modal("hide");
+};
+
+/**
+ * Show the modal dialog to login to gmusic
+ */
+LISTEN.showWatchaDoing = function(content) {
+	$("#watcha-modal_body").empty().append(content);
+	$("#watcha-modal").modal({backdrop : "static",
+							  keyboard : false,
+							  show : true});
+};
+
+/**
+ * Hides the modal dialog to login to gmusic
+ */
+LISTEN.hideGmusicLogin = function() {
 	$("#gmusic-modal_body").empty();
 	$("#gmusic-modal").modal("hide");
 };
@@ -70,13 +94,14 @@ LISTEN.showGmusicLogin = function(content) {
  * @param sHandler
  *            a callback function to handle a successful Ajax request.
  */
-LISTEN.getUserSessionAudio = function(locinfo, sHandler) {
+LISTEN.getUserSessionAudio = function(locinfo, doingWhat, sHandler) {
 	var data = {};
 	if (locinfo) {
 		data = {
 			lat : locinfo.lat,
 			lng : locinfo.lng,
 			curtime : new Date().getTime(),
+			watcha : doingWhat,
 			tz : jstz.determine().name()
 		}
 	}
@@ -244,7 +269,7 @@ LISTEN.showLoading = function() {
 };
 
 
-LISTEN.kickOffAudioSession = function() {
+LISTEN.kickOffAudioSession = function(doingWhat) {
 	/* get the user's location and metadata about that location */
 	TUNERAMBLR.util.getUserLocation(function(position) {
 
@@ -267,10 +292,10 @@ LISTEN.kickOffAudioSession = function() {
 		LISTEN.getUserSessionAudio({
 			lat : position.coords.latitude,
 			lng : position.coords.longitude
-		}, LISTEN.initUserSessionAudio);
+		}, doingWhat, LISTEN.initUserSessionAudio);
 
 	}, function() {
-		LISTEN.getUserSessionAudio(LISTEN.defaults.location,
+		LISTEN.getUserSessionAudio(LISTEN.defaults.location, doingWhat,
 				LISTEN.initUserSessionAudio);
 	}, function(error) {
 		/* do something */

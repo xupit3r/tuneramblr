@@ -11,7 +11,7 @@
   (:use [noir.core :only [defpage defpartial render]]
         [hiccup.form]
         [hiccup.core :only [html]]
-        [hiccup.page :only [html5 include-css]]))
+        [hiccup.page :only [html5 include-js]]))
 
 ;; builds a common representation of the page's head
 ;; which includes the common necessary libraries
@@ -41,7 +41,10 @@
         content]]
       (common/build-modal-dialog
         "gmusic-modal"
-        "Login to Google Music")]]))
+        "Login to Google Music")
+      (common/build-modal-dialog
+        "watcha-modal"
+        "Watcha doing?")]]))
 
 ;; defines the markup for a jPlayer
 (defpartial jplayer-layout []
@@ -114,6 +117,25 @@
        [:span.metad_text ]]]]
     (jplayer-layout)))
 
+;; fields for the watcha doing? dialog content
+(defpartial watcha-fields []
+  [:div (common/get-control-group-class :w-doing)
+   (label {:class "control-label"} "w-doing" "What are you up to?")
+   [:div.controls
+    (text-field "w-doing" "")
+    (vali/on-error :w-doing common/error-disp)]]
+  [:div
+   [:div.controls
+    (submit-button {:class "btn"} "Submit")]])
+
+;; content for the watcha doing? dialog
+(defpage "/user/listen/watcha/modal" []
+  (html5
+    (form-to {:id "watcha-modal-form" :class "form-horizontal"}
+             [:post ""]
+             (watcha-fields))
+    (include-js "/js/watcha-modal.js")))
+
 ;; check if we have a good google music
 ;; session
 (defpage "/user/listen/check/session" {}
@@ -122,26 +144,23 @@
      (gmusic/goodSession? 
        (umanage/get-gmusic-info (umanage/me)))}))
 
-;; get the audio for the current
-;; situation
-(defpage "/user/listen/get/audio" {:keys [lat lng curtime tz]}
+;; get the audio for the current situation/station
+(defpage "/user/listen/get/audio" {:keys [lat lng curtime tz watcha]}
   (let [gmSession (umanage/get-gmusic-info (umanage/me))
          winfo  (->> 
                      (weather/weather? lat lng)
                      (weather/prettyweather))
-            linfo (location/formatted-address? lat lng)
-            tinfo (song/get-discrete-time (Long/valueOf curtime) tz)]
+         linfo (location/formatted-address? lat lng)
+         tinfo (song/get-discrete-time (Long/valueOf curtime) tz)]
     (let [atrack (song/applic-track winfo {:lat lat
-                                           :lng lng} tinfo)]
-      (if (gmusic/goodSession? gmSession)
-        (let [sresults (gmusic/songSearch (:title atrack) gmSession)]
-          (let [track (first (:songs sresults))]
-            (let [playUrlResp (gmusic/songPlayUrl (:id track) gmSession)]
-              (response/json
-                {:url (:url playUrlResp)
-                 :track track
-                 :weather winfo
-                 :location linfo
-                 :time tinfo
-                 :gsession true}))))
-        (response/json {:gsession false})))))
+                                           :lng lng} tinfo watcha)]
+      (let [sresults (gmusic/songSearch (:title atrack) gmSession)]
+        (let [track (first (:songs sresults))]
+          (let [playUrlResp (gmusic/songPlayUrl (:id track) gmSession)]
+            (response/json
+              {:url (:url playUrlResp)
+               :track track
+               :weather winfo
+               :location linfo
+               :time tinfo
+               :gsession true})))))))

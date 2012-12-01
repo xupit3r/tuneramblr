@@ -1,5 +1,6 @@
 (ns tuneramblr.views.common
-  (:require [tuneramblr.models.user.umanage :as umanage])
+  (:require [tuneramblr.models.user.umanage :as umanage]
+            [noir.validation :as vali])
   (:use [noir.core :only [defpartial]]
         [hiccup.page :only [include-css include-js html5]]))
 
@@ -105,6 +106,16 @@
                      modal-body]
    [:div.modal-footer ]])
 
+;; build the control-group-form class
+(defn get-control-group-class [field]
+  (if 
+    (vali/errors? field)
+                  {:class "control-group error"}
+                  {:class "control-group"}))
+
+;; generic error display layout
+(defpartial error-disp [[first-error]]
+  [:p.help-inline first-error])
 
 ;; puts together an HTML layout
 (defpartial layout [& content]

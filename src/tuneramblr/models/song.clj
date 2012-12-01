@@ -253,11 +253,11 @@
 ;; the current weather conditions
 ;; latlng - the latlng location
 ;; dtime - timestamp
-(defn applic-track [winfo latlng dtime]
+;; watcha - what the user is currently doing
+(defn applic-track [winfo latlng dtime watcha]
   (let [lat (Double/valueOf (:lat latlng))
         lng (Double/valueOf (:lng latlng))]
-    (let [wq (map (fn [v]
-                    {:weather {$regex v}})
+    (let [wq (map #(hash-map :weather {$regex %})
                   (clojure.string/split winfo #","))
           clat (util/m2lat NEAR_BY_MILES)
           clng (util/m2lng NEAR_BY_MILES lat)]
@@ -265,11 +265,13 @@
         (map util/no-id
              (mc/find-maps 
                "songs" 
-               {$or 
-                [{$or wq}
-                 {:lat {$gt (- lat clat)
-                        $lt (+ lat clat)}
-                  :lng {$gt (- lng clng)
-                        $lt (+ lng clng)}}
-                 {:ctype {$ne "skip"}}]}))))))
+               {$and
+                [{$or 
+                  [{$or wq}
+                   {:lat {$gt (- lat clat)
+                          $lt (+ lat clat)}
+                    :lng {$gt (- lng clng)
+                          $lt (+ lng clng)}}
+                   {:ctype {$ne "skip"}}]}
+                 {:userdef {$regex watcha}}]}))))))
   
