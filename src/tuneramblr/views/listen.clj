@@ -79,18 +79,17 @@
       [:div.jp-time-holder
        [:div.jp-current-time ]
        [:div.jp-duration ]
-       [:ul.jp-toggles
-        [:li.jp-repeat 
-         [:a 
-          {:href "javascript:;" :tabindex 1 :title="Repeat"} "Repeat"]]
-        [:li.jp-repeat 
-         [:a 
-          {:href-off "javascript:;" :tabindex 1 :title="Repeat Off"} "Repeat Off"]]]]]
+       [:ul.love-hate-list
+        [:li#love-track
+         [:i.icon-thumbs-up]]
+        [:li#hate-track
+         [:i.icon-thumbs-down]]]]]
      [:div.jp-title
       [:ul
        [:li#jp-track-title ]
        [:li#jp-track-artist ]
        [:li#loading_div "&nbsp;"]]]
+     [:div.love-hate-container]
      [:div.jp-no-solution
       [:span "Update Required"]
       "To play the media you will need to either update your browser to a recent version or update your"
@@ -115,7 +114,8 @@
       [:div#metad_time_val 
        [:span.metad_lbl.label "Time of Day"]
        [:span.metad_text ]]]]
-    (jplayer-layout)))
+    [:div#jp-cont 
+     (jplayer-layout)]))
 
 ;; fields for the watcha doing? dialog content
 (defpartial watcha-fields []

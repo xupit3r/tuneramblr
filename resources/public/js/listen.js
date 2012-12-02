@@ -101,8 +101,8 @@ LISTEN.getUserSessionAudio = function(locinfo, doingWhat, sHandler) {
 			lat : locinfo.lat,
 			lng : locinfo.lng,
 			curtime : new Date().getTime(),
-			watcha : doingWhat,
-			tz : jstz.determine().name()
+			tz : jstz.determine().name(),
+			watcha : doingWhat
 		}
 	}
 
@@ -186,10 +186,7 @@ LISTEN.buildAudioSectionMeta = function(meta) {
  *            description)
  */
 LISTEN.setupAudioPlayer = function(audioInfo) {
-
-	// TODO: add check for valid URL and login information. if new login
-	// information is needed, then popup a dialog to request it from the user.
-
+	
 	var ap = $("#jquery_jplayer_1");
 
 	ap.jPlayer({
@@ -205,6 +202,19 @@ LISTEN.setupAudioPlayer = function(audioInfo) {
 		},
 		swfPath : "/script/Jplayer.swf",
 		supplied : "mp3"
+	});
+	
+	/* setup the love/hate stuff */
+	$("#love-track").click(function (ev) {
+		// TODO: add logic to submit "love" track
+		// TODO: update love icon to reflect that you "loved" this track
+	});
+	
+	$("#hate-track").click(function (ev) {
+		// TODO: add logic to submit "hate" track
+		// TODO: indicate in the UI that you click the "hate" icon
+		$("#jquery_jplayer_1").jPlayer("stop");
+		LISTEN.getNextTrack();
 	});
 
 };
@@ -235,7 +245,7 @@ LISTEN.getNextTrack = function() {
 	LISTEN.getUserSessionAudio({
 		lat : LISTEN.userLocation.lat,
 		lng : LISTEN.userLocation.lng
-	}, LISTEN.updateUserSessionAudio);
+	}, LISTEN.session.watcha, LISTEN.updateUserSessionAudio);
 };
 
 /**
@@ -270,6 +280,10 @@ LISTEN.showLoading = function() {
 
 
 LISTEN.kickOffAudioSession = function(doingWhat) {
+	
+	/* set the doing what? in the local cache */
+	LISTEN.session.watcha = doingWhat;
+	
 	/* get the user's location and metadata about that location */
 	TUNERAMBLR.util.getUserLocation(function(position) {
 

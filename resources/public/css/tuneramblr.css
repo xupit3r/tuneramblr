@@ -35,6 +35,21 @@
 	margin-bottom: 5px;
 }
 
+ul.love-hate-list {
+	list-style-type:none;
+}
+
+ul.love-hate-list li {
+	display:block;
+	float:right;
+}
+
+ul.love-hate-list li i {
+	display:block;
+	width:25px;
+	height:18px;
+}
+
 #timeline_container .track_entry {
 	border-top: 1px solid #F1F1F1;
     overflow: hidden;
