@@ -55,6 +55,7 @@ LISTEN.handlePrepareSession = function(resp) {
  * Hides the modal dialog to login to gmusic
  */
 LISTEN.hideWatchaDoing = function() {
+	$("#track-lookup").show();
 	$("#watcha-modal_body").empty();
 	$("#watcha-modal").modal("hide");
 };
@@ -138,7 +139,11 @@ LISTEN.storeAudioMeta = function(meta) {
 LISTEN.initUserSessionAudio = function(resp) {
 	LISTEN.storeAudioMeta(resp);
 	LISTEN.buildAudioSectionMeta(resp);
-	LISTEN.setupAudioPlayer(resp);
+	$("#track-lookup").remove();
+	$(".spinny").remove();
+	$("#jp_container_1").fadeIn("slow", function() {
+		LISTEN.setupAudioPlayer(resp);
+	});
 };
 
 /**
@@ -320,4 +325,6 @@ LISTEN.kickOffAudioSession = function(doingWhat) {
 $(document).ready(function() {
 	LISTEN.initAjaxLoading();
 	LISTEN.prepareSession();
+	$("#jp_container_1").hide();
+	$("#track-lookup").hide();
 });

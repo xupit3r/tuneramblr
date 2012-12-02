@@ -103,17 +103,24 @@
     :user-listen
     [:div#metadata
      [:div#metad_location 
-      [:div#metad_location_val 
+      [:div#metad_location_val.inline-block 
        [:span.metad_lbl.label "Location"]
-       [:span.metad_text ]]]
+       [:span.metad_text ]
+       [:div.spinny ]]]
      [:div#metad_weather
-      [:div#metad_weather_val 
+      [:div#metad_weather_val.inline-block 
        [:span.metad_lbl.label "Weather"]
-       [:span.metad_text ]]]
+       [:span.metad_text ]
+       [:div.spinny ]]]
      [:div#metad_time
-      [:div#metad_time_val 
+      [:div#metad_time_val.inline-block 
        [:span.metad_lbl.label "Time of Day"]
-       [:span.metad_text ]]]]
+       [:span.metad_text ]
+       [:div.spinny ]]]]
+    [:div#track-lookup 
+     [:div#track-lookup-progress.progress.progress-striped.active
+      [:div#track-lookup-notice.bar {:style "width: 100%"} 
+       "Finding the right track for you, please wait!"]]]
     [:div#jp-cont 
      (jplayer-layout)]))
 
