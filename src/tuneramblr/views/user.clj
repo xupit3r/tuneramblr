@@ -35,10 +35,9 @@
   (html5
     (common/build-common-head title)
     [:body
-     [:div {:class "container"}
+     [:div.container
       (common/build-nav-bar nil location)
-      [:div {:id "form_content"
-             :class "well"}
+      [:div#form_content.well
        [:h3 title]
        content]]]))
 
@@ -79,26 +78,26 @@
 (defpartial user-fields [{:keys [email username password re-password]}]
   [:div (get-control-group-class :email)
    (label {:class "control-label"} "email" "Email address: ")
-   [:div {:class "controls"}
+   [:div.controls
     (text-field "email" email)
     (vali/on-error :email error-disp)]]
   [:div (get-control-group-class :username)
    (label {:class "control-label"} "username" "Desired username: ")
-   [:div {:class "controls"}
+   [:div.controls
     (text-field "username" username)
     (vali/on-error :username error-disp)]]
   [:div (get-control-group-class :password)
    (label {:class "control-label"} "password" "Desired password: ")
-   [:div {:class "controls"}
+   [:div.controls
     (password-field "password" nil)
     (vali/on-error :password  error-disp)]]
   [:div (get-control-group-class :re-password)
    (label {:class "control-label"} "password" "Re-enter password: ")
-   [:div {:class "controls"}
+   [:div.controls
     (password-field "password" nil)
     (vali/on-error :re-password error-disp)]]
   [:div
-   [:div {:class "controls"}
+   [:div.controls
     (submit-button {:class "btn"} "Create user")]])
 
 
@@ -132,20 +131,20 @@
 ;; setup user login form content
 (defpartial user-login-fields [{:keys [username]}]
   (vali/on-error :username login-error-display)
-  [:div {:class "control-group"}
+  [:div.control-group
    (label {:class "control-label"} "username" "Username: ")
-   [:div {:class "controls"}
+   [:div.controls
     (text-field {:class "input-small"}
                 "username" 
                 nil)]]
-  [:div {:class "control-group"}
+  [:div.control-group
    (label {:class "control-label"} "password" "Password: ")
-   [:div {:class "controls"}
+   [:div.controls
     (password-field {:class "input-small"}
                     "password" 
                     nil)]]
-  [:div {:class "control-group"}
-   [:div {:class "controls"}
+  [:div.control-group
+   [:div.controls
     (submit-button {:class "btn btn-primary"}
                    "Login")]])
 

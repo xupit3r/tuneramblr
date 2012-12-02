@@ -68,10 +68,11 @@
 ;; builds a common representation of the page's head
 ;; which includes the common necessary libraries
 (defpartial build-common-footer []
-  [:div {:class "footer"}
-   [:p#tuneramblr_copy
-    "&copy; 2012 Joe D'Alessandro"]])
-
+  [:div.container
+   [:div#footer.footer
+    [:p#tuneramblr_copy
+     "&copy; 2012 Joe D'Alessandro"]]])
+   
 ;; builds the common navigation bar for the app
 (defpartial build-nav-bar [username active]
   [:div.navbar
@@ -99,11 +100,8 @@
 (defpartial build-modal-dialog [modal-id modal-header & modal-body]
   [:div.modal.hide {:id  modal-id}
    [:div.modal-header
-    [:button.close {:type "button"
-                    :data-dismiss "modal"} "X"]
     [:h3 modal-header]]
-   [:div.modal-body {:id (str modal-id "_body")} 
-                     modal-body]
+   [:div.modal-body {:id (str modal-id "_body")} modal-body]
    [:div.modal-footer ]])
 
 ;; build the control-group-form class

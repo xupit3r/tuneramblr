@@ -15,7 +15,8 @@ LISTEN.defaults.location = {
  * Prepares the user audio session. If the user session is bad, it will take the
  * steps necessary to mend it.
  */
-LISTEN.prepareSession = function() {
+LISTEN.prepareSession = function(watcha) {
+	LISTEN.session.watcha = watcha;
 	$.ajax({
 		type : "GET",
 		url : "/user/listen/check/session",
@@ -33,21 +34,9 @@ LISTEN.handlePrepareSession = function(resp) {
 	if (resp.gsession) {
 		// TODO: maybe add some indication that we have successfully logged in to gmusic
 		LISTEN.hideGmusicLogin();
-		$.ajax({
-			type : "GET",
-			url : "/user/listen/watcha/modal",
-			dataType : "html",
-			data : {},
-			success : LISTEN.showWatchaDoing
-		});
+		LISTEN.kickOffAudioSession(LISTEN.session.watcha);
 	} else {
-		$.ajax({
-			type : "GET",
-			url : "/user/gmusic/login/modal",
-			dataType : "html",
-			data : {},
-			success : LISTEN.showGmusicLogin
-		});
+		LISTEN.showGmusicLogin();
 	}
 };
 
@@ -63,11 +52,19 @@ LISTEN.hideWatchaDoing = function() {
 /**
  * Show the modal dialog to login to gmusic
  */
-LISTEN.showWatchaDoing = function(content) {
-	$("#watcha-modal_body").empty().append(content);
-	$("#watcha-modal").modal({backdrop : "static",
-							  keyboard : false,
-							  show : true});
+LISTEN.showWatchaDoing = function() {
+	$.ajax({
+		type : "GET",
+		url : "/user/listen/watcha/modal",
+		dataType : "html",
+		data : {},
+		success : function (content) {
+			$("#watcha-modal_body").empty().append(content);
+			$("#watcha-modal").modal({backdrop : "static",
+									  keyboard : false,
+									  show : true});
+		}
+	});
 };
 
 /**
@@ -81,9 +78,19 @@ LISTEN.hideGmusicLogin = function() {
 /**
  * Show the modal dialog to login to gmusic
  */
-LISTEN.showGmusicLogin = function(content) {
-	$("#gmusic-modal_body").empty().append(content);
-	$("#gmusic-modal").modal("show");
+LISTEN.showGmusicLogin = function() {
+	$.ajax({
+		type : "GET",
+		url : "/user/gmusic/login/modal",
+		dataType : "html",
+		data : {},
+		success : function (content) {
+			$("#gmusic-modal_body").empty().append(content);
+			$("#gmusic-modal").modal({backdrop : "static",
+				  					  keyboard : false,
+				  					  show : true});	
+		}
+	});
 };
 
 /**
@@ -123,10 +130,6 @@ LISTEN.getUserSessionAudio = function(locinfo, doingWhat, sHandler) {
  *            an object containing the meta data to be stored
  */
 LISTEN.storeAudioMeta = function(meta) {
-	/* store the data */
-	LISTEN.session.weather = meta.weather;
-	LISTEN.session.location = meta.location;
-	LISTEN.session.time = meta.time;
 	LISTEN.session.track = meta.track;
 };
 
@@ -140,7 +143,6 @@ LISTEN.initUserSessionAudio = function(resp) {
 	LISTEN.storeAudioMeta(resp);
 	LISTEN.buildAudioSectionMeta(resp);
 	$("#track-lookup").remove();
-	$(".spinny").remove();
 	$("#jp_container_1").fadeIn("slow", function() {
 		LISTEN.setupAudioPlayer(resp);
 	});
@@ -159,28 +161,14 @@ LISTEN.updateUserSessionAudio = function(resp) {
 };
 
 /**
- * builds the user meta data section (location, time, weather).
+ * builds the audio metadata section
  * 
  * @param meta
- *            an object containing the expected metadata (location, time, and
- *            weather)
+ *            an object containing the expected metadata/trackinfo
  */
 LISTEN.buildAudioSectionMeta = function(meta) {
-	/* build the new elements */
-	var timeEl = $("#metad_time_val span.metad_text");
-	var weatherEl = $("#metad_weather_val span.metad_text");
-	var locationEl = $("#metad_location_val span.metad_text");
-	var trackTitleEl = $("#jp-track-title");
-	var trackArtistEl = $("#jp-track-artist");
-
-	/* append the text nodes to the elements */
-	timeEl.text(meta.time);
-	weatherEl.text(meta.weather)
-	locationEl.text(meta.location);
-
-	var track = meta.track;
-	trackTitleEl.text(track.title);
-	trackArtistEl.text(track.artist);
+	$("#jp-track-title").text(meta.track.title);
+	$("#jp-track-artist").text(meta.track.artist);
 };
 
 /**
@@ -267,22 +255,6 @@ LISTEN.initAjaxLoading = function() {
 	});
 };
 
-/**
- * Used to explicitly show the the loading state
- */
-LISTEN.showLoading = function() {
-	$("#jp-track-title").text("");
-	$("#jp-track-artist").text("");
-	$("#loading_div").show();
-};
-
-/**
- * Used to explicitly clear the the loading state
- */
-LISTEN.showLoading = function() {
-	$("#loading_div").hide();
-};
-
 
 LISTEN.kickOffAudioSession = function(doingWhat) {
 	
@@ -324,7 +296,7 @@ LISTEN.kickOffAudioSession = function(doingWhat) {
 /* executes when the DOM is ready */
 $(document).ready(function() {
 	LISTEN.initAjaxLoading();
-	LISTEN.prepareSession();
+	LISTEN.showWatchaDoing();
 	$("#jp_container_1").hide();
 	$("#track-lookup").hide();
 });

@@ -22,16 +22,16 @@
 (defpartial user-setting-fields [userinfo]
   [:div (get-control-group-class :email)
    (label {:class "control-label"} "email" "Email: ")
-   [:div {:class "controls"}
+   [:div.controls
     (text-field "email" (:email userinfo))
     (vali/on-error :email error-disp)]]
   [:div (get-control-group-class :username)
    (label {:class "control-label"} "username" "Username: ")
-   [:div {:class "controls"}
+   [:div.controls
     (text-field "username" (:username userinfo))
     (vali/on-error :username error-disp)]]
   [:div
-   [:div {:class "controls"}
+   [:div.controls
     (submit-button {:class "btn btn-primary"}
                    "Update")]])
 
@@ -40,7 +40,6 @@
   (html5
     [:div
      (get common/includes :timeline.js)
-     [:h2 (str (umanage/me) "'s Timeline")]
      [:div#timeline_container 
       (common/loading-div)]]))
 
@@ -49,7 +48,6 @@
   (html5
     [:div
      (get common/includes :ttable.js)
-     [:h2 (str (umanage/me) "'s Tracks")]
      (common/loading-div)
      [:div#tracks_table_container
       [:table#tracks_table.table ]]]))
@@ -60,7 +58,6 @@
     [:div
      (get common/includes :leaflet.js)
      (get common/includes :tmap.js)
-     [:h2 (str (umanage/me) "'s Map")]
      [:div#tracks_map_container
       [:div#tracks_map {:style "height: 500px"}
        (common/loading-div)]]]))
@@ -104,32 +101,9 @@
 (defn layout-not-logged-in [username]
   (common/layout
     (common/build-nav-bar username :home)
-    [:div.carousel.slid
-     [:div.active.item
-      [:div.hero-unit.center-text
-       [:h1 "tuneramblr"]
-       [:p "Music is a journey, find the right stuff for where you are."]]]
-     [:div.item
-      [:div.row.well
-       [:div.span3 "&nbsp;"]
-       [:div.span3
-        [:img {:src "/img/mobile-screenshot.png"}]]
-       [:div.span4
-        [:h2 (str "Monitor what you are listening to, where you "
-                  "are listening to it, and a multitude of other "
-                  "factors (weather, imagery, time of day, etc.) "
-                  "using our mobile application.")]]
-       [:div.span1 "&nbsp;"]
-       [:div.span1 "&nbsp;"]]]
-     [:div.item
-      [:div.row.well
-       [:div.span4 "&nbsp;"]
-       [:div.span4 
-        [:h2 (str "Listen to music that will fit the current state "
-                  "of your world, build smart playlists, and view "
-                  "trends about your listening habits.  Learn why "
-                  "you enjoy a particular song in a particular situation.")]]
-       [:div.span4 "&nbsp;"]]]]
+    [:div.hero-unit.center-text
+     [:h1 "tuneramblr"]
+     [:p "Music is a journey, find the right stuff for where you are."]]
     (common/build-common-footer)))
 
 

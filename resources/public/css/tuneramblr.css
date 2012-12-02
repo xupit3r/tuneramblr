@@ -7,8 +7,14 @@
 	text-align: center;
 }
 
-.metad_text {
-	margin-left: 2px;
+#footer {
+    background-color: #FAFAFA;
+    background-image: linear-gradient(to bottom, #FFFFFF, #F2F2F2);
+    background-repeat: repeat-x;
+    border-radius: 4px 4px 4px 4px;
+    min-height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 #tracks_table tbody tr {
@@ -70,6 +76,7 @@ ul.love-hate-list {
 ul.love-hate-list li {
 	display:block;
 	float:right;
+	cursor: pointer;
 }
 
 ul.love-hate-list li i {

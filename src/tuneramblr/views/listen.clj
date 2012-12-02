@@ -44,7 +44,8 @@
         "Login to Google Music")
       (common/build-modal-dialog
         "watcha-modal"
-        "Watcha doing?")]]))
+        "Watcha doing?")]
+     (common/build-common-footer)]))
 
 ;; defines the markup for a jPlayer
 (defpartial jplayer-layout []
@@ -101,22 +102,6 @@
   (layout
     "Listen!"
     :user-listen
-    [:div#metadata
-     [:div#metad_location 
-      [:div#metad_location_val.inline-block 
-       [:span.metad_lbl.label "Location"]
-       [:span.metad_text ]
-       [:div.spinny ]]]
-     [:div#metad_weather
-      [:div#metad_weather_val.inline-block 
-       [:span.metad_lbl.label "Weather"]
-       [:span.metad_text ]
-       [:div.spinny ]]]
-     [:div#metad_time
-      [:div#metad_time_val.inline-block 
-       [:span.metad_lbl.label "Time of Day"]
-       [:span.metad_text ]
-       [:div.spinny ]]]]
     [:div#track-lookup 
      [:div#track-lookup-progress.progress.progress-striped.active
       [:div#track-lookup-notice.bar {:style "width: 100%"} 
@@ -151,23 +136,23 @@
      (gmusic/goodSession? 
        (umanage/get-gmusic-info (umanage/me)))}))
 
+;; builds information that will be used
+;; to select an appropriate track
+(defn get-why? [lat lng curtime tz]
+  {:winfo (->> 
+            (weather/weather? lat lng)
+            (weather/prettyweather)) 
+   :linfo (location/formatted-address? lat lng) 
+   :tinfo (song/get-discrete-time (Long/valueOf curtime) tz)})
+  
+
 ;; get the audio for the current situation/station
 (defpage "/user/listen/get/audio" {:keys [lat lng curtime tz watcha]}
   (let [gmSession (umanage/get-gmusic-info (umanage/me))
-         winfo  (->> 
-                     (weather/weather? lat lng)
-                     (weather/prettyweather))
-         linfo (location/formatted-address? lat lng)
-         tinfo (song/get-discrete-time (Long/valueOf curtime) tz)]
-    (let [atrack (song/applic-track winfo {:lat lat
-                                           :lng lng} tinfo watcha)]
+        why? (get-why? lat lng curtime tz)]
+    (let [atrack (song/applic-track (:winfo why?) {:lat lat :lng lng} (:tinfo why?) watcha)]
       (let [sresults (gmusic/songSearch (:title atrack) gmSession)]
-        (let [track (first (:songs sresults))]
-          (let [playUrlResp (gmusic/songPlayUrl (:id track) gmSession)]
-            (response/json
-              {:url (:url playUrlResp)
-               :track track
-               :weather winfo
-               :location linfo
-               :time tinfo
-               :gsession true})))))))
+        (response/json
+          {:url (:url (gmusic/songPlayUrl (:id  (first (:songs sresults))) gmSession))
+           :track  (first (:songs sresults))
+           :gsession true})))))
