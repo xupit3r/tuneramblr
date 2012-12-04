@@ -69,6 +69,13 @@ div.stretchy {
 	margin-bottom: 5px;
 }
 
+#track-alert {
+	margin-top: 20px;
+	width: 416px;
+	padding: 2px;
+	border: 0;
+}
+
 ul.love-hate-list {
 	list-style-type:none;
 }
@@ -77,6 +84,11 @@ ul.love-hate-list li {
 	display:block;
 	float:right;
 	cursor: pointer;
+}
+
+ul.love-hate-list li.selected {
+	border-radius: 4px 4px 4px 4px;
+	background: none repeat scroll 0 0 yellow;
 }
 
 ul.love-hate-list li i {

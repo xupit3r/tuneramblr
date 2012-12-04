@@ -32,7 +32,8 @@ LISTEN.prepareSession = function(watcha) {
  */
 LISTEN.handlePrepareSession = function(resp) {
 	if (resp.gsession) {
-		// TODO: maybe add some indication that we have successfully logged in to gmusic
+		// TODO: maybe add some indication that we have successfully logged in
+		// to gmusic
 		LISTEN.hideGmusicLogin();
 		LISTEN.kickOffAudioSession(LISTEN.session.watcha);
 	} else {
@@ -58,11 +59,13 @@ LISTEN.showWatchaDoing = function() {
 		url : "/user/listen/watcha/modal",
 		dataType : "html",
 		data : {},
-		success : function (content) {
+		success : function(content) {
 			$("#watcha-modal_body").empty().append(content);
-			$("#watcha-modal").modal({backdrop : "static",
-									  keyboard : false,
-									  show : true});
+			$("#watcha-modal").modal({
+				backdrop : "static",
+				keyboard : false,
+				show : true
+			});
 		}
 	});
 };
@@ -84,11 +87,13 @@ LISTEN.showGmusicLogin = function() {
 		url : "/user/gmusic/login/modal",
 		dataType : "html",
 		data : {},
-		success : function (content) {
+		success : function(content) {
 			$("#gmusic-modal_body").empty().append(content);
-			$("#gmusic-modal").modal({backdrop : "static",
-				  					  keyboard : false,
-				  					  show : true});	
+			$("#gmusic-modal").modal({
+				backdrop : "static",
+				keyboard : false,
+				show : true
+			});
 		}
 	});
 };
@@ -131,6 +136,8 @@ LISTEN.getUserSessionAudio = function(locinfo, doingWhat, sHandler) {
  */
 LISTEN.storeAudioMeta = function(meta) {
 	LISTEN.session.track = meta.track;
+	LISTEN.session.weather = meta.weather;
+	LISTEN.session.location = meta.location;
 };
 
 /**
@@ -179,7 +186,7 @@ LISTEN.buildAudioSectionMeta = function(meta) {
  *            description)
  */
 LISTEN.setupAudioPlayer = function(audioInfo) {
-	
+
 	var ap = $("#jquery_jplayer_1");
 
 	ap.jPlayer({
@@ -196,16 +203,18 @@ LISTEN.setupAudioPlayer = function(audioInfo) {
 		swfPath : "/script/Jplayer.swf",
 		supplied : "mp3"
 	});
-	
+
 	/* setup the love/hate stuff */
-	$("#love-track").click(function (ev) {
-		// TODO: add logic to submit "love" track
-		// TODO: update love icon to reflect that you "loved" this track
+	$("#love-track").click(function(ev) {
+		if(!$(this).hasClass("selected")) {
+			$(this).addClass("selected");
+			LISTEN.recordLoveHate("user_like")
+		}
 	});
-	
-	$("#hate-track").click(function (ev) {
-		// TODO: add logic to submit "hate" track
+
+	$("#hate-track").click(function(ev) {
 		// TODO: indicate in the UI that you click the "hate" icon
+		LISTEN.recordLoveHate("skip");
 		$("#jquery_jplayer_1").jPlayer("stop");
 		LISTEN.getNextTrack();
 	});
@@ -220,10 +229,6 @@ LISTEN.setupAudioPlayer = function(audioInfo) {
  *            track
  */
 LISTEN.updateAudioPlayer = function(audioInfo) {
-
-	// TODO: add check for valid URL and login information. if new login
-	// information is needed, then popup a dialog to request it from the user.
-
 	var ap = $("#jquery_jplayer_1");
 	ap.jPlayer("clearMedia");
 	ap.jPlayer("setMedia", {
@@ -232,9 +237,55 @@ LISTEN.updateAudioPlayer = function(audioInfo) {
 };
 
 /**
+ * Submits a love/hate request for the currently playing track.
+ */
+LISTEN.recordLoveHate = function(lh) {
+	var data = {
+		lat : LISTEN.userLocation.lat,
+		lng : LISTEN.userLocation.lng,
+		curtime : new Date().getTime(),
+		tz : jstz.determine().name(),
+		watcha : LISTEN.session.watcha,
+		weather : LISTEN.session.weather,
+		location : LISTEN.session.location,
+		artist : LISTEN.session.track.artist,
+		title : LISTEN.session.track.title,
+		album : LISTEN.session.track.album,
+		lovehate : lh
+	};
+
+	$.ajax({
+		type : "POST",
+		url : "/user/listen/lovehate",
+		dataType : "json",
+		data : data,
+		success : LISTEN.handleLoveHateResp
+	});
+};
+
+/**
+ * Handles the response from the love/hate track request. Handling will probably
+ * mean displaying some sort of notification that we have stored the info.
+ * 
+ * @param resp
+ *            the response from the love/hate request
+ */
+LISTEN.handleLoveHateResp = function(resp) {
+	$("#track-alert").text(resp.message).fadeIn("slow", function() {
+		$(this).fadeOut(5000, function() {
+			$(this).text("");
+		});
+	});
+	
+};
+
+/**
  * Handles the retrieval of the next audio track
  */
 LISTEN.getNextTrack = function() {
+
+	// clear the current track information
+	LISTEN.showTrackLoading();
 	LISTEN.getUserSessionAudio({
 		lat : LISTEN.userLocation.lat,
 		lng : LISTEN.userLocation.lng
@@ -242,25 +293,20 @@ LISTEN.getNextTrack = function() {
 };
 
 /**
- * Sets up the ajax loading state
+ * show the track loading div
  */
-LISTEN.initAjaxLoading = function() {
-	/* loading div for ajax calls */
-	$("#loading_div").ajaxStart(function() {
-		$("#jp-track-title").text("");
-		$("#jp-track-artist").text("");
-		$(this).show();
-	}).ajaxStop(function() {
-		$(this).hide();
-	});
+LISTEN.showTrackLoading = function() {
+	$("#jp-track-title").text("");
+	$("#jp-track-artist").text("");
+	$("#love-track").removeClass("selected");
+	$("#loading_div").show();
 };
 
-
 LISTEN.kickOffAudioSession = function(doingWhat) {
-	
+
 	/* set the doing what? in the local cache */
 	LISTEN.session.watcha = doingWhat;
-	
+
 	/* get the user's location and metadata about that location */
 	TUNERAMBLR.util.getUserLocation(function(position) {
 
@@ -295,8 +341,11 @@ LISTEN.kickOffAudioSession = function(doingWhat) {
 
 /* executes when the DOM is ready */
 $(document).ready(function() {
-	LISTEN.initAjaxLoading();
 	LISTEN.showWatchaDoing();
+	$("#loading_div").hide().ajaxStop(function() {
+		$(this).hide();
+	});;
 	$("#jp_container_1").hide();
 	$("#track-lookup").hide();
+	$("#track-alert").hide();
 });

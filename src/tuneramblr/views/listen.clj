@@ -107,7 +107,8 @@
       [:div#track-lookup-notice.bar {:style "width: 100%"} 
        "Finding the right track for you, please wait!"]]]
     [:div#jp-cont 
-     (jplayer-layout)]))
+     (jplayer-layout)]
+    [:div#track-alert.alert.alert-info.center-text ]))
 
 ;; fields for the watcha doing? dialog content
 (defpartial watcha-fields []
@@ -136,6 +137,21 @@
      (gmusic/goodSession? 
        (umanage/get-gmusic-info (umanage/me)))}))
 
+;; submit love or hate for a track
+(defpage [:post "/user/listen/lovehate"] 
+  {:keys [lat lng curtime tz watcha weather location artist title album lovehate]}
+  ; TODO: work in the timezone...
+  (response/json 
+    (song/add-song {:username (umanage/me)
+                    :lat (Double/valueOf lat)
+                    :lng (Double/valueOf lng)
+                    :artist artist
+                    :title title 
+                    :album album 
+                    :weather weather
+                    :tstamp (Long/valueOf curtime)
+                    :ctype lovehate})))
+
 ;; builds information that will be used
 ;; to select an appropriate track
 (defn get-why? [lat lng curtime tz]
@@ -155,4 +171,9 @@
         (response/json
           {:url (:url (gmusic/songPlayUrl (:id  (first (:songs sresults))) gmSession))
            :track  (first (:songs sresults))
+           :location (:linfo why?)
+           :weather (:winfo why?)
            :gsession true})))))
+
+
+
