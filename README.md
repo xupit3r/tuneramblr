@@ -1,12 +1,11 @@
 # tuneramblr
 
-tuneramblr is an application for collecting and analyzing all kinds of metadata (weather, images, attitudes, company, etc.) related to your music listening habits.  It aims to allow exploration of your musical interests by creating playlists based on metadata that you may not typically consider.
+The aim of tuneramblr is to provide recommendations for music that are based on how you listen to music (and not just what you listen to).
 
-This includes the web application portion there is also an accompanying mobile application.
+## Deploying the code
+Really the only thing that needs to be setup to deploy this code is the DB.  The DB (Mongo) connection setting can be configured within tuneramblr.properties.  For the exact properties to set, see dbdef.clj.
 
-To deploy, you must have a Mongo DB instance setup.  The configuration for this should be defined using the property keys in dbdef.clj.
-
-Leiningen is used for project management.
+Tuneramblr uses Leiningen for project management, so, as soon as you set up the DB, you can deploy the application by entering the command `lein run` from within the tunerambr directory.
 
 ## License
 
