@@ -97,6 +97,10 @@ ul.love-hate-list li i {
 	height:18px;
 }
 
+#timeline_container .ctype_skip {
+	background-color: #FFCCCC;
+}
+
 #timeline_container .track_entry {
 	border-top: 1px solid #F1F1F1;
     overflow: hidden;

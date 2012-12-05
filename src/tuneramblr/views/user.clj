@@ -186,16 +186,17 @@
 (defpage "/user/base/timeline" []
   (html5
     (map
-      #(vector :div.track_entry
-         [:div.track_meta
-          [:div.track_date (util/format-date (:tstamp %))]
-          [:div.track_name (str (:title %) 
-                                " by " (:artist %))]
-          [:div (:location %)]
-          [:div (:weather %)]]
-         (when (not (nil? (:img %)))
-           [:img.track_img.img-rounded 
-            {:src (str "/image/ugen/" (:img %))}])) 
+      #(vector :div {:class (str "ctype_" (:ctype %))}
+         [:div.track_entry
+          [:div.track_meta
+           [:div.track_date (util/format-date (:tstamp %))]
+           [:div.track_name (str (:title %) 
+                                 " by " (:artist %))]
+           [:div (:location %)]
+           [:div (:weather %)]]
+          (when (not (nil? (:img %)))
+            [:img.track_img.img-rounded 
+             {:src (str "/image/ugen/" (:img %))}])]) 
       (song/get-timeline-data 
         (umanage/me)))))
 
