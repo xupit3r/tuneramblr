@@ -7,6 +7,17 @@ Really the only thing that needs to be setup to deploy this code is the DB.  The
 
 Tuneramblr uses Leiningen for project management, so, as soon as you set up the DB, you can deploy the application by entering the command `lein run` from within the tunerambr directory.
 
+## Features
+* mobile monitoring of music listening
+* web/desktop based monitoring of listening habits
+* smart listening/playlist generation (play the music that will interest you)
+* social aspect: share your stats, find people with similar tastes, earn badges
+* share playlists/music with friends and family
+* discover new music (recommendation system)
+
+## Links
+wiki: http://thejoeshow.net:8090/display/MUXXER/muxxer+Home
+
 ## License
 
 Copyright (C) 2012 Joe D'Alessandro
