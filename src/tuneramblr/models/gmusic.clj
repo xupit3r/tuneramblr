@@ -115,7 +115,15 @@
   ([authSession] (getUserLibrary authSession true []))
   ([authSession ct userLib]
     (cond 
-      (not ct) userLib
+      (not ct) (map (fn [el]
+                      {:title (:title el)
+                       :artist (:artist el)
+                       :album (:album el)
+                       :duration (:durationMillis el)
+                       :playId (:id el)
+                       :artUrl (:albumArtUrl el)
+                       :playRating (:rating el)
+                       }) userLib)
       :else (let [libChunk 
                   (read-json
                     (:body 

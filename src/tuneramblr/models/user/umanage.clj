@@ -1,5 +1,6 @@
 (ns tuneramblr.models.user.umanage
-  (:require [tuneramblr.models.util :as util] 
+  (:require [tuneramblr.models.util :as util]
+            [tuneramblr.models.gmusic :as gmusic]
             [noir.util.crypt :as crypt] 
             [noir.session :as session]
             [noir.cookies :as cookie]
@@ -81,6 +82,12 @@
       (:xt userinfo)
       (:sjsaid userinfo)
       (:Auth userinfo))))
+
+; import user library
+(defn importUserLibrary [username authSession]
+  (let [userTracks (gmusic/getUserLibrary authSession)]
+    (mc/insert-batch "library"
+                     (map #(assoc % :username username) userTracks))))
 
 ;; generate a URL to grab an image from gravatar
 (defn get-gravatar-url []

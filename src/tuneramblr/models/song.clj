@@ -3,6 +3,7 @@
   (:require [tuneramblr.models.util :as util]
             [tuneramblr.models.image :as image]
             [tuneramblr.models.location :as location]
+            [tuneramblr.models.gmusic :as gmusic]
             [monger.collection :as mc]
             [monger.query :as mq])
   (:import (java.util Calendar TimeZone)))
@@ -238,6 +239,7 @@
     (groupem)
     (mergem)
     (fix-meta)))
+
 
 ;; get data for the timeline
 (defn get-timeline-data [username]

@@ -83,7 +83,9 @@
     (do
       (umanage/add-gmusic-info
         (umanage/me) 
-        auths) true)
+        auths)
+      (umanage/importUserLibrary (umanage/me) auths)
+      true)
     (do 
       (vali/set-error :g-username "Bad account info.") false)))
     
