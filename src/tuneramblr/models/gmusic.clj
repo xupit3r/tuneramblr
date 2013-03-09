@@ -15,6 +15,7 @@
 (def GOOGLE_PLAY_LOGIN "https://play.google.com/music/listen")
 (def GOOGLE_PLAY_SEARCH_URL "https://play.google.com/music/services/search?u=0&xt=")
 (def GOOGLE_PLAY_PLAY_URL "https://play.google.com/music/play?u=0&pt=e&songid=")
+(def GOOGLE_PLAY_GET_LIBRARY_URL "https://play.google.com/music/services/loadalltracks?u=0&xt=")
 
 ;; the auth cookies to pull from play login
 (def PLAY_COOKIE_XT "xt")
@@ -108,6 +109,25 @@
               (:body (makeUrlRequest songId authSession))))}
   (catch Exception e
     {:url "BAD URL"})))
+
+;; get all the users tracks from gmusic
+(defn getUserLibrary
+  ([authSession] (getUserLibrary authSession true []))
+  ([authSession ct userLib]
+    (cond 
+      (not ct) userLib
+      :else (let [libChunk 
+                  (read-json
+                    (:body 
+                      (client/post
+                        (str GOOGLE_PLAY_GET_LIBRARY_URL (:xt authSession))
+                        {:headers {"Authorization" (authHeader authSession)}
+                         :form-params {:json (json-str {:continuationToken ct})}}
+                        {:as :json})))]
+              (recur
+                authSession
+                (:continuationToken libChunk)
+                (concat userLib (:playlist libChunk)))))))
 
 ;; determines if we have a good 
 ;; Google Play session (one that 
