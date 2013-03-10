@@ -276,4 +276,14 @@
                           $lt (+ lng clng)}}
                    {:ctype {$ne "skip"}}]}
                  {:userdef {$regex watcha}}]}))))))
+
+;; selects a completely random track
+(defn getRandomTrack [] )
+
+;; selects a track that you haven't listened
+;; to recently or a track that has never been 
+;; listened to. outside of these constraints, 
+;; the track should be "random"
+(defn getSomethingNew [] )
+  
   
