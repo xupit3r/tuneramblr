@@ -7,12 +7,12 @@ var TIMELINE = {};
  * Requests the user's timeline information.
  */
 TIMELINE.setupUserTimeline = function() {
-	$.ajax({
-		type : "GET",
-		url : "/user/base/timeline",
-		dataType : "html",
-		success : TIMELINE.handleTimelineData
-	});
+    $.ajax({
+	type : "GET",
+	url : "/user/base/timeline",
+	dataType : "html",
+	success : TIMELINE.handleTimelineData
+    });
 };
 
 /**
@@ -23,8 +23,8 @@ TIMELINE.setupUserTimeline = function() {
  *            HTML!)
  */
 TIMELINE.handleTimelineData = function(resp) {
-	$("#timeline_container").append(resp);
-	$("#loading_div").detach();
+    $("#timeline_container").append(resp);
+    $("#loading_div").detach();
 };
 
 /* we want to do this immediately */

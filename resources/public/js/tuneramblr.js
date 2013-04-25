@@ -6,7 +6,7 @@ var TUNERAMBLR = {};
  * @returns true if the user is logged in, false otherwise
  */
 TUNERAMBLR.isUserLoggedIn = function() {
-	return $("#home_content").length > 0;
+    return $("#home_content").length > 0;
 };
 
 /* utility methods */
@@ -21,12 +21,12 @@ TUNERAMBLR.util = {};
  * @returns true if the map is empty, false otherwise
  */
 TUNERAMBLR.util.isEmpty = function(map) {
-	for ( var key in map) {
-		if (map.hasOwnProperty(key)) {
-			return false;
-		}
+    for ( var key in map) {
+	if (map.hasOwnProperty(key)) {
+	    return false;
 	}
-	return true;
+    }
+    return true;
 };
 
 /**
@@ -37,11 +37,11 @@ TUNERAMBLR.util.isEmpty = function(map) {
  * @returns an hashmap representation of the array
  */
 TUNERAMBLR.util.arrToMap = function(arr) {
-	var map = {};
-	for ( var i = 0; i < arr.length; i++) {
-		map[arr[i]] = arr[i];
-	}
-	return map;
+    var map = {};
+    for ( var i = 0; i < arr.length; i++) {
+	map[arr[i]] = arr[i];
+    }
+    return map;
 };
 
 /**
@@ -55,23 +55,23 @@ TUNERAMBLR.util.arrToMap = function(arr) {
  *            the callback function when an error occurs
  */
 TUNERAMBLR.util.getUserLocation = function(hLocation, hNoApi, hError) {
-
-	// TODO: I think this will be the most appropriate place to add the check
-	// for "freshness". Essentially, we need some metric (maybe time since last
-	// update, or some determination if the user is moving (i.e. if he isn't
-	// then we don't need to keep updating the location)). using this metric we
-	// should determine when the most appropriate time to update the user's
-	// location is (we want to avoid this because calling the location API is
-	// EXPENSIVE!!!!).
-
-	/* does this browser expose a geolocation API? */
-	if (navigator.geolocation) {
-		/* call the browser's location API */
-		navigator.geolocation.getCurrentPosition(hLocation, hError);
-	} else {
-		/* we have no API, we shall carry on! */
-		hNoApi();
-	}
+    
+    // TODO: I think this will be the most appropriate place to add the check
+    // for "freshness". Essentially, we need some metric (maybe time since last
+    // update, or some determination if the user is moving (i.e. if he isn't
+    // then we don't need to keep updating the location)). using this metric we
+    // should determine when the most appropriate time to update the user's
+    // location is (we want to avoid this because calling the location API is
+    // EXPENSIVE!!!!).
+    
+    /* does this browser expose a geolocation API? */
+    if (navigator.geolocation) {
+	/* call the browser's location API */
+	navigator.geolocation.getCurrentPosition(hLocation, hError);
+    } else {
+	/* we have no API, we shall carry on! */
+	hNoApi();
+    }
 };
 
 /* About */
@@ -80,17 +80,17 @@ TUNERAMBLR.util.getUserLocation = function(hLocation, hNoApi, hError) {
  * Requests the about information for the page.
  */
 TUNERAMBLR.about = function() {
-	$.ajax({
-		type : "GET",
-		url : "/about",
-		dataType : "json",
-		success : APP.displayAbout
-	});
+    $.ajax({
+	type : "GET",
+	url : "/about",
+	dataType : "json",
+	success : APP.displayAbout
+    });
 };
 
 /**
  * Handles and displays the about response information
  */
 TUNERAMBLR.displayAbout = function(response) {
-	$.prompt(response.about);
+    $.prompt(response.about);
 };
