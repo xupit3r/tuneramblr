@@ -15,9 +15,6 @@ Tuneramblr uses Leiningen for project management, so, as soon as you set up the 
 * share playlists/music with friends and family
 * discover new music (recommendation system)
 
-## Links
-wiki: http://thejoeshow.net:8090/display/MUXXER/muxxer+Home
-
 ## License
 
 Copyright (C) 2012 Joe D'Alessandro
