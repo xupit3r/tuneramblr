@@ -278,7 +278,17 @@
                  {:userdef {$regex watcha}}]}))))))
 
 ;; selects a completely random track
-(defn getRandomTrack [] )
+(defn getRandomTrack [username authSession] 
+  (let [cnt (mc/count "library" {:username username})]
+    (:url
+     (gmusic/songPlayUrl
+      (:playId
+       (first
+        (mq/with-collection "library"
+          (mq/find {:username username})
+          (mq/limit -1)
+          (mq/skip (int (rand cnt)))))) 
+      authSession))))
 
 ;; selects a track that you haven't listened
 ;; to recently or a track that has never been 

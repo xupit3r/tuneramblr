@@ -176,4 +176,10 @@
            :gsession true})))))
 
 
-
+;; get a random audio track from the user's
+;; library
+(defpage "/user/listen/get/random" {}
+  (response/json
+   (song/getRandomTrack 
+    (umanage/me)
+    (umanage/get-gmusic-info (umanage/me)))))
