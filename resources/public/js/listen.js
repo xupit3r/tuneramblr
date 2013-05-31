@@ -251,6 +251,7 @@ LISTEN.recordLoveHate = function(lh) {
 	artist : LISTEN.session.track.artist,
 	title : LISTEN.session.track.title,
 	album : LISTEN.session.track.album,
+	playId : LISTEN.session.track.playId,
 	lovehate : lh
     };
     

@@ -98,7 +98,7 @@
       
 
 ;; listen view (metadata + player)
-(defpage  "/user/listen" {}
+(defpage  "/user/listen" {:keys [mode]}
   (layout
     "Listen!"
     :user-listen
@@ -139,8 +139,7 @@
 
 ;; submit love or hate for a track
 (defpage [:post "/user/listen/lovehate"] 
-  {:keys [lat lng curtime tz watcha weather location artist title album lovehate]}
-  ; TODO: work in the timezone...
+  {:keys [lat lng curtime tz watcha weather location artist title album lovehate playId]}
   (response/json 
     (song/add-song {:username (umanage/me)
                     :lat (Double/valueOf lat)
@@ -149,7 +148,9 @@
                     :title title 
                     :album album 
                     :weather weather
+                    :timezone tz
                     :tstamp (Long/valueOf curtime)
+                    :playId playId
                     :ctype lovehate})))
 
 ;; builds information that will be used
@@ -163,23 +164,26 @@
   
 
 ;; get the audio for the current situation/station
-(defpage "/user/listen/get/audio" {:keys [lat lng curtime tz watcha]}
+(defpage "/user/listen/get/audio" {:keys [lat lng curtime tz watcha mode]}
+  (println watcha)
   (let [gmSession (umanage/get-gmusic-info (umanage/me))
         why? (get-why? lat lng curtime tz)]
-    (let [atrack (song/applic-track (:winfo why?) {:lat lat :lng lng} (:tinfo why?) watcha)]
-      (let [sresults (gmusic/songSearch (:title atrack) gmSession)]
-        (response/json
+    (cond
+     (not (empty? watcha))
+     (let [atrack (song/applic-track (:winfo why?) {:lat lat :lng lng} (:tinfo why?) watcha)]
+       (let [sresults (gmusic/songSearch (:title atrack) gmSession)]
+         (response/json
           {:url (:url (gmusic/songPlayUrl (:id  (first (:songs sresults))) gmSession))
            :track  (first (:songs sresults))
            :location (:linfo why?)
            :weather (:winfo why?)
-           :gsession true})))))
-
-
-;; get a random audio track from the user's
-;; library
-(defpage "/user/listen/get/random" {}
-  (response/json
-   (song/getRandomTrack 
-    (umanage/me)
-    (umanage/get-gmusic-info (umanage/me)))))
+           :gsession true})))
+     :else
+     (let [atrack (song/getRandomTrack (umanage/me))]
+       (response/json
+        {:url (:url (gmusic/songPlayUrl (:playId atrack) gmSession))
+         :track atrack
+         :location (:linfo why?)
+         :weather (:winfo why?)
+         :gsession true})))))
+  
