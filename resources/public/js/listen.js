@@ -15,8 +15,9 @@ LISTEN.defaults.location = {
  * Prepares the user audio session. If the user session is bad, it will take the
  * steps necessary to mend it.
  */
-LISTEN.prepareSession = function(watcha) {
+LISTEN.prepareSession = function(watcha, pMode) {
     LISTEN.session.watcha = watcha;
+    LISTEN.session.pMode = pMode;
     $.ajax({
 	type : "GET",
 	url : "/user/listen/check/session",
@@ -35,7 +36,7 @@ LISTEN.handlePrepareSession = function(resp) {
 	// TODO: maybe add some indication that we have successfully logged in
 	// to gmusic
 	LISTEN.hideGmusicLogin();
-	LISTEN.kickOffAudioSession(LISTEN.session.watcha);
+	LISTEN.kickOffAudioSession(LISTEN.session.watcha, LISTEN.session.pMode);
     } else {
 	LISTEN.showGmusicLogin();
     }
@@ -107,7 +108,7 @@ LISTEN.showGmusicLogin = function() {
  * @param sHandler
  *            a callback function to handle a successful Ajax request.
  */
-LISTEN.getUserSessionAudio = function(locinfo, doingWhat, sHandler) {
+LISTEN.getUserSessionAudio = function(locinfo, doingWhat, pMode, sHandler) {
     var data = {};
     if (locinfo) {
 	data = {
@@ -116,7 +117,7 @@ LISTEN.getUserSessionAudio = function(locinfo, doingWhat, sHandler) {
 	    curtime : new Date().getTime(),
 	    tz : jstz.determine().name(),
 	    watcha : doingWhat,
-	    
+	    pMode : pMode 
 	}
     }
     
@@ -290,7 +291,7 @@ LISTEN.getNextTrack = function() {
     LISTEN.getUserSessionAudio({
 	lat : LISTEN.userLocation.lat,
 	lng : LISTEN.userLocation.lng
-    }, LISTEN.session.watcha, LISTEN.updateUserSessionAudio);
+    }, LISTEN.session.watcha, LISTEN.session.pMode, LISTEN.updateUserSessionAudio);
 };
 
 /**
@@ -303,9 +304,7 @@ LISTEN.showTrackLoading = function() {
     $("#loading_div").show();
 };
 
-LISTEN.kickOffAudioSession = function(doingWhat) {
-    /* set the doing what? in the local cache */
-    LISTEN.session.watcha = doingWhat;
+LISTEN.kickOffAudioSession = function(doingWhat, pMode) {
     
     /* get the user's location and metadata about that location */
     TUNERAMBLR.util.getUserLocation(function(position) {
@@ -329,10 +328,10 @@ LISTEN.kickOffAudioSession = function(doingWhat) {
 	LISTEN.getUserSessionAudio({
 	    lat : position.coords.latitude,
 	    lng : position.coords.longitude
-	}, doingWhat, LISTEN.initUserSessionAudio);
+	}, doingWhat, pMode, LISTEN.initUserSessionAudio);
 	
     }, function() {
-	LISTEN.getUserSessionAudio(LISTEN.defaults.location, doingWhat,
+	LISTEN.getUserSessionAudio(LISTEN.defaults.location, doingWhat, pMode,
 				   LISTEN.initUserSessionAudio);
     }, function(error) {
 	/* do something */

@@ -116,7 +116,10 @@
    (label {:class "control-label"} "w-doing" "What are you up to?")
    [:div.controls
     (text-field "w-doing" "")
-    (vali/on-error :w-doing common/error-disp)]]
+    (vali/on-error :w-doing common/error-disp)]
+   (label {:class "control-label"} "pmode" "Want to Learn?")
+   [:div.controls
+    (check-box {} "pmode")]]
   [:div
    [:div.controls
     (submit-button {:class "btn"} "Submit")]])
@@ -148,6 +151,7 @@
                     :title title 
                     :album album 
                     :weather weather
+                    :watcha watcha
                     :timezone tz
                     :tstamp (Long/valueOf curtime)
                     :playId playId
@@ -164,12 +168,13 @@
   
 
 ;; get the audio for the current situation/station
-(defpage "/user/listen/get/audio" {:keys [lat lng curtime tz watcha mode]}
-  (println watcha)
+(defpage "/user/listen/get/audio" {:keys [lat lng curtime tz watcha pMode]}
+  (println (str "pMode =  " pMode))
+  (println (str "watcha = " watcha))
   (let [gmSession (umanage/get-gmusic-info (umanage/me))
         why? (get-why? lat lng curtime tz)]
     (cond
-     (not (empty? watcha))
+     (not pMode)
      (let [atrack (song/applic-track (:winfo why?) {:lat lat :lng lng} (:tinfo why?) watcha)]
        (let [sresults (gmusic/songSearch (:title atrack) gmSession)]
          (response/json
