@@ -5,7 +5,8 @@
             [tuneramblr.models.location :as location]
             [tuneramblr.models.gmusic :as gmusic]
             [monger.collection :as mc]
-            [monger.query :as mq])
+            [monger.query :as mq]
+            [clojure.set :as cset])
   (:import (java.util Calendar TimeZone)))
 
 ;;;; functions for working with song
@@ -197,7 +198,7 @@
 ;; on two potentionally
 ;; non-set collections
 (defn set-union [s1 s2]
-  (clojure.set/union
+  (cset/union
     (util/to-set s1)
     (util/to-set s2)))
 
