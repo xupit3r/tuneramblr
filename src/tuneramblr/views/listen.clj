@@ -29,26 +29,30 @@
      :tuneramblr.js
      :listen.js]))
 
-;; define a user space specific layout
+;; define the layout for the listen page
 (defpartial layout [title location & content]
   (html5
     (build-listen-head title)
     [:body
      [:div {:class "container"}
       (common/build-nav-bar (umanage/me) location)
-      [:div.row-fluid
+      [:div#player_row.row-fluid
        [:div#love.span3 
         "LOVE"]
        [:div#audio_content.span6
         content]
        [:div#meh.span3 
         "MEH"]]
+      [:div#notify_area.row-fluid
+       [:div.offset3
+        [:div#track-alert.alert.alert-info.center-text 
+        "&nbsp;"]]]
       (common/build-modal-dialog
-        "gmusic-modal"
-        "Login to Google Music")
+       "gmusic-modal"
+       "Login to Google Music")
       (common/build-modal-dialog
-        "watcha-modal"
-        "Watcha doing?")]
+       "watcha-modal"
+       "Watcha doing?")]
      (common/build-common-footer)]))
 
 ;; defines the markup for a jPlayer
@@ -106,8 +110,7 @@
       [:div#track-lookup-notice.bar {:style "width: 100%"} 
        "Finding the right track for you, please wait!"]]]
     [:div#jp-cont 
-     (jplayer-layout)]
-    [:div#track-alert.alert.alert-info.center-text ]))
+     (jplayer-layout)]))
 
 ;; fields for the watcha doing? dialog content
 (defpartial watcha-fields []

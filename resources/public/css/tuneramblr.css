@@ -69,6 +69,14 @@ div.stretchy {
     margin-bottom: 5px;
 }
 
+#player_row {
+    height: 200px;
+}
+
+#notify_area {
+    height: 50px;
+}
+
 #track-alert {
     margin-top: 20px;
     width: 416px;
