@@ -138,57 +138,65 @@
   (response/json
     {:gsession 
      (gmusic/goodSession? 
-       (umanage/get-gmusic-info (umanage/me)))}))
+      (umanage/get-gmusic-info (umanage/me)))}))
 
 ;; submit love or hate for a track
 (defpage [:post "/user/listen/lovehate"] 
   {:keys [lat lng curtime tz watcha weather location artist title album lovehate playId]}
   (response/json 
-    (song/add-song {:username (umanage/me)
-                    :lat (Double/valueOf lat)
-                    :lng (Double/valueOf lng)
-                    :artist artist
-                    :title title 
-                    :album album 
-                    :weather weather
-                    :watcha watcha
-                    :timezone tz
-                    :tstamp (Long/valueOf curtime)
-                    :playId playId
-                    :ctype lovehate})))
+   (song/add-song {:username (umanage/me)
+                   :lat (Double/valueOf lat)
+                   :lng (Double/valueOf lng)
+                   :artist artist
+                   :title title 
+                   :album album 
+                   :weather weather
+                   :watcha watcha
+                   :timezone tz
+                   :tstamp (Long/valueOf curtime)
+                   :playId playId
+                   :ctype lovehate})))
 
-;; builds information that will be used
-;; to select an appropriate track
-(defn get-why? [lat lng curtime tz]
-  {:winfo (->> 
+
+;; get meta data about this current point in time
+;; includes: weather, location, more specific time info
+;; NOTE: should only be called when it is absolutely 
+;; needed. this is a very expensive call to make, it 
+;; hits several other services to get its data
+(defpage "/user/listen/get/why" {:keys [lat lng]}
+  (response/json
+   {:weather (->> 
             (weather/weather? lat lng)
-            (weather/prettyweather)) 
-   :linfo (location/formatted-address? lat lng) 
-   :tinfo (song/get-discrete-time (Long/valueOf curtime) tz)})
-  
+            (weather/prettyweather))
+    :location (location/formatted-address? lat lng)}))
+
 
 ;; get the audio for the current situation/station
-(defpage "/user/listen/get/audio" {:keys [lat lng curtime tz watcha pMode]}
-  (println (str "pMode =  " pMode))
-  (println (str "watcha = " watcha))
-  (let [gmSession (umanage/get-gmusic-info (umanage/me))
-        why? (get-why? lat lng curtime tz)]
+(defpage "/user/listen/get/audio" {:keys [lat lng curtime tz watcha pMode why]}
+  (let [gmSession (umanage/get-gmusic-info (umanage/me))]
     (cond
-     (not pMode)
-     (let [atrack (song/applic-track (:winfo why?) {:lat lat :lng lng} (:tinfo why?) watcha)]
-       (let [sresults (gmusic/songSearch (:title atrack) gmSession)]
+     (not pMode) ; predictor/radio mode
+     (let [atrack (song/applic-track 
+                   (:weather why) 
+                   {:lat lat :lng lng} 
+                   (song/get-discrete-time 
+                    (Long/valueOf curtime) tz) 
+                   watcha)]
+       (let [sresults (gmusic/songSearch 
+                       (:title atrack) gmSession)]
          (response/json
-          {:url (:url (gmusic/songPlayUrl (:id  (first (:songs sresults))) gmSession))
+          {:url (:url (gmusic/songPlayUrl 
+                       (:id  (first (:songs sresults))) gmSession))
            :track  (first (:songs sresults))
-           :location (:linfo why?)
-           :weather (:winfo why?)
+           :location (:location why)
+           :weather (:weather why)
            :gsession true})))
-     :else
-     (let [atrack (song/getRandomTrack (umanage/me))]
+     :else ; learner mode
+     (let [atrack (song/getRandomTrack 
+                   (umanage/me))]
        (response/json
         {:url (:url (gmusic/songPlayUrl (:playId atrack) gmSession))
          :track atrack
-         :location (:linfo why?)
-         :weather (:winfo why?)
+         :location (:location why)
+         :weather (:weather why)
          :gsession true})))))
-  

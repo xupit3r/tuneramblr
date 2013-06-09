@@ -57,9 +57,9 @@
 ;; get weather information
 (defn weather? [lat lng]
   (->>
-    (build-query lat lng)
-    (build-url)
-    (call-weather-api)))
+   (build-query lat lng)
+   (build-url)
+   (call-weather-api)))
 
 ;; pull the current conditions 
 ;; from the retrieved weather data

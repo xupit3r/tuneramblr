@@ -117,7 +117,8 @@ LISTEN.getUserSessionAudio = function(locinfo, doingWhat, pMode, sHandler) {
 	    curtime : new Date().getTime(),
 	    tz : jstz.determine().name(),
 	    watcha : doingWhat,
-	    pMode : pMode 
+	    pMode : pMode,
+	    why : LISTEN.session.why
 	}
     }
     
@@ -274,9 +275,9 @@ LISTEN.recordLoveHate = function(lh) {
  */
 LISTEN.handleLoveHateResp = function(resp) {
     $("#track-alert").text(resp.message).fadeIn("slow", function() {
-		$(this).fadeOut(5000, function() {
-		    $(this).text("");
-		});
+	$(this).fadeOut(5000, function() {
+	    $(this).text("");
+	});
     });
     
 };
@@ -285,8 +286,6 @@ LISTEN.handleLoveHateResp = function(resp) {
  * Handles the retrieval of the next audio track
  */
 LISTEN.getNextTrack = function() {
-    
-    // clear the current track information
     LISTEN.showTrackLoading();
     LISTEN.getUserSessionAudio({
 	lat : LISTEN.userLocation.lat,
@@ -304,13 +303,32 @@ LISTEN.showTrackLoading = function() {
     $("#loading_div").show();
 };
 
+/*
+ * Retrieves the location related meta data
+ * (pretty location and weather).
+ */
+LISTEN.prepareLocationMeta = function(pLat, pLng, successF) {
+    var data = {
+	lat : pLat,
+	lng : pLng
+    };
+    
+    $.ajax({
+	type : "GET",
+	url : "/user/listen/get/why",
+	dataType : "json",
+	data : data,
+	success : successF
+    });
+}
+
 LISTEN.kickOffAudioSession = function(doingWhat, pMode) {
     
     /* get the user's location and metadata about that location */
     TUNERAMBLR.util.getUserLocation(function(position) {
 	
-	// TODO: update the location retrieval to check on the "freshness" of
-	// the user's location. see todo note in TUNERAMBLR.util.getUserLocation
+	/* TODO: update the location retrieval to check on the "freshness" of
+	the user's location. see todo note in TUNERAMBLR.util.getUserLocation */
 	
 	/*
 	 * I read that FF sometimes calls this multiple times let's avoid that,
@@ -325,14 +343,23 @@ LISTEN.kickOffAudioSession = function(doingWhat, pMode) {
 	LISTEN.userLocation.lng = position.coords.longitude;
 	
 	/* now, setup audio playback */
-	LISTEN.getUserSessionAudio({
-	    lat : position.coords.latitude,
-	    lng : position.coords.longitude
-	}, doingWhat, pMode, LISTEN.initUserSessionAudio);
+	var sFunc = function (resp) {
+	    LISTEN.session.why = resp;
+	    LISTEN.getUserSessionAudio({
+		lat : LISTEN.userLocation.lat,
+		lng : LISTEN.userLocation.lng
+	    }, doingWhat, pMode, LISTEN.initUserSessionAudio);
+	};
+	LISTEN.prepareLocationMeta(LISTEN.userLocation.lat, LISTEN.userLocation.lng, sFunc);
+	
 	
     }, function() {
-	LISTEN.getUserSessionAudio(LISTEN.defaults.location, doingWhat, pMode,
-				   LISTEN.initUserSessionAudio);
+	var sFunc = function (resp) {
+	    LISTEN.session.why = resp;
+	    LISTEN.getUserSessionAudio(LISTEN.defaults.location, doingWhat, pMode,
+				       LISTEN.initUserSessionAudio);
+	};
+	LISTEN.prepareLocationMeta(LISTEN.defaults.location.lat, LISTEN.defaults.location.lng, sFunc);
     }, function(error) {
 	/* do something */
     });
