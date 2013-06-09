@@ -165,10 +165,19 @@ LISTEN.initUserSessionAudio = function(resp) {
  *            the response object from the request
  */
 LISTEN.updateUserSessionAudio = function(resp) {
+    LISTEN.clearPreviousTrackInfo();
     LISTEN.storeAudioMeta(resp);
     LISTEN.buildAudioSectionMeta(resp);
     LISTEN.updateAudioPlayer(resp);
 };
+
+
+LISTEN.clearPreviousTrackInfo = function() {
+    $("#jp-track-title").text("");
+    $("#jp-track-artist").text("");
+    $("#love").removeClass("selected");
+    $("#meh").removeClass("selected");
+}
 
 /**
  * builds the audio metadata section
@@ -206,19 +215,22 @@ LISTEN.setupAudioPlayer = function(audioInfo) {
 	supplied : "mp3"
     });
     
-    /* setup the love/hate stuff */
-    $("#love-track").click(function(ev) {
+    /* setup the love the track click */
+    $("#love").click(function(ev) {
 	if(!$(this).hasClass("selected")) {
 	    $(this).addClass("selected");
 	    LISTEN.recordLoveHate("user_like")
 	}
     });
     
-    $("#hate-track").click(function(ev) {
-	// TODO: indicate in the UI that you click the "hate" icon
-	LISTEN.recordLoveHate("skip");
-	$("#jquery_jplayer_1").jPlayer("stop");
-	LISTEN.getNextTrack();
+    /* setup the meh the track click */
+    $("#meh").click(function(ev) {
+	if(!$(this).hasClass("selected")) {
+	    $(this).addClass("selected");
+	    LISTEN.recordLoveHate("skip");
+	    $("#jquery_jplayer_1").jPlayer("stop");
+	    LISTEN.getNextTrack();
+	}
     });
     
 };
@@ -297,9 +309,6 @@ LISTEN.getNextTrack = function() {
  * show the track loading div
  */
 LISTEN.showTrackLoading = function() {
-    $("#jp-track-title").text("");
-    $("#jp-track-artist").text("");
-    $("#love-track").removeClass("selected");
     $("#loading_div").show();
 };
 

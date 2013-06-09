@@ -1,10 +1,10 @@
 /** This file will contain any necessary customizations for the tuneramblr site **/
 .center {
-	margin: auto;
+    margin: auto;
 }
 
 .center-text {
-	text-align: center;
+    text-align: center;
 }
 
 #footer {
@@ -18,11 +18,11 @@
 }
 
 #tracks_table tbody tr {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 #tracks_table tbody tr:hover {
-	background-color: #D9EDF7;
+    background-color: #D9EDF7;
 }
 
 #loading_div {
@@ -38,15 +38,15 @@
 }
 
 div.inline-block {
-	display: inline-block;
+    display: inline-block;
 }
 
 #track-lookup-notice {
-	text-align: center;
+    text-align: center;
 }
 
 #track-lookup-progress {
-	width: 370px;
+    width: 370px;
 }
 
 div.spinny {
@@ -66,64 +66,53 @@ div.stretchy {
 }
 
 #audio_content #metadata {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 #track-alert {
-	margin-top: 20px;
-	width: 416px;
-	padding: 2px;
-	border: 0;
-}
-
-ul.love-hate-list {
-	list-style-type:none;
-}
-
-ul.love-hate-list li {
-	display:block;
-	float:right;
-	cursor: pointer;
-}
-
-ul.love-hate-list li.selected {
-	border-radius: 4px 4px 4px 4px;
-	background: none repeat scroll 0 0 yellow;
-}
-
-ul.love-hate-list li i {
-	display:block;
-	width:25px;
-	height:18px;
+    margin-top: 20px;
+    width: 416px;
+    padding: 2px;
+    border: 0;
 }
 
 #timeline_container .ctype_skip {
-	background-color: #FFCCCC;
+    background-color: #FFCCCC;
 }
 
 #timeline_container .track_entry {
-	border-top: 1px solid #F1F1F1;
+    border-top: 1px solid #F1F1F1;
     overflow: hidden;
     padding: 0 0 1em 45px;
     position: relative;
 }
 
 #timeline_container .track_date {
-	color: #BBBBBB;
-	font-size: 12px;
+    color: #BBBBBB;
+    font-size: 12px;
 }
 
 #timeline_container .track_meta {
-	font-size: 10px;
-	float: left;
+    font-size: 10px;
+    float: left;
 }
 
 #timeline_container .track_name {
-	font-weight: bold;
-	font-size: 14px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 #timeline_container .track_img {
-	float: right;
-	margin-top: 10px;
+    float: right;
+    margin-top: 10px;
+}
+
+#meh, #love {
+    font-size: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#meh.selected, #love.selected {
+    color: red;
 }

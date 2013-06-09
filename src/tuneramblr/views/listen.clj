@@ -37,8 +37,12 @@
      [:div {:class "container"}
       (common/build-nav-bar (umanage/me) location)
       [:div.row-fluid
-       [:div#audio_content.offset3
-        content]]
+       [:div#love.span3 
+        "LOVE"]
+       [:div#audio_content.span6
+        content]
+       [:div#meh.span3 
+        "MEH"]]
       (common/build-modal-dialog
         "gmusic-modal"
         "Login to Google Music")
@@ -79,12 +83,7 @@
        [:div.jp-volume-bar-value ]]
       [:div.jp-time-holder
        [:div.jp-current-time ]
-       [:div.jp-duration ]
-       [:ul.love-hate-list
-        [:li#love-track
-         [:i.icon-thumbs-up]]
-        [:li#hate-track
-         [:i.icon-thumbs-down]]]]]
+       [:div.jp-duration ]]]
      [:div.jp-title
       [:ul
        [:li#jp-track-title ]
