@@ -78,13 +78,14 @@
 
 ;; perform the addition of the google credentials
 ;; to the datastore
-(defn process-add [auths]
+(defn process-add [auths init]
   (if (validGoogleLogin auths)
     (do
       (umanage/add-gmusic-info
-        (umanage/me) 
-        auths)
-      (umanage/importUserLibrary (umanage/me) auths)
+       (umanage/me) 
+       auths)
+      (when init
+        (umanage/importUserLibrary (umanage/me) auths))
       true)
     (do 
       (vali/set-error :g-username "Bad account info.") false)))
@@ -96,7 +97,8 @@
       (if (process-add 
             (gmusic/loginToPlay 
               (:g-username gmi) 
-              (:g-password gmi)))
+              (:g-password gmi))
+            true) ;; this is initial import, so INIT is true
         (response/redirect "/user/listen")
         (render "/user/gmusic" gmi))
     (catch Exception e
@@ -112,7 +114,8 @@
     (if (process-add 
           (gmusic/loginToPlay 
             (:g-username gmi) 
-            (:g-password gmi)))
+            (:g-password gmi))
+          false) ;; this is not initial import, so INIT is false
       (response/json {:gsession true})
       (response/json {:gsession false}))
     (catch Exception e
